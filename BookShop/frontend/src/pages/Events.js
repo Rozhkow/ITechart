@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class EventsPage extends Component {
     render() {
-        return <h1>The Events Page</h1>;
+        return <h1>The Product Page</h1>;
     }
 }
 

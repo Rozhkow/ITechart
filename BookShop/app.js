@@ -15,6 +15,17 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Every host and client can sent requests to the Server
+  res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS'); // To control which kind of request can you sent
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // To control which kind of header can you sent
+  // Checking a request because it can't be handled
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
   app.use(isAuth);   // authorization check
 
   app.use(    
@@ -33,7 +44,7 @@ mongoose.connect(`mongodb+srv://${
     }@cluster0.accxh.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
 )
 .then(() => {
-    app.listen(3000); 
+    app.listen(8000); 
 })
 .catch(err => {
     console.log(err);
