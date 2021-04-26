@@ -1,5 +1,5 @@
 const Event = require('../../models/event');
-const User = require('../../models/user');
+const User = require('../../models/User');
 
 const { transformEvent } = require('./merge');
 

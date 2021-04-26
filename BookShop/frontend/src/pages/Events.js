@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class EventsPage extends Component {
-    render() {
-        return <h1>The Product Page</h1>;
-    }
+function EventsPage() {
+    return (
+        <div>
+            <h1>The Product Page</h1>
+        </div>
+    )
 }
 
 export default EventsPage;

@@ -1,11 +1,10 @@
-const authResolver = require('./auth');
 const eventsResolver = require('./events');
-const shoppingResolver = require('./shopping');
+const usersResolvers = require('./users');
 
-const rootResolver = {
-    ...authResolver,
-    ...eventsResolver,
-    ...shoppingResolver
+
+
+module.exports = {
+    Mutation: {
+        ...usersResolvers.Mutation
+    }
 };
-
-module.exports = rootResolver;

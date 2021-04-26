@@ -1,7 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import { gql } from '@apollo/client';
 
 import './index.css';
 import App from './App';
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+
+render(<App />, document.getElementById('root'));

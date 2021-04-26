@@ -1,43 +1,43 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Menu } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
-import AuthContext from '../../context/auth-context';
-import './MainNavigation.css';
+function MainNavigation() {
+  const pathname = window.location.pathname;
 
-const mainNavigation = props => (
-  <AuthContext.Consumer>
-    {context => {
-      return (
-        <header className="main-navigation">
-          <div className="main-navigation__logo">
-            <h1>BookShop</h1>
-          </div>
-          <nav className="main-navigation__items">
-            <ul>  
-              {!context.token && (    // If context token is exist we'll render this list item
-                <li>
-                  <NavLink to="/auth">Authenticate</NavLink>
-                </li>
-              )}
-              <li>
-                <NavLink to="/events">Products</NavLink>
-              </li>
-              {context.token && (
-                <React.Fragment>
-                  <li>      
-                    <NavLink to="/shoppings">Shoppings</NavLink>
-                  </li>
-                  <li>
-                    <button onClick={context.logout}>Logout</button>
-                  </li>
-                </React.Fragment>
-              )}
-            </ul>
-          </nav>
-        </header>
-      );
-    }}
-  </AuthContext.Consumer>
-);
+  const path = pathname === '/' ? 'Home' : pathname.substr(1);
+  const [activeItem, setActiveItem] = useState(path);
+  
+  const handleItemClick = (e, { name }) => setActiveItem(name);
 
-export default mainNavigation;
+  return(
+    <Menu pointing secondary size="massive" color="teal">
+      <Menu.Item
+        name="Home"
+        active={activeItem === 'Home'}
+        onClick={handleItemClick}
+        as={Link}
+        to="/"
+      />
+
+      <Menu.Menu position="right">
+        <Menu.Item
+          name="Login"
+          active={activeItem === 'Login'}
+          onClick={handleItemClick}
+          as={Link}
+          to="/login"
+        />
+        <Menu.Item
+          name="Register"
+          active={activeItem === 'Register'}
+          onClick={handleItemClick}
+          as={Link}
+          to="/register"
+        />
+      </Menu.Menu>
+    </Menu>
+  );
+}
+
+export default MainNavigation;

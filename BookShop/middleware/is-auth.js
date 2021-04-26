@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { SECRET_KEY } = require('../config');
 
 // intermediate processing function (request, response, callback arg to the middleware foo)
 
@@ -15,7 +16,7 @@ module.exports = (req, res, next) => {
     }
     let decodedToken;
     try {
-        decodedToken = jwt.verify(token, 'something');
+        decodedToken = jwt.verify(token, SECRET_KEY);
     } catch (err) {
         req.isAuth = false;
         return next();

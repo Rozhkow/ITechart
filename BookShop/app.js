@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql').graphqlHTTP;
 const { buildSchema } = require('graphql');
 const mongoose = require('mongoose');
+const { MONGODB } = require('./config.js');
 
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
@@ -39,11 +40,9 @@ app.use((req, res, next) => {
 
   // user connection
 
-mongoose.connect(`mongodb+srv://${      
-        process.env.MONGO_USER}:${process.env.MONGO_PASSWORD
-    }@cluster0.accxh.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
-)
+mongoose.connect(MONGODB)
 .then(() => {
+    console.log('MongoDB Connected');
     app.listen(8000); 
 })
 .catch(err => {

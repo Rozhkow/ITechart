@@ -20,7 +20,7 @@ module.exports = {
         if (!req.isAuth) {
         throw new Error('Unauthenticated!');
     }
-    const fetchedEvent = await Event.findOne({ _id: args.eventId });
+    const fetchedEvent = await Event.findOne({ id: args.eventId });
     const shopping = new Shopping({
         user: req.userId,
         event: fetchedEvent
@@ -35,7 +35,7 @@ module.exports = {
     try {
         const shopping = await Shopping.findById(args.shoppingId).populate('event');
         const event = transformEvent(shopping.event);
-        await Shopping.deleteOne({ _id: args.shoppingId });
+        await Shopping.deleteOne({ id: args.shoppingId });
         return event;
     } catch (err) {
       throw err;
