@@ -3,8 +3,9 @@ const usersResolvers = require('./users');
 
 
 
-module.exports = {
-    Mutation: {
-        ...usersResolvers.Mutation
-    }
-};
+const rootResolver = {
+    ...eventsResolver,
+    ...usersResolvers
+  };
+  
+  module.exports = rootResolver;

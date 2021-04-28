@@ -1,35 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Form } from 'semantic-ui-react';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client';
+// import gql from 'graphql-tag';
 
 
-function Register() {
-  const [values, setValues] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  })
+import { AuthContext } from '../context/auth';
+import { useForm } from '../util/hooks';
 
-  const onChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value});
+
+const REGISTER_USER = gql`
+  mutation register(
+    $username: String!
+    $email: String!
+    $password: String!
+    $confirmPassword: String!
+  ) {
+    register(
+      registerInput: {
+        username: $username
+        email: $email
+        password: $password
+        confirmPassword: $confirmPassword
+      }
+    ) {
+      id
+      email
+      username
+      createdAt
+      token
+    }
   }
+`;
 
-  // const [register, { loading }] = useMutation(REGISTER_USER, {
-  //   update(rezult){  // to update the cache after a mutation
-  //     console.log(rezult)
-  //   },
-  //   variables: values  // An object containing all of the variables your mutation needs to execute
-  // });
 
-  // const [register, { loading }] = useMutation(REGISTER_USER);
-  const loading = false;
+function Register(props) {
+  const context = useContext(AuthContext);
+  const [errors, setErrors] = useState({});
   
-  const onSubmit = (event) => {
-    event.preventDefault(); // undo the default action
-    // register();
-  }
+const { onChange, onSubmit, values } = useForm(registerUser, {
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: ''
+})
+  
+  
+
+const [addUser, { loading }] = useMutation(REGISTER_USER, {
+  update(_, { data: { register: userData}}) {
+    context.login(userData)
+    props.history.push('/') // to the HomePage
+  },
+  variables: values
+})
+
+function registerUser(){
+  addUser();
+}
 
   return (
     <div className="form-container">
@@ -74,29 +101,5 @@ function Register() {
     </div>
   );
 }
-
-const REGISTER_USER = gql`
-  mutation register(
-    $username: String!
-    $email: String!
-    $password: String!
-    $confirmPassword: String!
-  ) {
-    register(
-      registerInput: {
-        username: $username
-        email: $email
-        password: $password
-        confirmPassword: $confirmPassword
-      }
-    ) {
-      id
-      email
-      username
-      createdAt
-      token
-    }
-  }
-`;
 
 export default Register;

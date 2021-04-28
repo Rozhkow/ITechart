@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
-import ApolloClient, { InMemoryCache } from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import React from 'react';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 
-import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css';
+import './App.css';
 
+import { AuthProvider } from './context/auth';
+import AuthRoute from './util/AuthRoute';
 
 import MainNavigation from './components/Navigation/MainNavigation';
 import HomePage from './pages/Home';
@@ -17,33 +20,21 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-class App extends Component { 
-  state = {
-  token: null,
-  userId: null
-};
 
-login = () => {
-  this.setState({ token: null, userId: null });
-};
 
-logout = () => {
-  this.setState({ token: null, userId: null });
-};
-
-render() {
+function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
         <Container>
           <MainNavigation />
           <Route exact path="/" component={HomePage}/>
-          <Route exact path="/login" component={LoginPage}/>
-          <Route exact path="/register" component={RegisterPage}/>
+          <AuthRoute exact path="/login" component={LoginPage}/>
+          <AuthRoute exact path="/register" component={RegisterPage}/>
         </Container>
       </Router>
     </ApolloProvider>
   );
-}}
+}
 
 export default App;

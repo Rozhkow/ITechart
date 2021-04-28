@@ -1,61 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Button, Form } from 'semantic-ui-react';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client';
 
-
-  function Login() {
-
-    const [values, setValues] = useState({
-      username: '',
-      password: '',
-    })
-  
-    const onChange = (event) => {
-      setValues({ ...values, [event.target.name]: event.target.value});
-    }
-    
-    const onSubmit = (event) => {
-      event.preventDefault(); 
-      login();
-    }
-
-    const [login, { loading }] = useMutation(LOGIN_USER, {
-      update(rezult){  // to update the cache after a mutation
-        console.log(rezult)
-      },
-      variables: values
-    });
-  
-
-    return (
-      <div className="form-container">
-        <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
-          <h1>Login</h1>
-          <Form.Input
-            label="Username"
-            placeholder="Username.."
-            name="username"
-            type="text"
-            value={values.username}
-            onChange={onChange}
-          />
-          <Form.Input
-            label="Password"
-            placeholder="Password.."
-            name="password"
-            type="password"
-            value={values.password}
-            onChange={onChange}
-          />
-          <Button type="submit" primary>
-            Login
-          </Button>
-        </Form>
-      </div>
-    );
-}
-
+import { AuthContext } from '../context/auth';
+import { useForm } from '../util/hooks';
 
 const LOGIN_USER = gql`
   mutation login($username: String!, $password: String!) {
@@ -68,5 +16,57 @@ const LOGIN_USER = gql`
     }
   }
 `;
+
+function Login(props) {
+  const context = useContext(AuthContext);
+  const [errors, setErrors] = useState({});
+
+  const { onChange, onSubmit, values } = useForm(loginUserCallback, {
+    username: '',
+    password: ''
+  });
+  
+  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+    update(_, { data: { login: userData }})
+    {
+      context.login(userData);
+      props.history.push('/');
+    },
+    variables: values
+  });
+
+  function loginUserCallback() {
+    loginUser();
+  }
+  
+
+  return (
+    <div className="form-container">
+      <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
+        <h1>Login</h1>
+        <Form.Input
+          label="Username"
+          placeholder="Username.."
+          name="username"
+          type="text"
+          value={values.username}
+          onChange={onChange}
+        />
+        <Form.Input
+          label="Password"
+          placeholder="Password.."
+          name="password"
+          type="password"
+          value={values.password}
+          onChange={onChange}
+        />
+        <Button type="submit" primary>
+          Login
+        </Button>
+      </Form>
+    </div>
+  );
+}
+
 
 export default Login;

@@ -9,6 +9,12 @@ const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
 const isAuth = require('./middleware/is-auth');
 
+
+if(typeof URLSearchParams === 'undefined'){
+    global.URLSearchParams = require('url').URLSearchParams;
+}
+
+
 const app = express();
 
 app.use(bodyParser.json());       // parses JSON data, buffers, strings and urls passed using an HTTP POST request

@@ -55,7 +55,7 @@ input RegisterInput {
     password: String!
     confirmPassword: String!
     email: String!
-  }
+}
 
 type RootMutation {
     register(registerInput: RegisterInput): User

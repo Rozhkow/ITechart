@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import { Button, Form } from 'semantic-ui-react';
 import { useNutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';

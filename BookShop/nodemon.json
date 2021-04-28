@@ -1,7 +1,7 @@
 {
     "env": {
         "MONGO_USER": "Max",
-        "MONGO_PASSWORD": "aBxCDa9Yo1WKltjA",
-        "MONGO_DB": "events-react-dev"
+        "MONGO_PASSWORD": "SoP9XxkUr1KLTd7O",
+        "MONGO_DB": "booking_shop"
     }
 }
