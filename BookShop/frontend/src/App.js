@@ -1,4 +1,5 @@
 import React from 'react';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 
@@ -12,14 +13,18 @@ import MainNavigation from './components/Navigation/MainNavigation';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
+import { ApolloProvider } from '@apollo/client/react';
 
 
-
+const client = new ApolloClient({
+  uri: 'http://localhost:8000/graphql',
+  cache: new InMemoryCache()
+});
 
 
 function App() {
   return (
-    <AuthProvider>
+    <ApolloProvider client={client}>
       <Router>
         <Container>
           <MainNavigation />
@@ -28,7 +33,7 @@ function App() {
           <AuthRoute exact path="/register" component={RegisterPage}/>
         </Container>
       </Router>
-    </AuthProvider>
+    </ApolloProvider>
   );
 }
 

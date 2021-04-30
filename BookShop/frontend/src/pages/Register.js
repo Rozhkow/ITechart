@@ -52,7 +52,7 @@ const [addUser, { loading }] = useMutation(REGISTER_USER, {
     props.history.push('/') // to the HomePage
   },
   onError(err) {
-    setErrors(err.graphQLErrors[0].error);
+    console.log(err.graphQLErrors[0]);
   },
   variables: values
 })
