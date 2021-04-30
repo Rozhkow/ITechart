@@ -14,6 +14,7 @@ if(typeof URLSearchParams === 'undefined'){
     global.URLSearchParams = require('url').URLSearchParams;
 }
 
+const PORT = process.env.port || 8000;
 
 const app = express();
 
@@ -49,9 +50,9 @@ app.use((req, res, next) => {
 mongoose.connect(MONGODB)
 .then(() => {
     console.log('MongoDB Connected');
-    app.listen(8000); 
+    app.listen({port: PORT}); 
 })
 .catch(err => {
-    console.log(err);
+    console.error(err);
 });
 
