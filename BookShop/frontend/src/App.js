@@ -24,7 +24,7 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <ApolloProvider client={client}>
+    <AuthProvider client={client}>
       <Router>
         <Container>
           <MainNavigation />
@@ -33,7 +33,7 @@ function App() {
           <AuthRoute exact path="/register" component={RegisterPage}/>
         </Container>
       </Router>
-    </ApolloProvider>
+    </AuthProvider>
   );
 }
 
