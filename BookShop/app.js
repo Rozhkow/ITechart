@@ -10,9 +10,6 @@ const graphQlResolvers = require('./graphql/resolvers/index');
 const isAuth = require('./middleware/is-auth');
 
 
-if(typeof URLSearchParams === 'undefined'){
-    global.URLSearchParams = require('url').URLSearchParams;
-}
 
 const PORT = process.env.port || 8000;
 

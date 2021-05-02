@@ -54,6 +54,7 @@ function generateToken(user) {
       return {
         ...user._doc,
         id: user._id,
+        admin: user._admin,
         token
       };
     },
@@ -120,6 +121,7 @@ function generateToken(user) {
         return {
           ...res._doc,
           id: res._id,
+          admin: res._admin,
           token
         };
       }

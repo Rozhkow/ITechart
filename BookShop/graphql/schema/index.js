@@ -23,6 +23,7 @@ type User {
     email: String!
     token: String!
     username: String!
+    admin: Boolean!
     createdAt: String!
 }
 
@@ -45,6 +46,7 @@ input UserInput {
 }
 
 type RootQuery {
+    users: [User]
     events: [Event!]!
     shoppings: [Shopping!]!
     login(email: String!, password: String!): AuthData!

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form, Message } from 'semantic-ui-react';
 import {  useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 
@@ -104,6 +104,18 @@ function registerUser(){
         <Button type="submit" primary>
           Register
         </Button>
+        <Message>
+          <Message.Header>Rouls of register</Message.Header>
+            <p>
+            * Username must be unique            
+            </p>
+            <p>
+            * Email must be valid
+            </p>
+            <p>
+            * Passwords must match
+            </p>
+        </Message>
       </Form>
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">

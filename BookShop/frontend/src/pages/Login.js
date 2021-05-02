@@ -5,6 +5,8 @@ import { gql, useMutation } from '@apollo/client';
 import { AuthContext } from '../context/auth';
 import { useForm } from '../util/hooks';
 
+import { Message } from 'semantic-ui-react'
+
 const LOGIN_USER = gql`
   mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
@@ -19,7 +21,7 @@ const LOGIN_USER = gql`
 
 function Login(props) {
   const context = useContext(AuthContext);
-  const [errors, setErrors] = useState({});
+  const [errors] = useState({});
 
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
     username: '',
@@ -35,6 +37,8 @@ function Login(props) {
     },
     onError(err) {
       console.log(err.graphQLErrors[0]);
+      console.log(err)
+      console.log(errors)
     },
     variables: values
   });
@@ -46,7 +50,7 @@ function Login(props) {
 
   return (
     <div className="form-container">
-      <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
+      <Form error onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
         <h1>Login</h1>
         <Form.Input
           label="Username"
@@ -69,6 +73,16 @@ function Login(props) {
         <Button type="submit" primary>
           Login
         </Button>
+        
+        <Message>
+          <Message.Header>Rouls of login</Message.Header>
+            <p>
+            * Username must not be empty            
+            </p>
+            <p>
+            * Password must not empty
+            </p>
+        </Message>
       </Form>
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">
