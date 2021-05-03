@@ -23,6 +23,16 @@ function generateToken(user) {
   }
 
   module.exports = {
+    users: async () => {
+      try {
+          const users = await User.find();
+          return users.map(user => {
+              return user
+          });
+      } catch (err) {
+      throw err;
+      }
+    },
     login: async ({ username, password }) => {
       const { errors } = validateLoginInput(username, password);
 

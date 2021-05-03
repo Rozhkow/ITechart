@@ -1,11 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form, Message } from 'semantic-ui-react';
 import { gql, useMutation } from '@apollo/client';
 
 import { AuthContext } from '../context/auth';
 import { useForm } from '../util/hooks';
-
-import { Message } from 'semantic-ui-react'
 
 const LOGIN_USER = gql`
   mutation login($username: String!, $password: String!) {
@@ -21,7 +19,7 @@ const LOGIN_USER = gql`
 
 function Login(props) {
   const context = useContext(AuthContext);
-  const [errors] = useState({});
+  const [errors, setErrors] = useState({});
 
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
     username: '',
@@ -36,9 +34,8 @@ function Login(props) {
       props.history.push('/');
     },
     onError(err) {
-      console.log(err.graphQLErrors[0]);
-      console.log(err)
-      console.log(errors)
+      setErrors(err.graphQLErrors[0]);
+      console.log(setErrors);
     },
     variables: values
   });
@@ -50,7 +47,7 @@ function Login(props) {
 
   return (
     <div className="form-container">
-      <Form error onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
+      <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
         <h1>Login</h1>
         <Form.Input
           label="Username"
@@ -73,14 +70,13 @@ function Login(props) {
         <Button type="submit" primary>
           Login
         </Button>
-        
         <Message>
-          <Message.Header>Rouls of login</Message.Header>
+          <Message.Header>Rouls of Login</Message.Header>
             <p>
             * Username must not be empty            
             </p>
             <p>
-            * Password must not empty
+            * Password must not be empty
             </p>
         </Message>
       </Form>

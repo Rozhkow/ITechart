@@ -13,9 +13,9 @@ function MainNavigation() {
   
   const handleItemClick = (e, { name }) => setActiveItem(name);
 
-  
+  // console.log(user)
 
-  const MainNavigation = user ? (
+  const MainNavigation = (user && user.username === "admin") ? (
     <Menu pointing secondary size="massive" color="teal">
       <Menu.Item
         name="Home"
@@ -33,6 +33,25 @@ function MainNavigation() {
           as={Link}
           to="/adminProfile"
         />
+        
+         
+        <Menu.Item
+          name="Logout"
+          onClick={logout}
+        />
+      </Menu.Menu>
+    </Menu>
+  ) : (user && user.username !== "admin") ? (
+    <Menu pointing secondary size="massive" color="teal">
+      <Menu.Item
+        name="Home"
+        active={activeItem === 'Home'}
+        onClick={handleItemClick}
+        as={Link}
+        to="/"
+      />
+
+      <Menu.Menu position="right" size="massive" color="teal">
         <Menu.Item
           name={user.username}
           active={activeItem === user.username}
@@ -40,13 +59,24 @@ function MainNavigation() {
           as={Link}
           to="/profile"
         />
+        
+         
+         
+        {/* <Menu.Item
+          name={user.username}
+          active={activeItem === user.username}
+          onClick={handleItemClick}
+          as={Link}
+          to="/profile"
+        /> */}
+          
         <Menu.Item
           name="Logout"
           onClick={logout}
         />
       </Menu.Menu>
     </Menu>
-  ) : (
+  ) : ( 
     <Menu pointing secondary size="massive" color="teal">
       <Menu.Item
         name="Home"
