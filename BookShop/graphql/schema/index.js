@@ -46,10 +46,10 @@ input UserInput {
 }
 
 type RootQuery {
+    getUser(userId: ID!): User
     users: [User]
     events: [Event!]!
     shoppings: [Shopping!]!
-    login(email: String!, password: String!): AuthData!
 }
 
 input RegisterInput {

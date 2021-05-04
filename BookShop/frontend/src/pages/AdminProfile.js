@@ -1,112 +1,172 @@
-import React, { Component } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { Grid, GridRow, Table } from 'semantic-ui-react'
+import _ from 'lodash'
+import React, { Component } from 'react'
+import { Table, Button, Pagination, Container } from 'semantic-ui-react'
+import axios from 'axios';
 
 import UserCard from '../components/UserCard'
-import UserField from '../components/UserField'
+import { Link } from 'react-router-dom';
 
 const ALL_USERS = gql`
-  query getUsers {
+  {
     users {
-      email
       username
+      email
       createdAt
+      id
     }
   }
 `;
 
-
-
-function AdminProfilePage() {
-    const { loading, data: { getUsers: users }} = useQuery(ALL_USERS);
-    
-    
-
-    return (
-      <table class="ui celled table">
-        
-      <thead >
-        <tr><th>username</th>
-        <th>email</th>
-        <th>createdAt</th>
-      </tr></thead>
-      <tbody ><tr >{loading ? (
-              <h1>Loading users..</h1>
-            ) : (  
-            users && users.map(user => (
-              user={user})))}</tr></tbody>
-    </table>
+/* <Grid columns={3}>
+  <GridRow >
+  <h1>Users</h1>
+  </GridRow>
+  <GridRow>
+  {loading ? (
+  <h1>Loading users..</h1>
+  ) : (
+  users && users.map(user => (
+  <Grid.Column key={user.email} style={{ marginBottom: 20 }}>
+  <UserCard user={user} />
+  </Grid.Column>
+  ))
+  )}
+  </GridRow>
+  </Grid> */
 
 
 
-        // <div>
-        //     {loading ? (
-        //       <h1>Loading users..</h1>
-        //     ) : (  
-        //     users && users.map(user => (
-        //         <UserField user={user} />
-                
-            
-        //     ))
-            
-        //     )}
-        // </div>
+function exampleReducer(state, action) {
+  switch (action.type) {
+    case 'CHANGE_SORT':
+      if (state.column === action.column) {
+        return {
+          ...state,
+          data: state.data.slice().reverse(),
+          direction:
+            state.direction === 'ascending' ? 'descending' : 'ascending',
+        }
+      }
 
-
-
-      //   <Table singleLine>
-      //   <Table.Header>
-      //     <Table.Row>
-      //       <Table.HeaderCell>username</Table.HeaderCell>
-      //       <Table.HeaderCell>Registration Date</Table.HeaderCell>
-      //       <Table.HeaderCell>E-mail address</Table.HeaderCell>
-      //     </Table.Row>
-      //   </Table.Header>
-    
-      //   <Table.Body>
-      //       <Table.Row>
-      //       {loading ? (
-      //         <h1>Loading users..</h1>
-      //       ) : (  
-      //       users && users.map(user => (
-      //       <Table.Cell user ={user.username} />
-                
-            
-      //       ))
-            
-      //       )}
-            
-      //       </Table.Row>
-      //     <Table.Row>
-      //       <Table.Cell>Jamie Harington</Table.Cell>
-            
-      //     </Table.Row>
-      //     <Table.Row>
-      //       <Table.Cell>Jill Lewis</Table.Cell>
-            
-      //     </Table.Row>
-      //   </Table.Body>
-      // </Table>
-
-
-
-        // <Grid columns={3}>
-        //     <GridRow >
-        //         <h1>Users</h1>
-        //     </GridRow>
-        //     <GridRow>
-        //         {loading ? (
-        //             <h1>Loading users..</h1>
-        //         ) : (
-        //             users && users.map(user => (
-        //                 <Grid.Column key={user.email} style={{ marginBottom: 20 }}>
-        //                     <UserCard user={user} />
-        //                 </Grid.Column>
-        //             ))
-        //         )}
-        //     </GridRow>
-        // </Grid>
-    )
+      return {
+        column: action.column,
+        data: _.sortBy(state.data, [action.column]),
+        direction: 'ascending',
+      }
+    default:
+      throw new Error()
+  }
 }
 
+function AdminProfilePage() {
+  const { data: { users: users } } = useQuery(ALL_USERS);
+
+
+
+  // if (data) {
+  //   console.log(data)
+  // }
+
+  const [state, dispatch] = React.useReducer(exampleReducer, {
+    column: null,
+    data: users,
+    direction: null,
+  })
+
+  const { column, data, direction } = state
+
+
+  //
+
+
+  //
+
+
+  
+
+
+
+
+
+  return (
+    <Container>
+
+      <div class="ui large buttons">
+        <button class="ui button active" id="Table">Table</button>
+        <div class="or"></div>
+        <button class="ui button" id="Cards">Cards</button>
+      </div>
+
+      <Table sortable celled fixed>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell
+              sorted={column === 'username' ? direction : null}
+              onClick={() => dispatch({ type: 'CHANGE_SORT', column: 'username' })}
+            >
+              username
+    </Table.HeaderCell>
+            <Table.HeaderCell
+              sorted={column === 'email' ? direction : null}
+              onClick={() => dispatch({ type: 'CHANGE_SORT', column: 'email' })}
+            >
+              email
+    </Table.HeaderCell>
+            <Table.HeaderCell
+              sorted={column === 'createdAt' ? direction : null}
+              onClick={() => dispatch({ type: 'CHANGE_SORT', column: 'createdAt' })}
+            >
+              createdAt
+    </Table.HeaderCell>
+            <Table.HeaderCell
+              sorted={column === 'id' ? direction : null}
+              onClick={() => dispatch({ type: 'CHANGE_SORT', column: 'id' })}
+            >
+              id
+    </Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {data.slice(0).map(({ username, email, createdAt, id }) => (
+            <Table.Row key={username}>
+              <Table.Cell as={Link} to={`/users/${id}`}>{username}</Table.Cell>
+              <Table.Cell>{email}</Table.Cell>
+              <Table.Cell>{createdAt}</Table.Cell>
+              <Table.Cell>{id}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+
+
+      <Pagination
+        defaultActivePage={1}
+        firstItem={null}
+        lastItem={null}
+        pointing
+        secondary
+
+        totalPages={Math.ceil(data.length) / 6}
+      />
+
+    </Container>
+
+  )
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 export default AdminProfilePage;
+
+

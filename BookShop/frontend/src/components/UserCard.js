@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Card, Icon, Label } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 function UserCard({ user: { email, username, createdAt } }){
     
@@ -7,7 +8,7 @@ function UserCard({ user: { email, username, createdAt } }){
     return (
        <Card>
            <Card.Content>
-               <Card.Header>{username}</Card.Header>
+               <Card.Header as={Link} to={`/AdminProfile/${username}`}>{username}</Card.Header>
                <Card.Description>{email}</Card.Description>
                <Card.Meta>{createdAt}</Card.Meta>
            </Card.Content>

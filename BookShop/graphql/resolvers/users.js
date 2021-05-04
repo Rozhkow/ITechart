@@ -23,6 +23,18 @@ function generateToken(user) {
   }
 
   module.exports = {
+    getUser: async ({ userId }) => {
+      try {
+        const user = await User.findById(userId);
+        if (user) {
+          return user;
+        } else {
+          throw new Error('User not found');
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
     users: async () => {
       try {
           const users = await User.find();

@@ -17,7 +17,8 @@ import RegisterPage from './pages/Register';
 import ProfilePage from './pages/Profile';
 import AdminProfilePage from './pages/AdminProfile';
 import Footer from './components/Navigation/Footer';
-import { ApolloProvider } from '@apollo/client/react';
+import SingleUser from './pages/SingleUser';
+// import { ApolloProvider } from '@apollo/client/react';
 
 
 const client = new ApolloClient({
@@ -37,6 +38,7 @@ function App() {
           <AuthRoute exact path="/register" component={RegisterPage}/>
           <UnAuthRoute exact path="/profile" component={ProfilePage}/>
           <UnAuthRoute exact path="/adminProfile" component={AdminProfilePage}/>
+          <Route exact path="/users/:userId" component={SingleUser}/>
           <Footer />
         </Container>
       </Router>
