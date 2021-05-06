@@ -7,16 +7,7 @@ import axios from 'axios';
 import UserCard from '../components/UserCard'
 import { Link } from 'react-router-dom';
 
-const ALL_USERS = gql`
-  {
-    users {
-      username
-      email
-      createdAt
-      id
-    }
-  }
-`;
+
 
 /* <Grid columns={3}>
   <GridRow >
@@ -35,7 +26,7 @@ const ALL_USERS = gql`
   </GridRow>
   </Grid> */
 
-
+  
 
 function exampleReducer(state, action) {
   switch (action.type) {
@@ -57,7 +48,19 @@ function exampleReducer(state, action) {
     default:
       throw new Error()
   }
-}
+};
+
+const ALL_USERS = gql`
+  {
+    users {
+      username
+      email
+      createdAt
+      id
+    }
+  }
+`;
+
 
 function AdminProfilePage() {
   const { data: { users: users } } = useQuery(ALL_USERS);
@@ -90,6 +93,7 @@ function AdminProfilePage() {
 
 
   return (
+    
     <Container>
 
       <div class="ui large buttons">
@@ -128,7 +132,7 @@ function AdminProfilePage() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {data.slice(0).map(({ username, email, createdAt, id }) => (
+          {data.map(({ username, email, createdAt, id }) => (
             <Table.Row key={username}>
               <Table.Cell as={Link} to={`/users/${id}`}>{username}</Table.Cell>
               <Table.Cell>{email}</Table.Cell>

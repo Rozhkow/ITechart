@@ -3,7 +3,18 @@ import { gql, useQuery } from '@apollo/client';
 import { Card, Grid } from 'semantic-ui-react';
 
 import { AuthContext } from '../context/auth';
+import DeleteButton from '../components/DeleteButton';
 
+const FETCH_USER_QUERY = gql`
+    query($userId: ID!){
+        getUser(userId: $userId){
+            username
+            email
+            createdAt
+            id
+        }
+    }
+`
 
 function SingleUser(props){
     const userId = props.match.params.userId;
@@ -34,7 +45,7 @@ function SingleUser(props){
                         </Card.Content>
                         <hr/>
                         <Card.Content extra>
-
+                            {/* <DeleteButton postId={id} /> */}
                         </Card.Content>
                     </Card>
                     </Grid.Column>
@@ -45,16 +56,7 @@ function SingleUser(props){
     return userMarkup;
 }
 
-const FETCH_USER_QUERY = gql`
-    query($userId: ID!){
-        getUser(userId: $userId){
-            username
-            email
-            createdAt
-            id
-        }
-    }
-`
+
 
 export default SingleUser;
 

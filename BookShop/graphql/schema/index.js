@@ -64,6 +64,7 @@ type RootMutation {
     login(username: String!, password: String!): User
     createEvent(eventInput: EventInput): Event
     createUser(userInput: UserInput): User
+    deleteUser(userId: ID!): String!
     shopEvent(eventId: ID!): Shopping!
     cancelShopping(shoppingId: ID!): Event!
 }

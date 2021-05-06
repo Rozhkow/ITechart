@@ -23,6 +23,19 @@ function generateToken(user) {
   }
 
   module.exports = {
+    deleteUser: async ({ userId }) => {
+      try {
+        const user = await User.findById(userId);
+        // if (user.username === "admin") {
+          await user.delete();
+          return 'User deleted successfully';
+        // } else {
+        //   throw new Error('Action not allowed');
+        // }
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
     getUser: async ({ userId }) => {
       try {
         const user = await User.findById(userId);
