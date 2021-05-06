@@ -1,12 +1,14 @@
 import { gql, useQuery } from '@apollo/client';
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Table, Button, Pagination, Container } from 'semantic-ui-react'
+import { Table, Button, Pagination, Container, Grid } from 'semantic-ui-react'
 import axios from 'axios';
 
-import UserCard from '../components/UserCard'
+import UserCard from '../components/UserCard';
 import { Link } from 'react-router-dom';
+import DeleteButton from '../components/DeleteButton';
 
+// import UserForm from '../components/UserForm';
 
 
 /* <Grid columns={3}>
@@ -80,27 +82,21 @@ function AdminProfilePage() {
   const { column, data, direction } = state
 
 
-  //
-
-
-  //
-
-
-  
-
-
-
+ 
 
 
   return (
     
     <Container>
+      {/* <Grid>
+        <UserForm/>
+      </Grid> */}
 
-      <div class="ui large buttons">
+      {/* <div class="ui large buttons">
         <button class="ui button active" id="Table">Table</button>
         <div class="or"></div>
         <button class="ui button" id="Cards">Cards</button>
-      </div>
+      </div> */}
 
       <Table sortable celled fixed>
         <Table.Header>
@@ -129,15 +125,21 @@ function AdminProfilePage() {
             >
               id
     </Table.HeaderCell>
+            <Table.HeaderCell
+              
+            >
+              delete user
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {data.map(({ username, email, createdAt, id }) => (
             <Table.Row key={username}>
-              <Table.Cell as={Link} to={`/users/${id}`}>{username}</Table.Cell>
+              <Table.Cell as={Link} to={`/users/${id}`} style={{ margin: 0, padding: 0 }}>{username}</Table.Cell>
               <Table.Cell>{email}</Table.Cell>
               <Table.Cell>{createdAt}</Table.Cell>
               <Table.Cell>{id}</Table.Cell>
+              <Table.Cell><DeleteButton userId={id} /></Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
@@ -151,7 +153,7 @@ function AdminProfilePage() {
         pointing
         secondary
 
-        totalPages={Math.ceil(data.length) / 6}
+        totalPages={Math.ceil(data.length) / 5}
       />
 
     </Container>

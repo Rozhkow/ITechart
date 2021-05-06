@@ -5,6 +5,8 @@ import { Card, Grid } from 'semantic-ui-react';
 import { AuthContext } from '../context/auth';
 import DeleteButton from '../components/DeleteButton';
 
+
+
 const FETCH_USER_QUERY = gql`
     query($userId: ID!){
         getUser(userId: $userId){
@@ -16,9 +18,11 @@ const FETCH_USER_QUERY = gql`
     }
 `
 
+
+
 function SingleUser(props){
     const userId = props.match.params.userId;
-    console.log(userId);
+    
 
     const { data : { getUser }} = useQuery(FETCH_USER_QUERY, {
         variables: {
@@ -33,6 +37,7 @@ function SingleUser(props){
         const { username, email, createdAt, id } = getUser;
 
         userMarkup = (
+        
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={5}>
@@ -42,10 +47,11 @@ function SingleUser(props){
                             <Card.Header>{email}</Card.Header>
                             <Card.Header>{createdAt}</Card.Header>
                             <Card.Header>{id}</Card.Header>
+                            
                         </Card.Content>
                         <hr/>
                         <Card.Content extra>
-                            {/* <DeleteButton postId={id} /> */}
+                            <DeleteButton userId={id} />
                         </Card.Content>
                     </Card>
                     </Grid.Column>
