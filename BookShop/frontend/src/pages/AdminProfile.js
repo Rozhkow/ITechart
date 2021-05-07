@@ -1,12 +1,15 @@
 import { gql, useQuery } from '@apollo/client';
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Table, Button, Pagination, Container, Grid } from 'semantic-ui-react'
+import { Table, Button, Pagination, Container, Grid, Checkbox, Search } from 'semantic-ui-react'
 import axios from 'axios';
 
 import UserCard from '../components/UserCard';
 import { Link } from 'react-router-dom';
 import DeleteButton from '../components/DeleteButton';
+import ReactPaginate from "react-paginate";
+
+import './AdminProfile.css'
 
 // import UserForm from '../components/UserForm';
 
@@ -28,9 +31,9 @@ import DeleteButton from '../components/DeleteButton';
   </GridRow>
   </Grid> */
 
-  
 
-function exampleReducer(state, action) {
+
+function sortReducer(state, action) {
   switch (action.type) {
     case 'CHANGE_SORT':
       if (state.column === action.column) {
@@ -47,13 +50,19 @@ function exampleReducer(state, action) {
         data: _.sortBy(state.data, [action.column]),
         direction: 'ascending',
       }
+    case 'Dispatch':
+
+      return {
+
+
+      }
     default:
       throw new Error()
   }
 };
 
 const ALL_USERS = gql`
-  {
+  query users{
     users {
       username
       email
@@ -65,28 +74,54 @@ const ALL_USERS = gql`
 
 
 function AdminProfilePage() {
-  const { data: { users: users } } = useQuery(ALL_USERS);
 
+  const [searchTerm, setSearchTerm] = React.useState("");
 
+  const { data } = useQuery(ALL_USERS);
+
+  // if({data} === {}){ 
+  //   return (
+  //     <div> loading</div>
+  //   )
+  // }
 
   // if (data) {
   //   console.log(data)
   // }
 
-  const [state, dispatch] = React.useReducer(exampleReducer, {
+  const [state, dispatch] = React.useReducer(sortReducer, {
     column: null,
-    data: users,
+    users: data ? data.users : [],
     direction: null,
   })
 
-  const { column, data, direction } = state
+
+  // React.useEffect(() => {
+  //   dispatch({ users: data ? data.users : [] })
+
+  // }, [!data]);
 
 
- 
+
+  
+  // Pagination
+  const { column, users, direction } = state
+
+  const [userss] = React.useState(users.slice(0, 4));
+  const [pageNumber, setPageNumber] = React.useState(0);
+  const usersPerPage = 3;
+  const pagesVisited = pageNumber * usersPerPage;
+  const pageCount = Math.ceil(userss.length / usersPerPage);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  //
+
 
 
   return (
-    
+
     <Container>
       {/* <Grid>
         <UserForm/>
@@ -97,10 +132,22 @@ function AdminProfilePage() {
         <div class="or"></div>
         <button class="ui button" id="Cards">Cards</button>
       </div> */}
+      <div className="Search">
+        <input
+          type="text"
+          placeholder="Search.."
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
+        />
 
+      </div>
       <Table sortable celled fixed>
         <Table.Header>
-          <Table.Row>
+          <Table.Row textAlign='center'>
+            {/* <Table.HeaderCell>
+            
+    </Table.HeaderCell> */}
             <Table.HeaderCell
               sorted={column === 'username' ? direction : null}
               onClick={() => dispatch({ type: 'CHANGE_SORT', column: 'username' })}
@@ -126,16 +173,23 @@ function AdminProfilePage() {
               id
     </Table.HeaderCell>
             <Table.HeaderCell
-              
+
             >
               delete user
             </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {data.map(({ username, email, createdAt, id }) => (
-            <Table.Row key={username}>
-              <Table.Cell as={Link} to={`/users/${id}`} style={{ margin: 0, padding: 0 }}>{username}</Table.Cell>
+          {users.filter((val) => {
+            if (searchTerm == "") {
+              return val
+            } else if (val.username.toLowerCase().includes(searchTerm.toLowerCase())) {
+              return val
+            }
+          }).slice(pagesVisited, pagesVisited + usersPerPage).map(({ username, email, createdAt, id }) => (
+            <Table.Row textAlign='center' key={username}>
+              {/* <Table.Cell collapsing><Checkbox slider /></Table.Cell> */}
+              <Table.Cell><Table.Cell as={Link} to={`/users/${id}`} >{username}</Table.Cell></Table.Cell>
               <Table.Cell>{email}</Table.Cell>
               <Table.Cell>{createdAt}</Table.Cell>
               <Table.Cell>{id}</Table.Cell>
@@ -146,15 +200,30 @@ function AdminProfilePage() {
       </Table>
 
 
-      <Pagination
+      {/* <Pagination
         defaultActivePage={1}
         firstItem={null}
         lastItem={null}
         pointing
         secondary
 
-        totalPages={Math.ceil(data.length) / 5}
-      />
+        totalPages={Math.ceil(users.length) / 5}
+      /> */}
+
+      <div className="App">
+
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          pageCount={pageCount}
+          onPageChange={changePage}
+          containerClassName={"paginationBttns"}
+          previousLinkClassName={"previousBttn"}
+          nextLinkClassName={"nextBttn"}
+          disabledClassName={"paginationDisabled"}
+          activeClassName={"paginationActive"}
+        />
+      </div>
 
     </Container>
 

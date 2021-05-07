@@ -23,18 +23,25 @@ const FETCH_USER_QUERY = gql`
 function SingleUser(props){
     const userId = props.match.params.userId;
     
+    // if({data: { getUser }} === {}){ 
+    //     return (
+    //       <div> loading</div>
+    //     )
+    //   }
 
-    const { data : { getUser }} = useQuery(FETCH_USER_QUERY, {
+    const { data } = useQuery(FETCH_USER_QUERY, {
         variables: {
             userId
         }
     })
 
+    console.log(data)
+
     let userMarkup;
-    if(!getUser){
+    if(!data){
         userMarkup = <p>Loading user..</p>
     } else {
-        const { username, email, createdAt, id } = getUser;
+        const { username, email, createdAt, id } = data.getUser;
 
         userMarkup = (
         
