@@ -34,8 +34,7 @@ function Login(props) {
       props.history.push('/');
     },
     onError(err) {
-      setErrors(err.graphQLErrors[0]);
-      console.log(setErrors);
+      console.log(err.graphQLErrors[0]);
     },
     variables: values
   });
@@ -72,6 +71,7 @@ function Login(props) {
         </Button>
         <Message>
           <Message.Header>Rouls of Login</Message.Header>
+          <hr/>
             <p>
             * Username must not be empty            
             </p>

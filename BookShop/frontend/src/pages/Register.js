@@ -106,6 +106,7 @@ function registerUser(){
         </Button>
         <Message>
           <Message.Header>Rouls of register</Message.Header>
+          <hr/>
             <p>
             * Username must be unique            
             </p>

@@ -3,6 +3,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { Table, Button, Pagination, Container, Grid, Checkbox, Search } from 'semantic-ui-react'
 import axios from 'axios';
+import { CSVLink } from 'react-csv';
 
 import UserCard from '../components/UserCard';
 import { Link } from 'react-router-dom';
@@ -12,6 +13,8 @@ import ReactPaginate from "react-paginate";
 import './AdminProfile.css'
 
 // import UserForm from '../components/UserForm';
+
+
 
 
 /* <Grid columns={3}>
@@ -95,7 +98,15 @@ function AdminProfilePage() {
     direction: null,
   })
 
-
+  
+  // const headers = [
+  //   {label: Username, key: username},
+  //   {label: Email, key: email},
+  //   {label: createdAt, key: createdAt},
+  //   {label: ID, key: id}
+  // ];
+  
+  
   // React.useEffect(() => {
   //   dispatch({ users: data ? data.users : [] })
 
@@ -107,9 +118,9 @@ function AdminProfilePage() {
   // Pagination
   const { column, users, direction } = state
 
-  const [userss] = React.useState(users.slice(0, 4));
+  const [userss] = React.useState(users.slice(0, 10));
   const [pageNumber, setPageNumber] = React.useState(0);
-  const usersPerPage = 3;
+  const usersPerPage = 5;
   const pagesVisited = pageNumber * usersPerPage;
   const pageCount = Math.ceil(userss.length / usersPerPage);
   const changePage = ({ selected }) => {
@@ -117,12 +128,17 @@ function AdminProfilePage() {
   };
 
   //
-
+const csvReport = {
+    filename: 'Report.csv',
+    // headers: headers,
+    data: users
+  };
 
 
   return (
 
     <Container>
+     
       {/* <Grid>
         <UserForm/>
       </Grid> */}
@@ -142,12 +158,11 @@ function AdminProfilePage() {
         />
 
       </div>
-      <Table sortable celled fixed>
+      <Table sortable celled compact definition>
         <Table.Header>
           <Table.Row textAlign='center'>
-            {/* <Table.HeaderCell>
-            
-    </Table.HeaderCell> */}
+            <Table.HeaderCell />
+              
             <Table.HeaderCell
               sorted={column === 'username' ? direction : null}
               onClick={() => dispatch({ type: 'CHANGE_SORT', column: 'username' })}
@@ -188,7 +203,7 @@ function AdminProfilePage() {
             }
           }).slice(pagesVisited, pagesVisited + usersPerPage).map(({ username, email, createdAt, id }) => (
             <Table.Row textAlign='center' key={username}>
-              {/* <Table.Cell collapsing><Checkbox slider /></Table.Cell> */}
+              <Table.Cell collapsing><Checkbox slider /></Table.Cell>
               <Table.Cell><Table.Cell as={Link} to={`/users/${id}`} >{username}</Table.Cell></Table.Cell>
               <Table.Cell>{email}</Table.Cell>
               <Table.Cell>{createdAt}</Table.Cell>
@@ -224,6 +239,11 @@ function AdminProfilePage() {
           activeClassName={"paginationActive"}
         />
       </div>
+
+      <Button  className="exportData">
+        <CSVLink {...csvReport}>Export data</CSVLink>
+      </Button>
+
 
     </Container>
 
