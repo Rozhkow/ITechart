@@ -1,6 +1,14 @@
 # ITechart
 
-I've delete node_modules folders, because they had got many files. 
+List of cases, which I need to complete by 12.05. :
 
-I've tried to create a form to check a connection between front-end and back-end. I'll try to make a authorization. 
-
+* AdminPage: 
+    Match checkboxes with exporting to csv ( each action is complete, but separately )
+    Solve the problem with page refreshing
+* HomePage:
+    Adding cards of products 
+* LastUpdating:
+    Corrected front side of AdminPage ( couple of elements )
+    Completed exporting data 
+    Completed checkbox of table lines 
+* I decided to rest on the nine of May:)
