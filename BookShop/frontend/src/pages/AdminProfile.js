@@ -64,6 +64,24 @@ function sortReducer(state, action) {
   }
 };
 
+
+const IndeterminateCheckbox = React.forwardRef(
+  ({ indeterminate, ...rest }, ref) => {
+    const defaultRef = React.useRef()
+    const resolvedRef = ref || defaultRef
+
+    React.useEffect(() => {
+      resolvedRef.current.indeterminate = indeterminate
+    }, [resolvedRef, indeterminate])
+
+    return (
+      <>
+        <input type="checkbox" ref={resolvedRef} {...rest} />
+      </>
+    )
+  }
+)
+
 const ALL_USERS = gql`
   query users{
     users {
@@ -82,6 +100,23 @@ function AdminProfilePage() {
 
   const { data } = useQuery(ALL_USERS);
 
+  // state = { checked: false }
+  
+  // const [data, setUserState] = React.useState([]);
+
+  // React.useEffect(() => {
+  //   data.map(d => {
+  //     return {
+  //       select: false,
+  //       username:d.username,
+  //       email:d.email,
+  //       createdAt:d.createdAt,
+  //       id:d.id
+  //     }
+  //   })
+  // })
+
+
   // if({data} === {}){ 
   //   return (
   //     <div> loading</div>
@@ -93,6 +128,7 @@ function AdminProfilePage() {
   // }
 
   const [state, dispatch] = React.useReducer(sortReducer, {
+    checked: false,
     column: null,
     users: data ? data.users : [],
     direction: null,
@@ -203,7 +239,7 @@ const csvReport = {
             }
           }).slice(pagesVisited, pagesVisited + usersPerPage).map(({ username, email, createdAt, id }) => (
             <Table.Row textAlign='center' key={username}>
-              <Table.Cell collapsing><Checkbox slider /></Table.Cell>
+              <Table.Cell  collapsing><Checkbox  slider /> </Table.Cell>
               <Table.Cell><Table.Cell as={Link} to={`/users/${id}`} >{username}</Table.Cell></Table.Cell>
               <Table.Cell>{email}</Table.Cell>
               <Table.Cell>{createdAt}</Table.Cell>

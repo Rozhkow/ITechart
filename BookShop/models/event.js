@@ -14,10 +14,6 @@ const eventSchema = new Schema({
     price: {
         type: Number,
         required: true
-    },
-    date: {
-        type: Date,
-        required: true
     }
 });
 
