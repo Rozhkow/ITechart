@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../../context/auth'
 
+
 function MainNavigation() {
   const { user, logout } = useContext(AuthContext);
   const pathname = window.location.pathname;
@@ -16,7 +17,7 @@ function MainNavigation() {
   // console.log(user)
 
   const MainNavigation = (user && user.username === "admin") ? (
-    <Menu pointing secondary size="massive" color="teal">
+    <Menu pointing secondary size="massive" color="teal" className="MainNavigation">
       <Menu.Item
         name="Home"
         active={activeItem === 'Home'}

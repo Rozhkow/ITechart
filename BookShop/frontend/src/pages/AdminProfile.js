@@ -65,22 +65,7 @@ function sortReducer(state, action) {
 };
 
 
-const IndeterminateCheckbox = React.forwardRef(
-  ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef()
-    const resolvedRef = ref || defaultRef
 
-    React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate
-    }, [resolvedRef, indeterminate])
-
-    return (
-      <>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
-      </>
-    )
-  }
-)
 
 const ALL_USERS = gql`
   query users{
@@ -99,22 +84,16 @@ function AdminProfilePage() {
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const { data } = useQuery(ALL_USERS);
-
-  // state = { checked: false }
   
-  // const [data, setUserState] = React.useState([]);
+  // state = { checked: false }
 
-  // React.useEffect(() => {
-  //   data.map(d => {
-  //     return {
-  //       select: false,
-  //       username:d.username,
-  //       email:d.email,
-  //       createdAt:d.createdAt,
-  //       id:d.id
-  //     }
-  //   })
-  // })
+  const [userState, setUserState] = React.useState([data]);
+  console.log(data)
+
+  React.useEffect(() => {
+    console.log(data)
+    setUserState(data)
+  }, []);
 
 
   // if({data} === {}){ 
@@ -134,15 +113,15 @@ function AdminProfilePage() {
     direction: null,
   })
 
-  
+
   // const headers = [
   //   {label: Username, key: username},
   //   {label: Email, key: email},
   //   {label: createdAt, key: createdAt},
   //   {label: ID, key: id}
   // ];
-  
-  
+
+
   // React.useEffect(() => {
   //   dispatch({ users: data ? data.users : [] })
 
@@ -150,7 +129,7 @@ function AdminProfilePage() {
 
 
 
-  
+
   // Pagination
   const { column, users, direction } = state
 
@@ -164,7 +143,7 @@ function AdminProfilePage() {
   };
 
   //
-const csvReport = {
+  const csvReport = {
     filename: 'Report.csv',
     // headers: headers,
     data: users
@@ -174,7 +153,7 @@ const csvReport = {
   return (
 
     <Container>
-     
+
       {/* <Grid>
         <UserForm/>
       </Grid> */}
@@ -194,11 +173,23 @@ const csvReport = {
         />
 
       </div>
-      <Table sortable celled compact definition>
+      <Table sortable celled compact >
         <Table.Header>
           <Table.Row textAlign='center'>
-            <Table.HeaderCell />
-              
+            <Table.HeaderCell>
+              <Checkbox 
+              // onChange={e =>{
+              //   let checked = e.target.checked;
+              //   setUserState(
+              //     userState.map(d =>{
+              //       d.select = checked;
+              //       return d;
+              //     })
+              //   )
+              // }}
+               slider /> 
+            </Table.HeaderCell>
+
             <Table.HeaderCell
               sorted={column === 'username' ? direction : null}
               onClick={() => dispatch({ type: 'CHANGE_SORT', column: 'username' })}
@@ -231,6 +222,7 @@ const csvReport = {
           </Table.Row>
         </Table.Header>
         <Table.Body>
+          {/* {userState.map(() =>  */}
           {users.filter((val) => {
             if (searchTerm == "") {
               return val
@@ -239,7 +231,19 @@ const csvReport = {
             }
           }).slice(pagesVisited, pagesVisited + usersPerPage).map(({ username, email, createdAt, id }) => (
             <Table.Row textAlign='center' key={username}>
-              <Table.Cell  collapsing><Checkbox  slider /> </Table.Cell>
+              <Table.Cell collapsing><Checkbox 
+              // onChange={event => { 
+              //   let checked = event.target.checked;
+              //   setUserState(
+              //     userState.map(dataa => {
+              //       if(d.username === dataa.username) {
+              //         dataa.select = checked;
+              //       }
+              //       return dataa;
+              //     })
+              //   )
+              //   }} checked={d.select} 
+                slider /> </Table.Cell>
               <Table.Cell><Table.Cell as={Link} to={`/users/${id}`} >{username}</Table.Cell></Table.Cell>
               <Table.Cell>{email}</Table.Cell>
               <Table.Cell>{createdAt}</Table.Cell>
@@ -247,6 +251,7 @@ const csvReport = {
               <Table.Cell><DeleteButton userId={id} /></Table.Cell>
             </Table.Row>
           ))}
+           {/* )}  */}
         </Table.Body>
       </Table>
 
@@ -276,7 +281,7 @@ const csvReport = {
         />
       </div>
 
-      <Button  className="exportData">
+      <Button className="exportData">
         <CSVLink {...csvReport}>Export data</CSVLink>
       </Button>
 
