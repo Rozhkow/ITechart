@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { Card, Container, Grid, Pagination } from 'semantic-ui-react';
+import { Container, Grid } from 'semantic-ui-react';
 
 import GoodCard from '../components/GoodCard';
 import ReactPaginate from "react-paginate";
@@ -33,7 +33,7 @@ function HomePage() {
     const { data } = useQuery(FETCH_ITEMS_QUERY);
 
 
-    const [state] = React.useState({goods: data ? data.events : []})
+    const [state] = React.useState({ goods: data ? data.events : [] })
 
 
     const { goods } = state
@@ -61,11 +61,11 @@ function HomePage() {
                     }}
                 />
             </div>
-            <Grid centered columns={3} className="Cards">
-                <Grid.Row centered>
-                    
+            <Grid columns={3} className="Cards">
+                <Grid.Row >
+
                 </Grid.Row>
-                <Grid.Row centered>
+                <Grid.Row >
                     {goods.filter((val) => {
                         if (searchTerm == "") {
                             return val
@@ -82,7 +82,6 @@ function HomePage() {
             </Grid>
 
             <div className="App">
-
                 <ReactPaginate
                     previousLabel={"<"}
                     nextLabel={">"}
@@ -100,7 +99,7 @@ function HomePage() {
     ) : (user && user.username !== "admin") ? (
         <Container>
             <ImageSlider slides={SliderData} />
-            
+
             <div className="Search">
                 <input
                     type="text"
@@ -112,7 +111,7 @@ function HomePage() {
             </div>
             <Grid columns={3}>
                 <Grid.Row>
-                    
+
                 </Grid.Row>
                 <Grid.Row>
                     {goods.filter((val) => {
@@ -131,7 +130,6 @@ function HomePage() {
             </Grid>
 
             <div className="App">
-
                 <ReactPaginate
                     previousLabel={"<"}
                     nextLabel={">"}
@@ -145,6 +143,7 @@ function HomePage() {
                 />
             </div>
         </Container>
+
     ) : (
         <Container>
             <ImageSlider slides={SliderData} />
@@ -160,7 +159,7 @@ function HomePage() {
             </div>
             <Grid columns={3}>
                 <Grid.Row>
-                    
+
                 </Grid.Row>
                 <Grid.Row>
                     {goods.filter((val) => {
@@ -179,7 +178,6 @@ function HomePage() {
             </Grid>
 
             <div className="App">
-
                 <ReactPaginate
                     previousLabel={"<"}
                     nextLabel={">"}

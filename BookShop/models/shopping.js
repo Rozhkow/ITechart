@@ -13,7 +13,7 @@ const shoppingSchema = new Schema(
             ref: 'User'
         }
     },
-        { timestamps: true }
+    { timestamps: true }
 );
 
 module.exports = mongoose.model('Shopping', shoppingSchema);

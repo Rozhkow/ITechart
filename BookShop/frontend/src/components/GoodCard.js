@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, Card, Icon, Label, Image, Accordion } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { Card, Icon, Image, Accordion } from 'semantic-ui-react'
+
 
 
 
@@ -8,7 +8,7 @@ function GoodCard({ good: { title, description, price } }) {
 
 
     const [activeIndex, handleClick] = React.useState(0);
-    
+
 
     return (
 
@@ -19,27 +19,17 @@ function GoodCard({ good: { title, description, price } }) {
                 <Accordion>
                     <Accordion.Title
                         active={activeIndex === 0}
-                        onClick={() => handleClick((activeIndex === 0) ? (activeIndex+1) : (activeIndex-1))}
+                        onClick={() => handleClick((activeIndex === 0) ? (activeIndex + 1) : (activeIndex - 1))}
                     >
                         <Icon name='dropdown' />
                         Description
                     </Accordion.Title>
                     <Accordion.Content active={activeIndex === 1}>
                         <p>
-                        { description }
+                            {description}
                         </p>
                     </Accordion.Content>
                 </Accordion>
-                {/* <Card.Description class="ui accordion" >
-                    <div class="title">
-                        <i class="dropdown icon"></i>
-                            Description
-                    </div>
-                    <div class="content">
-                        <p class="transition hidden">{ description }</p>
-                    </div>
-                </Card.Description> */}
-
             </Card.Content>
             <Card.Content extra>
                 <Card.Meta>{price}$</Card.Meta>

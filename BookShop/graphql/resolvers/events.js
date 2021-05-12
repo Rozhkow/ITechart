@@ -11,23 +11,23 @@ module.exports = {
                 return event;
             });
         } catch (err) {
-        throw err;
+            throw err;
         }
     },
     createEvent: async (args, req) => {
-        
-    const event = new Event({
-        title: args.eventInput.title,
-        description: args.eventInput.description,
-        price: +args.eventInput.price
-    });
-    
-    try {
-        let createdEvent = await event.save();
-        return createdEvent;
-    } catch (err) {
-    console.log(err);
-    throw err;
-    }
+
+        const event = new Event({
+            title: args.eventInput.title,
+            description: args.eventInput.description,
+            price: +args.eventInput.price
+        });
+
+        try {
+            let createdEvent = await event.save();
+            return createdEvent;
+        } catch (err) {
+            console.log(err);
+            throw err;
+        }
     }
 };

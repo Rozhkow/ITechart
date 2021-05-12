@@ -33,12 +33,12 @@ function App() {
       <Router>
         <Container>
           <MainNavigation />
-          <Route exact path="/" component={HomePage}/>
-          <AuthRoute exact path="/login" component={LoginPage}/>
-          <AuthRoute exact path="/register" component={RegisterPage}/>
-          <UnAuthRoute exact path="/profile" component={ProfilePage}/>
-          <UnAuthRoute exact path="/adminProfile" component={AdminProfilePage}/>
-          <Route exact path="/users/:userId" component={SingleUser}/>
+          <Route exact path="/" component={HomePage} />
+          <AuthRoute exact path="/login" component={LoginPage} />
+          <AuthRoute exact path="/register" component={RegisterPage} />
+          <UnAuthRoute exact path="/profile" component={ProfilePage} />
+          <UnAuthRoute exact path="/adminProfile" component={AdminProfilePage} />
+          <Route exact path="/users/:userId" component={SingleUser} />
           <Footer />
         </Container>
       </Router>

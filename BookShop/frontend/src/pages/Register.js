@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Button, Form, Message } from 'semantic-ui-react';
-import {  useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 
 
@@ -36,30 +36,30 @@ const REGISTER_USER = gql`
 function Register(props) {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
-  
-const { onChange, onSubmit, values } = useForm(registerUser, {
-  username: '',
-  email: '',
-  password: '',
-  confirmPassword: ''
-})
-  
-  
 
-const [addUser, { loading }] = useMutation(REGISTER_USER, {
-  update(_, { data: { register: userData}}) {
-    context.login(userData)
-    props.history.push('/') // to the HomePage
-  },
-  onError(err) {
-    console.log(err.graphQLErrors[0]);
-  },
-  variables: values
-})
+  const { onChange, onSubmit, values } = useForm(registerUser, {
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
 
-function registerUser(){
-  addUser();
-}
+
+
+  const [addUser, { loading }] = useMutation(REGISTER_USER, {
+    update(_, { data: { register: userData } }) {
+      context.login(userData)
+      props.history.push('/') // to the HomePage
+    },
+    onError(err) {
+      console.log(err.graphQLErrors[0]);
+    },
+    variables: values
+  })
+
+  function registerUser() {
+    addUser();
+  }
 
   return (
     <div className="form-container">
@@ -106,14 +106,14 @@ function registerUser(){
         </Button>
         <Message>
           <Message.Header>Rouls of register</Message.Header>
-          <hr/>
-            <p>
-            * Username must be unique            
+          <hr />
+          <p>
+            * Username must be unique
             </p>
-            <p>
+          <p>
             * Email must be valid
             </p>
-            <p>
+          <p>
             * Passwords must match
             </p>
         </Message>

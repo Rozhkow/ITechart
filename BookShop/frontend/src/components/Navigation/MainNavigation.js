@@ -11,7 +11,7 @@ function MainNavigation() {
 
   const path = pathname === '/' ? 'Home' : pathname.substr(1);
   const [activeItem, setActiveItem] = useState(path);
-  
+
   const handleItemClick = (e, { name }) => setActiveItem(name);
 
   // console.log(user)
@@ -34,8 +34,8 @@ function MainNavigation() {
           as={Link}
           to="/adminProfile"
         />
-        
-         
+
+
         <Menu.Item
           name="Logout"
           onClick={logout}
@@ -60,9 +60,9 @@ function MainNavigation() {
           as={Link}
           to="/profile"
         />
-        
-         
-         
+
+
+
         {/* <Menu.Item
           name={user.username}
           active={activeItem === user.username}
@@ -70,14 +70,14 @@ function MainNavigation() {
           as={Link}
           to="/profile"
         /> */}
-          
+
         <Menu.Item
           name="Logout"
           onClick={logout}
         />
       </Menu.Menu>
     </Menu>
-  ) : ( 
+  ) : (
     <Menu pointing secondary size="massive" color="teal">
       <Menu.Item
         name="Home"

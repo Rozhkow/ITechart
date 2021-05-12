@@ -18,17 +18,17 @@ function DeleteButton({ userId }) {
     })
     return (
         <>
-        <Button
-            class="ui right floated button"
-            onClick={() => setConfirmOpen(true)}
-        >
-            <Icon name="trash" color="red" style={{ margin: 0 }} />
-        </Button>
-        <Confirm 
-            open={confirmOpen}
-            onCancel={() => setConfirmOpen(false)}
-            onConfirm={deleteUser}
-        />    
+            <Button
+                class="ui right floated button"
+                onClick={() => setConfirmOpen(true)}
+            >
+                <Icon name="trash" color="red" style={{ margin: 0 }} />
+            </Button>
+            <Confirm
+                open={confirmOpen}
+                onCancel={() => setConfirmOpen(false)}
+                onConfirm={deleteUser}
+            />
         </>
     )
 };

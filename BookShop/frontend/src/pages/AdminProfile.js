@@ -1,38 +1,14 @@
 import { gql, useQuery } from '@apollo/client';
 import _ from 'lodash'
-import React, { Component } from 'react'
-import { Table, Button, Pagination, Container, Grid, Checkbox, Search } from 'semantic-ui-react'
-import axios from 'axios';
+import React from 'react'
+import { Table, Button, Container, Checkbox } from 'semantic-ui-react'
 import { CSVLink } from 'react-csv';
 
-import UserCard from '../components/UserCard';
 import { Link } from 'react-router-dom';
 import DeleteButton from '../components/DeleteButton';
 import ReactPaginate from "react-paginate";
 
 import './AdminProfile.css'
-
-// import UserForm from '../components/UserForm';
-
-
-
-
-/* <Grid columns={3}>
-  <GridRow >
-  <h1>Users</h1>
-  </GridRow>
-  <GridRow>
-  {loading ? (
-  <h1>Loading users..</h1>
-  ) : (
-  users && users.map(user => (
-  <Grid.Column key={user.email} style={{ marginBottom: 20 }}>
-  <UserCard user={user} />
-  </Grid.Column>
-  ))
-  )}
-  </GridRow>
-  </Grid> */
 
 
 
@@ -66,7 +42,6 @@ function sortReducer(state, action) {
 
 
 
-
 const ALL_USERS = gql`
   query users{
     users {
@@ -84,8 +59,6 @@ function AdminProfilePage() {
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const { data } = useQuery(ALL_USERS);
-  
-  // state = { checked: false }
 
   const [userState, setUserState] = React.useState([data]);
   console.log(data)
@@ -102,9 +75,6 @@ function AdminProfilePage() {
   //   )
   // }
 
-  // if (data) {
-  //   console.log(data)
-  // }
 
   const [state, dispatch] = React.useReducer(sortReducer, {
     checked: false,
@@ -113,13 +83,6 @@ function AdminProfilePage() {
     direction: null,
   })
 
-
-  // const headers = [
-  //   {label: Username, key: username},
-  //   {label: Email, key: email},
-  //   {label: createdAt, key: createdAt},
-  //   {label: ID, key: id}
-  // ];
 
 
   // React.useEffect(() => {
@@ -142,10 +105,9 @@ function AdminProfilePage() {
     setPageNumber(selected);
   };
 
-  //
+
   const csvReport = {
     filename: 'Report.csv',
-    // headers: headers,
     data: users
   };
 
@@ -154,15 +116,6 @@ function AdminProfilePage() {
 
     <Container>
 
-      {/* <Grid>
-        <UserForm/>
-      </Grid> */}
-
-      {/* <div class="ui large buttons">
-        <button class="ui button active" id="Table">Table</button>
-        <div class="or"></div>
-        <button class="ui button" id="Cards">Cards</button>
-      </div> */}
       <div className="Search">
         <input
           type="text"
@@ -171,23 +124,23 @@ function AdminProfilePage() {
             setSearchTerm(event.target.value);
           }}
         />
-
       </div>
+
       <Table sortable celled compact >
         <Table.Header>
           <Table.Row textAlign='center'>
             <Table.HeaderCell>
-              <Checkbox 
-              // onChange={e =>{
-              //   let checked = e.target.checked;
-              //   setUserState(
-              //     userState.map(d =>{
-              //       d.select = checked;
-              //       return d;
-              //     })
-              //   )
-              // }}
-               slider /> 
+              <Checkbox
+                // onChange={e =>{
+                //   let checked = e.target.checked;
+                //   setUserState(
+                //     userState.map(d =>{
+                //       d.select = checked;
+                //       return d;
+                //     })
+                //   )
+                // }}
+                slider />
             </Table.HeaderCell>
 
             <Table.HeaderCell
@@ -231,18 +184,18 @@ function AdminProfilePage() {
             }
           }).slice(pagesVisited, pagesVisited + usersPerPage).map(({ username, email, createdAt, id }) => (
             <Table.Row textAlign='center' key={username}>
-              <Table.Cell collapsing><Checkbox 
-              // onChange={event => { 
-              //   let checked = event.target.checked;
-              //   setUserState(
-              //     userState.map(dataa => {
-              //       if(d.username === dataa.username) {
-              //         dataa.select = checked;
-              //       }
-              //       return dataa;
-              //     })
-              //   )
-              //   }} checked={d.select} 
+              <Table.Cell collapsing><Checkbox
+                // onChange={event => { 
+                //   let checked = event.target.checked;
+                //   setUserState(
+                //     userState.map(dataa => {
+                //       if(d.username === dataa.username) {
+                //         dataa.select = checked;
+                //       }
+                //       return dataa;
+                //     })
+                //   )
+                //   }} checked={d.select} 
                 slider /> </Table.Cell>
               <Table.Cell><Table.Cell as={Link} to={`/users/${id}`} >{username}</Table.Cell></Table.Cell>
               <Table.Cell>{email}</Table.Cell>
@@ -251,23 +204,12 @@ function AdminProfilePage() {
               <Table.Cell><DeleteButton userId={id} /></Table.Cell>
             </Table.Row>
           ))}
-           {/* )}  */}
+          {/* )}  */}
         </Table.Body>
       </Table>
 
 
-      {/* <Pagination
-        defaultActivePage={1}
-        firstItem={null}
-        lastItem={null}
-        pointing
-        secondary
-
-        totalPages={Math.ceil(users.length) / 5}
-      /> */}
-
       <div className="App">
-
         <ReactPaginate
           previousLabel={"<"}
           nextLabel={">"}
@@ -285,22 +227,9 @@ function AdminProfilePage() {
         <CSVLink {...csvReport}>Export data</CSVLink>
       </Button>
 
-
     </Container>
-
   )
-
-
 }
-
-
-
-
-
-
-
-
-
 
 
 export default AdminProfilePage;

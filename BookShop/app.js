@@ -31,25 +31,25 @@ app.use((req, res, next) => {
   next();
 });
 
-  app.use(isAuth);   // authorization check
+app.use(isAuth);   // authorization check
 
-  app.use(    
-    '/graphql',
-    graphqlHttp({
-      schema: graphQlSchema,
-      rootValue: graphQlResolvers,
-      graphiql: true
-    })
-  );
+app.use(
+  '/graphql',
+  graphqlHttp({
+    schema: graphQlSchema,
+    rootValue: graphQlResolvers,
+    graphiql: true
+  })
+);
 
-  // user connection
+// user connection
 
 mongoose.connect(MONGODB)
-.then(() => {
+  .then(() => {
     console.log('MongoDB Connected');
-    app.listen({port: PORT}); 
-})
-.catch(err => {
+    app.listen({ port: PORT });
+  })
+  .catch(err => {
     console.error(err);
-});
+  });
 

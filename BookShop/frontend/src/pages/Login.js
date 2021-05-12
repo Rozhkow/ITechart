@@ -25,10 +25,9 @@ function Login(props) {
     username: '',
     password: ''
   });
-  
+
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update(_, { data: { login: userData }})
-    {
+    update(_, { data: { login: userData } }) {
       console.log(userData);
       context.login(userData);
       props.history.push('/');
@@ -42,7 +41,7 @@ function Login(props) {
   function loginUserCallback() {
     loginUser();
   }
-  
+
 
   return (
     <div className="form-container">
@@ -71,11 +70,11 @@ function Login(props) {
         </Button>
         <Message>
           <Message.Header>Rouls of Login</Message.Header>
-          <hr/>
-            <p>
-            * Username must not be empty            
+          <hr />
+          <p>
+            * Username must not be empty
             </p>
-            <p>
+          <p>
             * Password must not be empty
             </p>
         </Message>
