@@ -14,7 +14,7 @@ function GoodCard({ good: { title, description, price } }) {
 
         <Card>
             <Card.Content>
-                <Image floated='top' size='medium' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                <Image floated='left' size='medium' src='https://react.semantic-ui.com/images/wireframe/image.png' />
                 <Card.Header>{title}</Card.Header>
                 <Accordion>
                     <Accordion.Title

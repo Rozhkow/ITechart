@@ -17,21 +17,18 @@ function AuthPage() {
           placeholder="Username.."
           name="username"
           type="text"
-
         />
         <Form.Input
           label="Email"
           placeholder="Email.."
           name="email"
           type="email"
-
         />
         <Form.Input
           label="Password"
           placeholder="Password.."
           name="password"
           type="password"
-
         />
         <Form.Input
           label="Confirm Password"

@@ -31,7 +31,7 @@ function App() {
   return (
     <AuthProvider client={client}>
       <Router>
-        <Container>
+        <Container className="mainContainer">
           <MainNavigation />
           <Route exact path="/" component={HomePage} />
           <AuthRoute exact path="/login" component={LoginPage} />

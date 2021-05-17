@@ -6,3 +6,15 @@
   width: 400px;
   margin: auto;
 }
+
+#root {
+  height: 100%;
+}
+
+
+.mainContainer {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
