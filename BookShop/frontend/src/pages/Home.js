@@ -8,6 +8,7 @@ import { AuthContext } from '../context/auth'
 
 import ImageSlider from '../components/ImageSlider';
 import { SliderData } from '../components/SliderData';
+import GoodForm from '../components/GoodForm';
 
 import './Home.css'
 
@@ -63,7 +64,9 @@ function HomePage() {
             </div>
             <Grid columns={3} className="Cards">
                 <Grid.Row >
-
+                    <Grid.Column>
+                        <GoodForm />
+                    </Grid.Column>
                 </Grid.Row>
                 <Grid.Row >
                     {goods.filter((val) => {

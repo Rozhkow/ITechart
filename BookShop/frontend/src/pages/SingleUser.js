@@ -5,7 +5,7 @@ import { Card, Grid } from 'semantic-ui-react';
 import { AuthContext } from '../context/auth';
 import DeleteButton from '../components/DeleteButton';
 
-
+import './SingleUser.css'
 
 const FETCH_USER_QUERY = gql`
     query($userId: ID!){
@@ -45,11 +45,11 @@ function SingleUser(props) {
 
         userMarkup = (
 
-            <Grid>
+            <Grid className="SingleUser">
                 <Grid.Row>
                     <Grid.Column width={5}>
                         <Card fluid>
-                            <Card.Content>
+                            <Card.Content >
                                 <Card.Header>{username}</Card.Header>
                                 <Card.Header>{email}</Card.Header>
                                 <Card.Header>{createdAt}</Card.Header>

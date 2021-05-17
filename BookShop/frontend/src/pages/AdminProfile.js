@@ -114,7 +114,7 @@ function AdminProfilePage() {
 
   return (
 
-    <Container>
+    <Container className="AdminBlock">
 
       <div className="Search">
         <input
