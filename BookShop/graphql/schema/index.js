@@ -13,7 +13,7 @@ type Event {
     id: ID!
     title: String!
     description: String!
-    price: Float!
+    price: String!
 }
 
 type User {
@@ -34,7 +34,7 @@ type AuthData {
 input EventInput {
     title: String!
     description: String!
-    price: Float!
+    price: String!
 }
 
 input UserInput {

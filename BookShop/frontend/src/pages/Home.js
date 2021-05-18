@@ -1,5 +1,5 @@
-import React from 'react';
-import { gql, useQuery } from '@apollo/client';
+import React, { useState } from 'react';
+import { useQuery } from '@apollo/client';
 import { Container, Grid } from 'semantic-ui-react';
 
 import GoodCard from '../components/GoodCard';
@@ -10,17 +10,9 @@ import ImageSlider from '../components/ImageSlider';
 import { SliderData } from '../components/SliderData';
 import GoodForm from '../components/GoodForm';
 
-import './Home.css'
+import './Home.css';
+import { FETCH_ITEMS_QUERY } from '../util/graphql';
 
-const FETCH_ITEMS_QUERY = gql`
-    query events{
-        events {
-            title
-            description
-            price
-        }
-    }
-`
 
 
 function HomePage() {
@@ -28,19 +20,20 @@ function HomePage() {
     // if (data) {
     //     console.log(data);
     // }
-    const [searchTerm, setSearchTerm] = React.useState("");
+    const [searchTerm, setSearchTerm] = useState("");
 
 
     const { data } = useQuery(FETCH_ITEMS_QUERY);
 
-
-    const [state] = React.useState({ goods: data ? data.events : [] })
+    
+    
+    const [state] = useState({ goods: data ? data.events : [] })
 
 
     const { goods } = state
 
-    const [goodss] = React.useState(goods.slice(0, 10));
-    const [pageNumber, setPageNumber] = React.useState(0);
+    const [goodss] = useState(goods.slice(0, 10));
+    const [pageNumber, setPageNumber] = useState(0);
     const goodsPerPage = 6;
     const pagesVisited = pageNumber * goodsPerPage;
     const pageCount = Math.ceil(goodss.length / goodsPerPage);
