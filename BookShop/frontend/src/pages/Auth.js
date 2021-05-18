@@ -1,13 +1,9 @@
-import React from 'react';
-import { Button, Form } from 'semantic-ui-react';
-import { useNutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-
-
+import React from "react";
+import { Button, Form } from "semantic-ui-react";
+import { useNutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 
 function AuthPage() {
-
-
   return (
     <div className="form-container">
       <Form>
@@ -35,15 +31,13 @@ function AuthPage() {
           placeholder="Confirm Password.."
           name="confirmPassword"
           type="password"
-
         />
         <Button type="submit" primary>
           Register
         </Button>
       </Form>
-
     </div>
-  )
+  );
 }
 
 export default AuthPage;

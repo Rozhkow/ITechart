@@ -1,51 +1,40 @@
-import React, { useContext, useState } from 'react';
-import { Button, Form, Message } from 'semantic-ui-react';
-import { gql, useMutation } from '@apollo/client';
+import React, { useContext, useState } from "react";
+import { Button, Form, Message } from "semantic-ui-react";
+import { gql, useMutation } from "@apollo/client";
 
-import { AuthContext } from '../context/auth';
-import { useForm } from '../util/hooks';
+import { AuthContext } from "../context/auth";
+import { useForm } from "../util/hooks";
 
-const LOGIN_USER = gql`
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      id
-      email
-      username
-      createdAt
-      token
-    }
-  }
-`;
+import { LOGIN_USER } from "../util/graphql";
 
 function Login(props) {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   });
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, { data: { login: userData } }) {
       console.log(userData);
       context.login(userData);
-      props.history.push('/');
+      props.history.push("/");
     },
     onError(err) {
       console.log(err.graphQLErrors[0]);
     },
-    variables: values
+    variables: values,
   });
 
   function loginUserCallback() {
     loginUser();
   }
 
-
   return (
     <div className="form-container">
-      <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
+      <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
         <h1>Login</h1>
         <Form.Input
           label="Username"
@@ -71,12 +60,8 @@ function Login(props) {
         <Message>
           <Message.Header>Rouls of Login</Message.Header>
           <hr />
-          <p>
-            * Username must not be empty
-            </p>
-          <p>
-            * Password must not be empty
-            </p>
+          <p>* Username must not be empty</p>
+          <p>* Password must not be empty</p>
         </Message>
       </Form>
       {Object.keys(errors).length > 0 && (
@@ -91,6 +76,5 @@ function Login(props) {
     </div>
   );
 }
-
 
 export default Login;

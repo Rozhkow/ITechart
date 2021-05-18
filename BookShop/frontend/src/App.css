@@ -2,7 +2,7 @@
   margin: 4rem 2.5rem;
 }
 
-.form-container{
+.form-container {
   width: 400px;
   margin: auto;
 }
@@ -10,7 +10,6 @@
 #root {
   height: 100%;
 }
-
 
 .mainContainer {
   display: flex !important;

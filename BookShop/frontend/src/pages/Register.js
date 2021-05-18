@@ -1,61 +1,34 @@
-import React, { useState, useContext } from 'react';
-import { Button, Form, Message } from 'semantic-ui-react';
-import { useMutation } from '@apollo/client';
-import gql from 'graphql-tag';
+import React, { useState, useContext } from "react";
+import { Button, Form, Message } from "semantic-ui-react";
+import { useMutation } from "@apollo/client";
+import gql from "graphql-tag";
 
+import { AuthContext } from "../context/auth";
+import { useForm } from "../util/hooks";
 
-import { AuthContext } from '../context/auth';
-import { useForm } from '../util/hooks';
-
-
-const REGISTER_USER = gql`
-  mutation register(
-    $username: String!
-    $email: String!
-    $password: String!
-    $confirmPassword: String!
-  ) {
-    register(
-      registerInput: {
-        username: $username
-        email: $email
-        password: $password
-        confirmPassword: $confirmPassword
-      }
-    ) {
-      id
-      email
-      username
-      createdAt
-      token
-    }
-  }
-`;
-
+import { REGISTER_USER } from "../util/graphql";
 
 function Register(props) {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
   const { onChange, onSubmit, values } = useForm(registerUser, {
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  })
-
-
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { register: userData } }) {
-      context.login(userData)
-      props.history.push('/') // to the HomePage
+      context.login(userData);
+      props.history.push("/"); // to the HomePage
     },
     onError(err) {
       console.log(err.graphQLErrors[0]);
     },
-    variables: values
-  })
+    variables: values,
+  });
 
   function registerUser() {
     addUser();
@@ -63,7 +36,7 @@ function Register(props) {
 
   return (
     <div className="form-container">
-      <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
+      <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
         <h1>Register</h1>
         <Form.Input
           label="Username"
@@ -107,15 +80,9 @@ function Register(props) {
         <Message>
           <Message.Header>Rouls of register</Message.Header>
           <hr />
-          <p>
-            * Username must be unique
-            </p>
-          <p>
-            * Email must be valid
-            </p>
-          <p>
-            * Passwords must match
-            </p>
+          <p>* Username must be unique</p>
+          <p>* Email must be valid</p>
+          <p>* Passwords must match</p>
         </Message>
       </Form>
       {Object.keys(errors).length > 0 && (
