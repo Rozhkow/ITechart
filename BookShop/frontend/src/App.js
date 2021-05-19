@@ -1,5 +1,4 @@
 import React from "react";
-import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 
@@ -18,20 +17,17 @@ import ProfilePage from "./pages/Profile";
 import AdminProfilePage from "./pages/AdminProfile";
 import Footer from "./components/Navigation/Footer";
 import SingleUser from "./pages/SingleUser";
-// import { ApolloProvider } from '@apollo/client/react';
 
-const client = new ApolloClient({
-  uri: "http://localhost:8000/graphql",
-  cache: new InMemoryCache(),
-});
+// parameter EXACT need to us because it desables partial matching for 
+// routs and we can be sure that it returns route only in case that our way match to current URL 
 
 function App() {
   return (
-    <AuthProvider client={client}>
+    <AuthProvider>
       <Router>
         <Container className="mainContainer">
-          <MainNavigation />
-          <Route exact path="/" component={HomePage} />
+          <MainNavigation /> 
+          <Route exact  path="/" component={HomePage} /> 
           <AuthRoute exact path="/login" component={LoginPage} />
           <AuthRoute exact path="/register" component={RegisterPage} />
           <UnAuthRoute exact path="/profile" component={ProfilePage} />

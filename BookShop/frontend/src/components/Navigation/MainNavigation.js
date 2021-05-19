@@ -6,14 +6,13 @@ import { AuthContext } from "../../context/auth";
 
 function MainNavigation() {
   const { user, logout } = useContext(AuthContext);
+  
+  // When we want to go to another page, navbarItem will be active
   const pathname = window.location.pathname;
-
-  const path = pathname === "/" ? "Home" : pathname.substr(1);
+  const path = pathname === '/' ? 'Home' : pathname.substr(1);
   const [activeItem, setActiveItem] = useState(path);
 
   const handleItemClick = (e, { name }) => setActiveItem(name);
-
-  // console.log(user)
 
   const MainNavigation =
     user && user.username === "admin" ? (
@@ -62,15 +61,6 @@ function MainNavigation() {
             as={Link}
             to="/profile"
           />
-
-          {/* <Menu.Item
-          name={user.username}
-          active={activeItem === user.username}
-          onClick={handleItemClick}
-          as={Link}
-          to="/profile"
-        /> */}
-
           <Menu.Item name="Logout" onClick={logout} />
         </Menu.Menu>
       </Menu>
@@ -86,15 +76,15 @@ function MainNavigation() {
 
         <Menu.Menu position="right">
           <Menu.Item
-            name="Login"
-            active={activeItem === "Login"}
+            name="login"
+            active={activeItem === "login"}
             onClick={handleItemClick}
             as={Link}
             to="/login"
           />
           <Menu.Item
-            name="Register"
-            active={activeItem === "Register"}
+            name="register"
+            active={activeItem === "register"}
             onClick={handleItemClick}
             as={Link}
             to="/register"

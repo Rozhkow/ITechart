@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect, useReducer } from "react";
 import { useQuery } from "@apollo/client";
 import { Container, Grid } from "semantic-ui-react";
 
@@ -13,16 +13,38 @@ import GoodForm from "../components/GoodForm";
 import "./Home.css";
 import { FETCH_ITEMS_QUERY } from "../util/graphql";
 
+function Reducer(state, action) {
+  switch (action.type) {
+    case "UPDATE_GOODS":
+      console.log(action.payload)
+      return {
+        ...state,
+        goods: action.payload,
+      };
+    default:
+      throw new Error();
+  }
+}
+
 function HomePage() {
-  const { user } = React.useContext(AuthContext);
-  // if (data) {
-  //     console.log(data);
-  // }
+  const { user } = useContext(AuthContext);
+  
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data } = useQuery(FETCH_ITEMS_QUERY);
+  const { loading, data } = useQuery(FETCH_ITEMS_QUERY);
 
-  const [state] = useState({ goods: data ? data.events : [] });
+  const [state, dispatch] = useReducer(Reducer, {
+    goods: data ? data.events : [],
+  });
+
+  useEffect(() => {
+    console.log(data)
+    if(!loading && data && data.events) {
+      console.log(data)
+      dispatch({ type: 'UPDATE_GOODS', payload: data.events })
+    }
+  }, [data, loading]);
+
 
   const { goods } = state;
 
@@ -56,7 +78,10 @@ function HomePage() {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            {goods
+            {loading ? (
+            <h1>Loading goods..</h1>
+          ) : (
+            goods && goods
               .filter((val) => {
                 if (searchTerm == "") {
                   return val;
@@ -71,7 +96,7 @@ function HomePage() {
                 <Grid.Column key={good.title} style={{ marginBottom: 20 }}>
                   <GoodCard good={good} />
                 </Grid.Column>
-              ))}
+              )))}
           </Grid.Row>
         </Grid>
 
@@ -103,9 +128,11 @@ function HomePage() {
           />
         </div>
         <Grid columns={3}>
-          <Grid.Row></Grid.Row>
           <Grid.Row>
-            {goods
+            {loading ? (
+            <h1>Loading goods..</h1>
+          ) : (
+            goods && goods
               .filter((val) => {
                 if (searchTerm == "") {
                   return val;
@@ -120,7 +147,7 @@ function HomePage() {
                 <Grid.Column key={good.title} style={{ marginBottom: 20 }}>
                   <GoodCard good={good} />
                 </Grid.Column>
-              ))}
+              )))}
           </Grid.Row>
         </Grid>
 
@@ -152,9 +179,11 @@ function HomePage() {
           />
         </div>
         <Grid columns={3}>
-          <Grid.Row></Grid.Row>
           <Grid.Row>
-            {goods
+          {loading ? (
+            <h1>Loading goods..</h1>
+          ) : (
+            goods && goods
               .filter((val) => {
                 if (searchTerm == "") {
                   return val;
@@ -169,7 +198,7 @@ function HomePage() {
                 <Grid.Column key={good.title} style={{ marginBottom: 20 }}>
                   <GoodCard good={good} />
                 </Grid.Column>
-              ))}
+              )))}
           </Grid.Row>
         </Grid>
 

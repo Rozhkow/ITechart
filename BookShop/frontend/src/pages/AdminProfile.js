@@ -1,6 +1,6 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import _ from "lodash";
-import React from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import { Table, Button, Container, Checkbox } from "semantic-ui-react";
 import { CSVLink } from "react-csv";
 
@@ -14,10 +14,11 @@ import { ALL_USERS } from "../util/graphql";
 function sortReducer(state, action) {
   switch (action.type) {
     case "CHANGE_SORT":
+      debugger;
       if (state.column === action.column) {
         return {
           ...state,
-          data: state.data.slice().reverse(),
+          users: state.users.slice().reverse(),
           direction:
             state.direction === "ascending" ? "descending" : "ascending",
         };
@@ -25,54 +26,47 @@ function sortReducer(state, action) {
 
       return {
         column: action.column,
-        data: _.sortBy(state.data, [action.column]),
+        users: _.sortBy(state.users, [action.column]),
         direction: "ascending",
       };
-    case "Dispatch":
-      return {};
+    case "UPDATE_USERS":
+      return {
+        ...state,
+        users: action.payload,
+      };
     default:
       throw new Error();
   }
 }
 
 function AdminProfilePage() {
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const { data } = useQuery(ALL_USERS);
+  const { loading, data } = useQuery(ALL_USERS);
 
-  const [userState, setUserState] = React.useState([data]);
 
   console.log(data);
 
-  React.useEffect(() => {
-    console.log(data);
-    setUserState(data);
-  }, []);
-
-  // if({data} === {}){
-  //   return (
-  //     <div> loading</div>
-  //   )
-  // }
-
-  const [state, dispatch] = React.useReducer(sortReducer, {
+  const [state, dispatch] = useReducer(sortReducer, {
     checked: false,
     column: null,
     users: data ? data.users : [],
     direction: null,
   });
 
-  // React.useEffect(() => {
-  //   dispatch({ users: data ? data.users : [] })
-
-  // }, [!data]);
+  useEffect(() => {
+    if(!loading && data && data.users) {
+      dispatch({ type: 'UPDATE_USERS', payload: data.users })
+    }
+  }, [data, loading]);
 
   // Pagination
+  
   const { column, users, direction } = state;
 
-  const [userss] = React.useState(users.slice(0, 10));
-  const [pageNumber, setPageNumber] = React.useState(0);
-  const usersPerPage = 5;
+  const [userss] = useState(users.slice(0, 10));
+  const [pageNumber, setPageNumber] = useState(0);
+  const usersPerPage = 6;
   const pagesVisited = pageNumber * usersPerPage;
   const pageCount = Math.ceil(userss.length / usersPerPage);
   const changePage = ({ selected }) => {
@@ -147,48 +141,51 @@ function AdminProfilePage() {
         </Table.Header>
         <Table.Body>
           {/* {userState.map(() =>  */}
-          {users
-            .filter((val) => {
-              if (searchTerm == "") {
-                return val;
-              } else if (
-                val.username.toLowerCase().includes(searchTerm.toLowerCase())
-              ) {
-                return val;
-              }
-            })
-            .slice(pagesVisited, pagesVisited + usersPerPage)
-            .map(({ username, email, createdAt, id }) => (
-              <Table.Row textAlign="center" key={username}>
-                <Table.Cell collapsing>
-                  <Checkbox
-                    // onChange={event => {
-                    //   let checked = event.target.checked;
-                    //   setUserState(
-                    //     userState.map(dataa => {
-                    //       if(d.username === dataa.username) {
-                    //         dataa.select = checked;
-                    //       }
-                    //       return dataa;
-                    //     })
-                    //   )
-                    //   }} checked={d.select}
-                    slider
-                  />{" "}
-                </Table.Cell>
-                <Table.Cell>
-                  <Table.Cell as={Link} to={`/users/${id}`}>
-                    {username}
+          {loading ? (
+            <h1>Loading goods..</h1>
+          ) : (
+            users && users
+              .filter((val) => {
+                if (searchTerm == "") {
+                  return val;
+                } else if (
+                  val.username.toLowerCase().includes(searchTerm.toLowerCase())
+                ) {
+                  return val;
+                }
+              })
+              .slice(pagesVisited, pagesVisited + usersPerPage)
+              .map(({ username, email, createdAt, id }) => (
+                <Table.Row textAlign="center" key={username}>
+                  <Table.Cell collapsing>
+                    <Checkbox
+                      // onChange={event => {
+                      //   let checked = event.target.checked;
+                      //   setUserState(
+                      //     userState.map(dataa => {
+                      //       if(d.username === dataa.username) {
+                      //         dataa.select = checked;
+                      //       }
+                      //       return dataa;
+                      //     })
+                      //   )
+                      //   }} checked={d.select}
+                      slider
+                    />{" "}
                   </Table.Cell>
-                </Table.Cell>
-                <Table.Cell>{email}</Table.Cell>
-                <Table.Cell>{createdAt}</Table.Cell>
-                <Table.Cell>{id}</Table.Cell>
-                <Table.Cell>
-                  <DeleteButton userId={id} />
-                </Table.Cell>
-              </Table.Row>
-            ))}
+                  <Table.Cell>
+                    <Table.Cell as={Link} to={`/users/${id}`}>
+                      {username}
+                    </Table.Cell>
+                  </Table.Cell>
+                  <Table.Cell>{email}</Table.Cell>
+                  <Table.Cell>{createdAt}</Table.Cell>
+                  <Table.Cell>{id}</Table.Cell>
+                  <Table.Cell>
+                    <DeleteButton userId={id} />
+                  </Table.Cell>
+                </Table.Row>
+              )))}
           {/* )}  */}
         </Table.Body>
       </Table>

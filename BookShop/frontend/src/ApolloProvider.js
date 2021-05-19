@@ -1,12 +1,12 @@
 import React from "react";
 import App from "./App";
-import ApolloClient from "@apollo-client";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { createHttpLink } from "apollo-link-http";
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from "@apollo/client/react";
 import { setContext } from "apollo-link-context";
 
-const httpLink = createHttpLink({
-  uri: "http://localhost:8000",
+const httpLink = createHttpLink({  
+  uri: "http://localhost:8000/graphql",  // endpoint to our localserver
 });
 
 const authLink = setContext(() => {

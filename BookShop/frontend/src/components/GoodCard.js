@@ -1,6 +1,8 @@
 import React from "react";
 import { Card, Icon, Image, Accordion } from "semantic-ui-react";
 
+import './GoodCard.css';
+
 function GoodCard({ good: { title, description, price } }) {
   const [activeIndex, handleClick] = React.useState(0);
 
@@ -8,14 +10,14 @@ function GoodCard({ good: { title, description, price } }) {
     <Card>
       <Card.Content>
         <Image
-          floated="left"
+          centered
           size="medium"
           src="https://react.semantic-ui.com/images/wireframe/image.png"
         />
         <Card.Header>{title}</Card.Header>
         <Accordion>
           <Accordion.Title
-            active={activeIndex === 0}
+            active={activeIndex === 0} 
             onClick={() =>
               handleClick(activeIndex === 0 ? activeIndex + 1 : activeIndex - 1)
             }
