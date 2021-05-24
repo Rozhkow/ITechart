@@ -3,30 +3,64 @@ import { useMutation } from "@apollo/client";
 import { Button, Confirm, Icon } from "semantic-ui-react";
 
 import { DELETE_USER_MUTATION } from "../util/graphql";
-import { ALL_USERS } from "../util/graphql";
+import { DELETE_GOOD_MUTATION } from "../util/graphql";
 
-function DeleteButton({ userId, callback }) {
-  console.log(userId);
+import { ALL_USERS } from "../util/graphql";
+import { FETCH_ITEMS_QUERY } from "../util/graphql";
+
+function DeleteButton({ userId, id }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const [deleteUser] = useMutation(DELETE_USER_MUTATION, {
-    update(proxy) {
-      setConfirmOpen(false);
-      // TODO: remove user from cache
+    update(proxy, result) {
+      // TODO: remove users from cache
       if (userId) {
         const data = proxy.readQuery({
           query: ALL_USERS
         });
-        data.users = data.users.filter((p) => p.id !== userId);
-        proxy.writeQuery({ query: ALL_USERS, data });
+        let newData = [...data.users];
+        newData = [result.data.users, ...newData];
+        proxy.writeQuery({
+          query: ALL_USERS, 
+          data: {
+            ...data,
+            users: {
+              newData
+            }
+          }
+        });
       }
-      if(callback) callback();
     },
     variables: {
       userId
     }
   });
-  
+
+  const [deleteEvent] = useMutation(DELETE_GOOD_MUTATION, {
+    update(proxy, result) {
+      // TODO: remove goods from cache
+      if (id) {
+        const data = proxy.readQuery({
+          query: FETCH_ITEMS_QUERY
+        });
+        let newData = [...data.events];
+        newData = [result.data.events, ...newData];
+        proxy.writeQuery({
+          query: FETCH_ITEMS_QUERY, 
+          data: {
+            ...data,
+            events: {
+              newData
+            }
+          }
+        });
+      }
+    },
+    variables: {
+      id
+    }
+  });
+
   return (
     <>
       <Button
@@ -38,7 +72,9 @@ function DeleteButton({ userId, callback }) {
       <Confirm
         open={confirmOpen}
         onCancel={() => setConfirmOpen(false)}
-        onConfirm={deleteUser}
+        
+        onConfirm={deleteUser || deleteEvent} 
+        // onConfirm={deleteEvent}
       />
     </>
   );

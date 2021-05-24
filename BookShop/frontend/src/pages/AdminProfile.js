@@ -55,20 +55,21 @@ function AdminProfilePage() {
   });
 
   useEffect(() => {
-    if(!loading && data && data.users) {
+    if (!loading && data && data.users) {
       dispatch({ type: 'UPDATE_USERS', payload: data.users })
     }
-  }, [data, loading]);
+  }, [data, loading]); // restart hook if our second argument has changed
 
   // Pagination
-  
+
   const { column, users, direction } = state;
 
-  const [userss] = useState(users.slice(0, 10));
+
+  // const [userss] = useState(users.slice(0, 10));
   const [pageNumber, setPageNumber] = useState(0);
-  const usersPerPage = 6;
+  const usersPerPage = 5;
   const pagesVisited = pageNumber * usersPerPage;
-  const pageCount = Math.ceil(userss.length / usersPerPage);
+  const pageCount = Math.ceil(users.length / usersPerPage);
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };

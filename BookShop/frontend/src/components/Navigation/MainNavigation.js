@@ -3,6 +3,7 @@ import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../../context/auth";
+import AdminProfilePage from "../../pages/AdminProfile";
 
 function MainNavigation() {
   const { user, logout } = useContext(AuthContext);
@@ -34,7 +35,7 @@ function MainNavigation() {
         <Menu.Menu position="right" size="massive" color="teal">
           <Menu.Item
             name={user.username}
-            active={activeItem === user.username}
+            active={activeItem === user.username || activeItem === "adminProfile"}
             onClick={handleItemClick}
             as={Link}
             to="/adminProfile"
@@ -56,7 +57,7 @@ function MainNavigation() {
         <Menu.Menu position="right" size="massive" color="teal">
           <Menu.Item
             name={user.username}
-            active={activeItem === user.username}
+            active={activeItem === user.username || activeItem === "profile"}
             onClick={handleItemClick}
             as={Link}
             to="/profile"

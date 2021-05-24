@@ -29,4 +29,17 @@ module.exports = {
       throw err;
     }
   },
+  deleteEvent: async ({ id }) => {
+    try {
+      const event = await Event.findById(id);
+      // if (user.username === "admin") {
+      await event.delete();
+      return "Good deleted successfully";
+      // } else {
+      //   throw new Error('Action not allowed');
+      // }
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
 };

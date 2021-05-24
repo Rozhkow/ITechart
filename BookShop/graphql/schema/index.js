@@ -32,6 +32,7 @@ type AuthData {
 }
 
 input EventInput {
+
     title: String!
     description: String!
     price: String!
@@ -62,7 +63,8 @@ type RootMutation {
     createEvent(eventInput: EventInput): Event
     createUser(userInput: UserInput): User
     deleteUser(userId: ID!): String!
-    shopEvent(eventId: ID!): Shopping!
+    deleteEvent(id: ID!): String!
+    shopEvent(id: ID!): Shopping!
     cancelShopping(shoppingId: ID!): Event!
 }
 

@@ -48,11 +48,11 @@ function HomePage() {
 
   const { goods } = state;
 
-  const [goodss] = useState(goods.slice(0, 10));
+  // const [goodss] = useState(goods.slice(0, 10));
   const [pageNumber, setPageNumber] = useState(0);
   const goodsPerPage = 6;
   const pagesVisited = pageNumber * goodsPerPage;
-  const pageCount = Math.ceil(goodss.length / goodsPerPage);
+  const pageCount = Math.ceil(goods.length / goodsPerPage);
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };

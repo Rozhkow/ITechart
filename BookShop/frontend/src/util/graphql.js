@@ -3,10 +3,17 @@ import gql from "graphql-tag";
 export const FETCH_ITEMS_QUERY = gql`
   query events {
     events {
+      id
       title
       description
       price
     }
+  }
+`;
+
+export const DELETE_GOOD_MUTATION = gql`
+  mutation deleteEvent($id: ID!) {
+    deleteEvent(id: $id)
   }
 `;
 
@@ -18,20 +25,20 @@ export const DELETE_USER_MUTATION = gql`
 
 export const CREATE_GOOD_MUTATION = gql`
   mutation createEvent(
-    $picture: Upload
+    
     $title: String!
     $description: String!
     $price: String!
   ) {
     createEvent(
       eventInput: {
-        picture: $picture
+        
         title: $title
         description: $description
         price: $price
       }
     ) {
-      picture
+      
       title
       description
       price
