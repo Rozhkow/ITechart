@@ -40,12 +40,12 @@ function DeleteButton({ userId, id }) {
     update(proxy, result) {
       // TODO: remove goods from cache
       if (id) {
-        const data = proxy.readQuery({
+        const data = proxy.readQuery({ // read data from cache
           query: FETCH_ITEMS_QUERY
         });
         let newData = [...data.events];
         newData = [result.data.events, ...newData];
-        proxy.writeQuery({
+        proxy.writeQuery({ // update data in cache
           query: FETCH_ITEMS_QUERY, 
           data: {
             ...data,
@@ -73,7 +73,7 @@ function DeleteButton({ userId, id }) {
         open={confirmOpen}
         onCancel={() => setConfirmOpen(false)}
         
-        onConfirm={deleteUser || deleteEvent} 
+        onConfirm={deleteEvent || deleteUser} 
         // onConfirm={deleteEvent}
       />
     </>

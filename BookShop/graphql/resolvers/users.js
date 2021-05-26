@@ -9,7 +9,7 @@ const {
   validateLoginInput,
 } = require("../../middleware/validators");
 
-function generateToken(user) {
+function generateToken(user) { // Returns the JsonWebToken as string
   return jwt.sign(
     {
       id: user.id,

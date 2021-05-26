@@ -10,7 +10,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext(() => {
-  const token = localStorage.getItem("jwtToken");
+  const token = localStorage.getItem("jwtToken"); // let us keep pair of key/defenition in brouser
   return {
     headers: {
       Authorization: token ? `Bearer ${token}` : "",

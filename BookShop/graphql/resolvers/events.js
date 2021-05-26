@@ -22,7 +22,7 @@ module.exports = {
     });
 
     try {
-      let createdEvent = await event.save();
+      let createdEvent = await event.save(); // save into database
       return createdEvent;
     } catch (err) {
       console.log(err);
@@ -32,12 +32,8 @@ module.exports = {
   deleteEvent: async ({ id }) => {
     try {
       const event = await Event.findById(id);
-      // if (user.username === "admin") {
-      await event.delete();
+      await event.delete(); // delete from database
       return "Good deleted successfully";
-      // } else {
-      //   throw new Error('Action not allowed');
-      // }
     } catch (err) {
       throw new Error(err);
     }

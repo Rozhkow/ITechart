@@ -43,18 +43,18 @@ input UserInput {
     password: String!
 }
 
-type RootQuery {
-    getUser(userId: ID!): User
-    users: [User]
-    events: [Event]
-    shoppings: [Shopping!]!
-}
-
 input RegisterInput {
     username: String!
     password: String!
     confirmPassword: String!
     email: String!
+}
+
+type RootQuery {
+    getUser(userId: ID!): User
+    users: [User]
+    events: [Event]
+    shoppings: [Shopping!]!
 }
 
 type RootMutation {
