@@ -17,6 +17,7 @@ import ProfilePage from "./pages/Profile";
 import AdminProfilePage from "./pages/AdminProfile";
 import Footer from "./components/Navigation/Footer";
 import SingleUser from "./pages/SingleUser";
+import SingleGood from "./pages/SingleGood";
 
 // parameter EXACT need to us because it desables partial matching for 
 // routs and we can be sure that it returns route only in case that our way match to current URL 
@@ -37,6 +38,7 @@ function App() {
             component={AdminProfilePage}
           />
           <Route exact path="/users/:userId" component={SingleUser} />
+          <Route exact path="/goods/:id" component={SingleGood} />
           <Footer />
         </Container>
       </Router>

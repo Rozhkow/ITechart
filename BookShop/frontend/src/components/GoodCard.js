@@ -1,9 +1,12 @@
 import React, { useContext } from "react";
 import { Card, Icon, Image, Accordion } from "semantic-ui-react";
 
+import { Link } from "react-router-dom";
 import DeleteButton from "../components/DeleteButton";
 import './GoodCard.css';
 import { AuthContext } from "../context/auth";
+
+
 
 function GoodCard({ good: { title, description, price, id } }) {
   const { user } = useContext(AuthContext);
@@ -19,7 +22,7 @@ function GoodCard({ good: { title, description, price, id } }) {
           size="medium"
           src="https://react.semantic-ui.com/images/wireframe/image.png"
         />
-        <Card.Header>{title}</Card.Header>
+        <Card.Header as={Link} to={`/goods/${id}`}>{title}</Card.Header>
         <Accordion>
           <Accordion.Title
             active={activeIndex === 0} 
@@ -49,7 +52,7 @@ function GoodCard({ good: { title, description, price, id } }) {
           size="medium"
           src="https://react.semantic-ui.com/images/wireframe/image.png"
         />
-        <Card.Header>{title}</Card.Header>
+        <Card.Header as={Link} to={`/goods/${id}`}>{title}</Card.Header>
         <Accordion>
           <Accordion.Title
             active={activeIndex === 0} 

@@ -52,6 +52,7 @@ input RegisterInput {
 
 type RootQuery {
     getUser(userId: ID!): User
+    getEvent(id: ID!): Event
     users: [User]
     events: [Event]
     shoppings: [Shopping!]!

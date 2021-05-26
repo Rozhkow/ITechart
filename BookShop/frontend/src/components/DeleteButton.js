@@ -73,11 +73,15 @@ function DeleteButton({ userId, id }) {
         open={confirmOpen}
         onCancel={() => setConfirmOpen(false)}
         
-        onConfirm={deleteEvent || deleteUser} 
-        // onConfirm={deleteEvent}
+        onConfirm={deleteEvent} 
+
+        
+        // onConfirm={deleteUser}
       />
     </>
   );
 }
+
+// DeleteButton(onConfirm(deleteUser))
 
 export default DeleteButton;

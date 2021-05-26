@@ -93,7 +93,7 @@ function HomePage() {
               })
               .slice(pagesVisited, pagesVisited + goodsPerPage)
               .map((good) => (
-                <Grid.Column key={good.title} style={{ marginBottom: 20 }}>
+                <Grid.Column key={good.id} style={{ marginBottom: 20 }}>
                   <GoodCard good={good} />
                 </Grid.Column>
               )))}
@@ -144,7 +144,7 @@ function HomePage() {
               })
               .slice(pagesVisited, pagesVisited + goodsPerPage)
               .map((good) => (
-                <Grid.Column key={good.title} style={{ marginBottom: 20 }}>
+                <Grid.Column key={good.id} style={{ marginBottom: 20 }}>
                   <GoodCard good={good} />
                 </Grid.Column>
               )))}
@@ -195,7 +195,7 @@ function HomePage() {
               })
               .slice(pagesVisited, pagesVisited + goodsPerPage)
               .map((good) => (
-                <Grid.Column key={good.title} style={{ marginBottom: 20 }}>
+                <Grid.Column key={good.id} style={{ marginBottom: 20 }}>
                   <GoodCard good={good} />
                 </Grid.Column>
               )))}

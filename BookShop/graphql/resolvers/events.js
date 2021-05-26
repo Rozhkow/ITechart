@@ -14,6 +14,18 @@ module.exports = {
       throw err;
     }
   },
+  getEvent: async ({ id }) => {
+    try {
+      const event = await Event.findById(id);
+      if (event) {
+        return event;
+      } else {
+        throw new Error("Good not found");
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
   createEvent: async (args, req) => {
     const event = new Event({
       title: args.eventInput.title,

@@ -93,6 +93,17 @@ export const FETCH_USER_QUERY = gql`
   }
 `;
 
+export const FETCH_GOOD_QUERY = gql`
+  query ($id: ID!) {
+    getEvent(id: $id) {
+      title
+      description
+      price
+      id
+    }
+  }
+`;
+
 export const ALL_USERS = gql`
   query users {
     users {
