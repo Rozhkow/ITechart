@@ -29,13 +29,19 @@ export const CREATE_GOOD_MUTATION = gql`
     $title: String!
     $description: String!
     $price: String!
+    $autor: String!
+    $pageNumber: String!
+    $publishYear: String!
   ) {
     createEvent(
       eventInput: {
-        
+
         title: $title
         description: $description
         price: $price
+        autor: $autor
+        pageNumber: $pageNumber
+        publishYear: $publishYear
       }
     ) {
       
@@ -94,12 +100,15 @@ export const FETCH_USER_QUERY = gql`
 `;
 
 export const FETCH_GOOD_QUERY = gql`
-  query ($id: ID!) {
+  query getEvent($id: ID!) {
     getEvent(id: $id) {
       title
       description
       price
       id
+      autor
+      pageNumber
+      publishYear
     }
   }
 `;
@@ -113,4 +122,33 @@ export const ALL_USERS = gql`
       id
     }
   }
+`;
+
+export const UPDATE_GOOD = gql`
+mutation updateEvent(
+  $id: ID!
+  $title: String!
+    $description: String!
+    $price: String!
+    $autor: String!
+    $pageNumber: String!
+    $publishYear: String!
+) {
+  updateEvent (
+    id: $id
+    title: $title
+        description: $description
+        price: $price
+        autor: $autor
+        pageNumber: $pageNumber
+        publishYear: $publishYear
+  ) {
+    title
+    description
+    price
+    autor
+    pageNumber
+    publishYear
+  }
+}
 `;

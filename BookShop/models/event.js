@@ -15,6 +15,18 @@ const eventSchema = new Schema({
     type: Number,
     required: true,
   },
+  autor: {
+    type: String,
+    required: true,
+  },
+  pageNumber: {
+    type: Number,
+    required: true,
+  },
+  publishYear: {
+    type: Number,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model("Event", eventSchema);

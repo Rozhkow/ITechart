@@ -6,13 +6,14 @@ import { useForm } from "../util/hooks";
 
 import "./GoodForm.css";
 
-import { CREATE_GOOD_MUTATION } from "../util/graphql";
-import { FETCH_ITEMS_QUERY } from "../util/graphql";
+import { UPDATE_GOOD } from "../util/graphql";
+import { FETCH_GOOD_QUERY } from "../util/graphql";
 
 
-function GoodForm() {
-  const { values, onChange, onSubmit } = useForm(createGoodCallback, {
+function UpdateGood() {
+  const { values, onChange, onSubmit } = useForm(updateGoodCallback, {
     // picture: "",
+    id: "",
     title: "",
     description: "",
     price: "",
@@ -21,38 +22,40 @@ function GoodForm() {
     publishYear: ""
   });
 
-  const [createEvent] = useMutation(CREATE_GOOD_MUTATION, {
+  const [updateEvent] = useMutation(UPDATE_GOOD, {
     variables: values,
     update(proxy, result) {
+      debugger
       // TODO: remove goods from cache
       // values.picture = "";
+      values.id = "";
       values.title = "";
       values.description = "";
       values.price = "";
       values.autor = "";
       values.pageNumber = "";
       values.publishYear = "";
-      debugger
 
-      const data = proxy.readQuery({
-        query: FETCH_ITEMS_QUERY
-      });
-      let newData = [...data.events];
-      newData = [result.data.events, ...newData];
-      proxy.writeQuery({
-        query: FETCH_ITEMS_QUERY,
-        data: {
-          ...data,
-          events: {
-            newData
-          }
-        }
-      })
-    }
+      
+      // const data = proxy.readQuery({
+      //   query: FETCH_GOOD_QUERY
+      // });
+      // let newData = [...data.getEvent];
+      // newData = [result.data.getEvent, ...newData];
+      // proxy.writeQuery({
+      //   query: FETCH_GOOD_QUERY,
+      //   data: {
+      //     ...data,
+      //     getEvent: {
+      //       newData
+      //     }
+      //   }
+      // })
+    },
   });
 
-  function createGoodCallback() {
-    createEvent();
+  function updateGoodCallback() {
+    updateEvent();
   }
 
   // console.log(typeof(values.title))
@@ -64,7 +67,7 @@ function GoodForm() {
   return (
     <Container className="GoodCard" noValidate>
       <Form onSubmit={onSubmit}>
-        <h2>Create a good:</h2>
+        <h2>Update a good:</h2>
         <Form.Field>
           {/* <Form.Input
             name="picture"
@@ -72,6 +75,12 @@ function GoodForm() {
             onChange={onChange}
             value={String(values.picture)}
           /> */}
+          <Form.Input
+            placeholder="ID"
+            name="id"
+            onChange={onChange}
+            value={values.id}
+          />
           <Form.Input
             placeholder="Title"
             name="title"
@@ -110,7 +119,7 @@ function GoodForm() {
             value={values.publishYear}
           />
           <Button type="submit" color="teal">
-            Submit
+            Update
           </Button>
         </Form.Field>
       </Form>
@@ -118,4 +127,4 @@ function GoodForm() {
   );
 }
 
-export default GoodForm;
+export default UpdateGood;

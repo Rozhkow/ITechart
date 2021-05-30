@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
-import { Card, Grid, Image } from "semantic-ui-react";
+import { Card, Grid, Image, Accordion, Icon } from "semantic-ui-react";
 
 import { AuthContext } from "../context/auth";
 import DeleteButton from "../components/DeleteButton";
+import UpdateGood from "../components/UpdateGood";
 
 import "./SingleGood.css";
 
@@ -26,19 +27,24 @@ function SingleGood(props) {
   if (!data) {
     goodMarkup = <p>Loading good..</p>;
   } else {
-    const { title, description, price, id } = data.getEvent;
+    const { title, description, price, id, autor, pageNumber, publishYear } = data.getEvent;
 
     goodMarkup = 
     user && user.username === "admin" ? (
       <Grid className="SingleGood">
-            <Grid.Column className="img" width={7}>
+            <Grid.Column className="img" width={5}>
                 <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
             </Grid.Column>
-          <Grid.Column width={9}>
+          <Grid.Column width={6}>
             <Card fluid>
               <Card.Content>
                 <Card.Header><h1>{title}</h1></Card.Header>
-                <Card.Header>{description}</Card.Header>
+                <Card.Header>Description: {description}</Card.Header>
+                <Card.Header>Autor: {autor}</Card.Header>
+                <Card.Header>Number of page: {pageNumber}</Card.Header>
+                <Card.Header>Year of publishing: {publishYear}</Card.Header>
+                <Card.Header>id: {id}</Card.Header>
+                <hr />
                 <Card.Header>{price}$</Card.Header>
               </Card.Content>
               <hr />
@@ -46,6 +52,9 @@ function SingleGood(props) {
                 <DeleteButton id={id} />
               </Card.Content>
             </Card>
+          </Grid.Column>
+          <Grid.Column width={5}>
+            <UpdateGood />
           </Grid.Column>
       </Grid>
     ) : (
@@ -57,8 +66,16 @@ function SingleGood(props) {
             <Card fluid>
               <Card.Content>
                 <Card.Header><h1>{title}</h1></Card.Header>
-                <Card.Header>{description}</Card.Header>
+                <Card.Header>Description: {description}</Card.Header>
+                <Card.Header>Autor: {autor}</Card.Header>
+                <Card.Header>Number of page: {pageNumber}</Card.Header>
+                <Card.Header>Year of publishing: {publishYear}</Card.Header>
+                <hr />
                 <Card.Header>{price}$</Card.Header>
+                <hr />
+                <Card.Content extra>
+                <Icon size="large" name='shopping cart' />
+              </Card.Content>
               </Card.Content>
             </Card>
           </Grid.Column>

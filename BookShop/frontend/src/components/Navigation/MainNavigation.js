@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
-import { Menu } from "semantic-ui-react";
+import { Menu, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../../context/auth";
 
 function MainNavigation() {
   const { user, logout } = useContext(AuthContext);
-  
+
   // When we want to go to another page, navbarItem will be active
   const pathname = window.location.pathname;
   const path = pathname === '/' ? 'Home' : pathname.substr(1);
@@ -54,6 +54,15 @@ function MainNavigation() {
         />
 
         <Menu.Menu position="right" size="massive" color="teal">
+          <Menu.Item 
+            name="shopping cart"
+            active={activeItem === "shopping cart"}
+            onClick={handleItemClick}
+            as={Link}
+            to="/shopping"
+          >
+            <Icon name="shopping cart" />
+          </Menu.Item>
           <Menu.Item
             name={user.username}
             active={activeItem === user.username || activeItem === "profile"}
