@@ -15,6 +15,7 @@ function generateToken(user) { // Returns the JsonWebToken as string
       id: user.id,
       email: user.email,
       username: user.username,
+      admin: user.admin,
     },
     SECRET_KEY,
     { expiresIn: "1h" }

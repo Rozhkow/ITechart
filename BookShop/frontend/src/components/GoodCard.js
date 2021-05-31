@@ -14,7 +14,7 @@ function GoodCard({ good: { title, description, price, id } }) {
   const [activeIndex, handleClick] = React.useState(0);
 
   const GoodCard = 
-  user && user.username === "admin" ? (
+  user && user.admin === true ? (
     <Card>
       <Card.Content>
         <Image

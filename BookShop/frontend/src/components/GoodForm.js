@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Button, Container } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 
@@ -11,6 +11,8 @@ import { FETCH_ITEMS_QUERY } from "../util/graphql";
 
 
 function GoodForm() {
+const [errors, setErrors] = useState({});
+
   const { values, onChange, onSubmit } = useForm(createGoodCallback, {
     // picture: "",
     title: "",
@@ -21,7 +23,7 @@ function GoodForm() {
     publishYear: ""
   });
 
-  const [createEvent] = useMutation(CREATE_GOOD_MUTATION, {
+  const [createEvent, { loading }] = useMutation(CREATE_GOOD_MUTATION, {
     variables: values,
     update(proxy, result) {
       // TODO: remove goods from cache
@@ -32,7 +34,6 @@ function GoodForm() {
       values.autor = "";
       values.pageNumber = "";
       values.publishYear = "";
-      debugger
 
       const data = proxy.readQuery({
         query: FETCH_ITEMS_QUERY
@@ -48,6 +49,9 @@ function GoodForm() {
           }
         }
       })
+    },
+    onError(err) {
+      alert(err.graphQLErrors[0].message);
     }
   });
 
@@ -62,8 +66,8 @@ function GoodForm() {
 
 
   return (
-    <Container className="GoodCard" noValidate>
-      <Form onSubmit={onSubmit}>
+    <Container className="GoodCard">
+      <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
         <h2>Create a good:</h2>
         <Form.Field>
           {/* <Form.Input
@@ -75,45 +79,60 @@ function GoodForm() {
           <Form.Input
             placeholder="Title"
             name="title"
-            onChange={onChange}
             value={values.title}
+            error={errors.title ? "dede" : false}
+            onChange={onChange}
           />
           <Form.Input
             placeholder="Description"
             name="description"
-            onChange={onChange}
             value={values.description}
+            error={errors.description ? true : false}
+            onChange={onChange}
           />
           <Form.Input
             type="number"
             placeholder="Price"
             name="price"
-            onChange={onChange}
             value={values.price}
+            error={errors.price ? true : false}
+            onChange={onChange}
           />
           <Form.Input
             placeholder="Autor"
             name="autor"
-            onChange={onChange}
             value={values.autor}
+            error={errors.autor ? true : false}
+            onChange={onChange}
           />
           <Form.Input
             placeholder="pageNumber"
             name="pageNumber"
-            onChange={onChange}
             value={values.pageNumber}
+            error={errors.pageNumber ? true : false}
+            onChange={onChange}
           />
           <Form.Input
             placeholder="publishYear"
             name="publishYear"
-            onChange={onChange}
             value={values.publishYear}
+            error={errors.publishYear ? true : false}
+            onChange={onChange}
           />
           <Button type="submit" color="teal">
             Submit
           </Button>
         </Form.Field>
       </Form>
+      {Object.keys(errors).length > 0 && (
+        <div className="ui error message">
+          <ul className="list">
+            {Object.values(errors).map((value) => (
+              <li key={value}>{value}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </Container>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Button, Form, Message } from "semantic-ui-react";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 
 import { AuthContext } from "../context/auth";
 import { useForm } from "../util/hooks";
@@ -13,7 +13,7 @@ function Login(props) {
 
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
     username: "",
-    password: "",
+    password: ""
   });
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
@@ -23,7 +23,7 @@ function Login(props) {
       props.history.push("/");
     },
     onError(err) {
-      console.log(err.graphQLErrors[0]);
+      alert(err.graphQLErrors[0].message);
     },
     variables: values,
   });
@@ -58,6 +58,7 @@ function Login(props) {
           Login
         </Button>
         <Message>
+          
           <Message.Header>Rouls of Login</Message.Header>
           <hr />
           <p>* Username must not be empty</p>

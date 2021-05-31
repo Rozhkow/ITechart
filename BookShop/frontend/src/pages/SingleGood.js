@@ -30,7 +30,7 @@ function SingleGood(props) {
     const { title, description, price, id, autor, pageNumber, publishYear } = data.getEvent;
 
     goodMarkup = 
-    user && user.username === "admin" ? (
+    user && user.admin === true ? (
       <Grid className="SingleGood">
             <Grid.Column className="img" width={5}>
                 <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />

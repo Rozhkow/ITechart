@@ -7,7 +7,6 @@ import "./App.css";
 
 import { AuthProvider } from "./context/auth";
 import AuthRoute from "./util/AuthRoute";
-import UnAuthRoute from "./util/UnAuthRoute";
 
 import MainNavigation from "./components/Navigation/MainNavigation";
 import HomePage from "./pages/Home";
@@ -29,13 +28,13 @@ function App() {
       <Router>
         <Container className="mainContainer">
           <MainNavigation /> 
-          <Route exact  path="/" component={HomePage} /> 
-          <AuthRoute exact path="/login" component={LoginPage} />
-          <AuthRoute exact path="/register" component={RegisterPage} />
-          <UnAuthRoute exact path="/profile" component={ProfilePage} />
-          <UnAuthRoute exact path="/adminProfile" component={AdminProfilePage} />
-          <UnAuthRoute exact path="/shopping" component={ShoppingPage}/>
-          <Route exact path="/users/:userId" component={SingleUser} />
+          <Route exact path="/" component={HomePage} /> 
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/register" component={RegisterPage} />
+          <AuthRoute exact path="/profile" component={ProfilePage} />
+          <AuthRoute exact path="/adminProfile" component={AdminProfilePage} />
+          <AuthRoute exact path="/shopping" component={ShoppingPage}/>
+          <AuthRoute exact path="/users/:userId" component={SingleUser} />
           <Route exact path="/goods/:id" component={SingleGood} />
           <Footer />
         </Container>

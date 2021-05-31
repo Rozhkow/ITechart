@@ -15,7 +15,7 @@ function MainNavigation() {
   const handleItemClick = (e, { name }) => setActiveItem(name);
 
   const MainNavigation =
-    user && user.username === "admin" ? (
+    user && user.admin === true ? (
       <Menu
         pointing
         secondary
@@ -43,7 +43,7 @@ function MainNavigation() {
           <Menu.Item name="Logout" onClick={logout} />
         </Menu.Menu>
       </Menu>
-    ) : user && user.username !== "admin" ? (
+    ) : user && user.admin === false ? (
       <Menu pointing secondary size="massive" color="teal">
         <Menu.Item
           name="Home"

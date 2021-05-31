@@ -6,8 +6,8 @@ import GoodCard from "../components/GoodCard";
 import ReactPaginate from "react-paginate";
 import { AuthContext } from "../context/auth";
 
-import ImageSlider from "../components/ImageSlider";
-import { SliderData } from "../components/SliderData";
+import ImageSlider from "../components/Slider/ImageSlider";
+import { SliderData } from "../components/Slider/SliderData";
 import GoodForm from "../components/GoodForm";
 
 import "./Home.css";
@@ -26,9 +26,8 @@ function Reducer(state, action) {
   }
 }
 
-function HomePage() {
+function HomePage() {debugger
   const { user } = useContext(AuthContext);
-  const sth = user;
   const [searchTerm, setSearchTerm] = useState("");
 
   const { loading, data } = useQuery(FETCH_ITEMS_QUERY);

@@ -94,6 +94,7 @@ export const FETCH_USER_QUERY = gql`
     getUser(userId: $userId) {
       username
       email
+      admin
       createdAt
       id
     }
