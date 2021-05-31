@@ -59,6 +59,7 @@ export const LOGIN_USER = gql`
       email
       username
       createdAt
+      admin
       token
     }
   }

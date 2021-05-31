@@ -32,6 +32,7 @@ type AuthData {
     userId: ID!
     token: String!
     tokenExpiration: Int!
+    admin: Boolean!
 }
 
 input EventInput {

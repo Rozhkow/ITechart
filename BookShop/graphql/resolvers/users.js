@@ -87,7 +87,6 @@ module.exports = {
     return {
       ...user._doc,
       id: user._id,
-      admin: user._admin,
       token,
     };
   },
@@ -157,7 +156,6 @@ module.exports = {
       return {
         ...res._doc,
         id: res._id,
-        admin: res._admin,
         token,
       };
     }

@@ -33,6 +33,7 @@ function App() {
           <AuthRoute exact path="/login" component={LoginPage} />
           <AuthRoute exact path="/register" component={RegisterPage} />
           <UnAuthRoute exact path="/profile" component={ProfilePage} />
+          <UnAuthRoute exact path="/adminProfile" component={AdminProfilePage} />
           <UnAuthRoute exact path="/shopping" component={ShoppingPage}/>
           <Route exact path="/users/:userId" component={SingleUser} />
           <Route exact path="/goods/:id" component={SingleGood} />

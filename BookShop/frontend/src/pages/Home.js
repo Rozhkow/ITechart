@@ -28,7 +28,7 @@ function Reducer(state, action) {
 
 function HomePage() {
   const { user } = useContext(AuthContext);
-  
+  const sth = user;
   const [searchTerm, setSearchTerm] = useState("");
 
   const { loading, data } = useQuery(FETCH_ITEMS_QUERY);
@@ -44,7 +44,7 @@ function HomePage() {
       dispatch({ type: 'UPDATE_GOODS', payload: data.events })
     }
   }, [data, loading]);
-
+  console.log(user)
 
   const { goods } = state;
 
@@ -58,8 +58,8 @@ function HomePage() {
   };
 
   const HomePage =
-    user && user.username === "admin" ? (
-      <Container className="Home">
+    user && user.admin === true ? (
+      <Container className="Home"><div>admin</div>
         <ImageSlider slides={SliderData} />
 
         <div className="Search">
@@ -114,8 +114,8 @@ function HomePage() {
           />
         </div>
       </Container>
-    ) : user && user.username !== "admin" ? (
-      <Container>
+    ) : user && user.admin === false ? (
+      <Container><div>user</div>
         <ImageSlider slides={SliderData} />
 
         <div className="Search">
@@ -166,7 +166,7 @@ function HomePage() {
         </div>
       </Container>
     ) : (
-      <Container>
+      <Container><div>akuke</div>
         <ImageSlider slides={SliderData} />
 
         <div className="Search">
