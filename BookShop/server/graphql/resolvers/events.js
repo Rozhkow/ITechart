@@ -44,12 +44,11 @@ module.exports = {
       publishYear: args.eventInput.publishYear,
     });
 
-    try {
+    if (title.trim() === "") {
       let createdEvent = await event.save(); // save into database
       return createdEvent;
-    } catch (err) {
-      console.log(err);
-      throw err;
+    } else {
+      throw new Error("Title must not be empty");
     }
   },
   updateEvent: async (args, req) => {
