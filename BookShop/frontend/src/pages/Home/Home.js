@@ -16,7 +16,7 @@ import { FETCH_ITEMS_QUERY } from "../../util/graphql";
 function Reducer(state, action) {
   switch (action.type) {
     case "UPDATE_GOODS":
-      console.log(action.payload)
+      console.log(action.payload);
       return {
         ...state,
         goods: action.payload,
@@ -37,13 +37,10 @@ function HomePage() {
   });
 
   useEffect(() => {
-    console.log(data)
-    if(!loading && data && data.events) {
-      console.log(data)
-      dispatch({ type: 'UPDATE_GOODS', payload: data.events })
+    if (!loading && data && data.events) {
+      dispatch({ type: "UPDATE_GOODS", payload: data.events });
     }
   }, [data, loading]);
-  console.log(user)
 
   const { goods } = state;
 
@@ -55,30 +52,31 @@ function HomePage() {
     setPageNumber(selected);
   };
 
-  const HomePage = (
-      <Container className="Home">
-        <ImageSlider slides={SliderData} />
+  return (
+    <Container className="Home">
+      <ImageSlider slides={SliderData} />
 
-        <div className="Search">
-          <input
-            type="text"
-            placeholder="Search.."
-            onChange={(event) => {
-              setSearchTerm(event.target.value);
-            }}
-          />
-        </div>
-        <Grid columns={3} className="Cards">
-          <Grid.Row>
-            <Grid.Column>
-              {user && user.admin === true ? <GoodForm /> : null}
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            {loading ? (
+      <div className="Search">
+        <input
+          type="text"
+          placeholder="Search.."
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
+        />
+      </div>
+      <Grid columns={3} className="Cards">
+        <Grid.Row>
+          <Grid.Column>
+            {user && user.admin === true ? <GoodForm /> : null}
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          {loading ? (
             <h1>Loading goods..</h1>
           ) : (
-            goods && goods
+            goods &&
+            goods
               .filter((val) => {
                 if (searchTerm == "") {
                   return val;
@@ -93,26 +91,26 @@ function HomePage() {
                 <Grid.Column key={good.id} style={{ marginBottom: 20 }}>
                   <GoodCard good={good} />
                 </Grid.Column>
-              )))}
-          </Grid.Row>
-        </Grid>
+              ))
+          )}
+        </Grid.Row>
+      </Grid>
 
-        <div className="App">
-          <ReactPaginate
-            previousLabel={"<"}
-            nextLabel={">"}
-            pageCount={pageCount}
-            onPageChange={changePage}
-            containerClassName={"paginationBttns"}
-            previousLinkClassName={"previousBttn"}
-            nextLinkClassName={"nextBttn"}
-            disabledClassName={"paginationDisabled"}
-            activeClassName={"paginationActive"}
-          />
-        </div>
-      </Container>
-    );
-  return HomePage;
+      <div className="App">
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          pageCount={pageCount}
+          onPageChange={changePage}
+          containerClassName={"paginationBttns"}
+          previousLinkClassName={"previousBttn"}
+          nextLinkClassName={"nextBttn"}
+          disabledClassName={"paginationDisabled"}
+          activeClassName={"paginationActive"}
+        />
+      </div>
+    </Container>
+  );
 }
 
 export default HomePage;

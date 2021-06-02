@@ -9,52 +9,41 @@ function MainNavigation() {
 
   // When we want to go to another page, navbarItem will be active
   const pathname = window.location.pathname;
-  const path = pathname === '/' ? 'Home' : pathname.substr(1);
+  const path = pathname === "/" ? "Home" : pathname.substr(1);
   const [activeItem, setActiveItem] = useState(path);
 
-  const handleItemClick = (e, { name }) => setActiveItem(name);
+  const handleItemClick = (_, { name }) => setActiveItem(name);
 
-  const MainNavigation =
-    user && user.admin === true ? (
-      <Menu
-        pointing
-        secondary
-        size="massive"
-        color="teal"
-        className="MainNavigation"
-      >
-        <Menu.Item
-          name="Home"
-          active={activeItem === "Home"}
-          onClick={handleItemClick}
-          as={Link}
-          to="/"
-        />
+  const MainNavigation = (
+    <Menu
+      pointing
+      secondary
+      size="massive"
+      color="teal"
+      className="MainNavigation"
+    >
+      <Menu.Item
+        name="Home"
+        active={activeItem === "Home"}
+        onClick={handleItemClick}
+        as={Link}
+        to="/"
+      />
 
-        <Menu.Menu position="right" size="massive" color="teal">
+      <Menu.Menu position="right" size="massive" color="teal">
+        {user && user.admin === true ? (
           <Menu.Item
             name={user.username}
-            active={activeItem === user.username || activeItem === "adminProfile"}
+            active={
+              activeItem === user.username || activeItem === "adminProfile"
+            }
             onClick={handleItemClick}
             as={Link}
             to="/adminProfile"
           />
-
-          <Menu.Item name="Logout" onClick={logout} />
-        </Menu.Menu>
-      </Menu>
-    ) : user && user.admin === false ? (
-      <Menu pointing secondary size="massive" color="teal">
-        <Menu.Item
-          name="Home"
-          active={activeItem === "Home"}
-          onClick={handleItemClick}
-          as={Link}
-          to="/"
-        />
-
-        <Menu.Menu position="right" size="massive" color="teal">
-          <Menu.Item 
+        ) : null}
+        {user && user.admin === false ? (
+          <Menu.Item
             name="shopping cart"
             active={activeItem === "shopping cart"}
             onClick={handleItemClick}
@@ -63,6 +52,8 @@ function MainNavigation() {
           >
             <Icon name="shopping cart" />
           </Menu.Item>
+        ) : null}
+        {user && user.admin === false ? (
           <Menu.Item
             name={user.username}
             active={activeItem === user.username || activeItem === "profile"}
@@ -70,20 +61,9 @@ function MainNavigation() {
             as={Link}
             to="/profile"
           />
-          <Menu.Item name="Logout" onClick={logout} />
-        </Menu.Menu>
-      </Menu>
-    ) : (
-      <Menu pointing secondary size="massive" color="teal">
-        <Menu.Item
-          name="Home"
-          active={activeItem === "Home"}
-          onClick={handleItemClick}
-          as={Link}
-          to="/"
-        />
-
-        <Menu.Menu position="right">
+        ) : null}
+        {user ? <Menu.Item name="Logout" onClick={logout} /> : null}
+        {!user ? (
           <Menu.Item
             name="login"
             active={activeItem === "login"}
@@ -91,6 +71,8 @@ function MainNavigation() {
             as={Link}
             to="/login"
           />
+        ) : null}
+        {!user ? (
           <Menu.Item
             name="register"
             active={activeItem === "register"}
@@ -98,9 +80,10 @@ function MainNavigation() {
             as={Link}
             to="/register"
           />
-        </Menu.Menu>
-      </Menu>
-    );
+        ) : null}
+      </Menu.Menu>
+    </Menu>
+  );
 
   return MainNavigation;
 }

@@ -19,21 +19,21 @@ import SingleUser from "../pages/SinglePages/User/SingleUser";
 import SingleGood from "../pages/SinglePages/Good/SingleGood";
 import ShoppingPage from "../pages/SinglePages/Shopping";
 
-// parameter EXACT need to us because it desables partial matching for 
-// routs and we can be sure that it returns route only in case that our way match to current URL 
+// parameter EXACT need to us because it desables partial matching for
+// routs and we can be sure that it returns route only in case that our way match to current URL
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Container className="mainContainer">
-          <MainNavigation /> 
-          <Route exact path="/" component={HomePage} /> 
+          <MainNavigation />
+          <Route exact path="/" component={HomePage} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
           <AuthRoute exact path="/profile" component={ProfilePage} />
           <AuthRoute exact path="/adminProfile" component={AdminProfilePage} />
-          <AuthRoute exact path="/shopping" component={ShoppingPage}/>
+          <AuthRoute exact path="/shopping" component={ShoppingPage} />
           <AuthRoute exact path="/users/:userId" component={SingleUser} />
           <Route exact path="/goods/:id" component={SingleGood} />
           <Footer />

@@ -9,9 +9,8 @@ import "./GoodForm.css";
 import { CREATE_GOOD_MUTATION } from "../../util/graphql";
 import { FETCH_ITEMS_QUERY } from "../../util/graphql";
 
-
 function GoodForm() {
-const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
 
   const { values, onChange, onSubmit } = useForm(createGoodCallback, {
     // picture: "",
@@ -20,7 +19,7 @@ const [errors, setErrors] = useState({});
     price: "",
     autor: "",
     pageNumber: "",
-    publishYear: ""
+    publishYear: "",
   });
 
   const [createEvent, { loading }] = useMutation(CREATE_GOOD_MUTATION, {
@@ -36,7 +35,7 @@ const [errors, setErrors] = useState({});
       values.publishYear = "";
 
       const data = proxy.readQuery({
-        query: FETCH_ITEMS_QUERY
+        query: FETCH_ITEMS_QUERY,
       });
       let newData = [...data.events];
       newData = [result.data.events, ...newData];
@@ -45,14 +44,14 @@ const [errors, setErrors] = useState({});
         data: {
           ...data,
           events: {
-            newData
-          }
-        }
-      })
+            newData,
+          },
+        },
+      });
     },
     onError(err) {
       alert(err.graphQLErrors[0].message);
-    }
+    },
   });
 
   function createGoodCallback() {
@@ -62,8 +61,6 @@ const [errors, setErrors] = useState({});
   // console.log(typeof(values.title))
   // console.log(typeof(values.description))
   // console.log(typeof values.price);
-
-
 
   return (
     <Container className="GoodCard">

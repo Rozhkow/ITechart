@@ -26,7 +26,7 @@ const eventSchema = new Schema({
   publishYear: {
     type: Number,
     required: true,
-  }
+  },
 });
 
 module.exports = mongoose.model("Event", eventSchema);

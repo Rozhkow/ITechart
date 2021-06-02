@@ -9,7 +9,8 @@ const {
   validateLoginInput,
 } = require("../../middleware/validators");
 
-function generateToken(user) { // Returns the JsonWebToken as string
+function generateToken(user) {
+  // Returns the JsonWebToken as string
   return jwt.sign(
     {
       id: user.id,
@@ -64,8 +65,7 @@ module.exports = {
     if (username.trim() === "") {
       errors.username = "Username must not be empty";
       throw new Error("Username must not be empty", { errors });
-    }
-    if (password.trim() === "") {
+    } else if (password.trim() === "") {
       errors.password = "Password must not be empty";
       throw new Error("Password must not be empty", { errors });
     }

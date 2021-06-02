@@ -14,7 +14,6 @@ import { ALL_USERS } from "../../util/graphql";
 function sortReducer(state, action) {
   switch (action.type) {
     case "CHANGE_SORT":
-      debugger;
       if (state.column === action.column) {
         return {
           ...state,
@@ -44,9 +43,6 @@ function AdminProfilePage() {
 
   const { loading, data } = useQuery(ALL_USERS);
 
-
-  console.log(data);
-
   const [state, dispatch] = useReducer(sortReducer, {
     checked: false,
     column: null,
@@ -56,7 +52,7 @@ function AdminProfilePage() {
 
   useEffect(() => {
     if (!loading && data && data.users) {
-      dispatch({ type: 'UPDATE_USERS', payload: data.users })
+      dispatch({ type: "UPDATE_USERS", payload: data.users });
     }
   }, [data, loading]); // restart hook if our second argument has changed
 
@@ -91,9 +87,26 @@ function AdminProfilePage() {
 
       <Table sortable celled compact>
         <Table.Header>
-          <Table.Row textAlign="center"
-            sorted={column === "username" || "email" || "createdAt" || "id" ? direction : null}
-            onClick={() => dispatch({ type: "CHANGE_SORT", column: "username" || "email" || "createdAt" || "id" })}
+          <Table.Row
+            textAlign="center"
+            sorted={
+              column === "username" || "email" || "createdAt" || "id"
+                ? direction
+                : null
+            }
+            onClick={() =>
+              dispatch({
+                type: "CHANGE_SORT",
+                column:
+                  column === "username"
+                    ? "username"
+                    : column === "email"
+                    ? "email"
+                    : column === "createdAt"
+                    ? "createdAt"
+                    : column === "id",
+              })
+            }
           >
             <Table.HeaderCell>
               <Checkbox slider />
@@ -109,7 +122,8 @@ function AdminProfilePage() {
           {loading ? (
             <h1>Loading goods..</h1>
           ) : (
-            users && users
+            users &&
+            users
               .filter((val) => {
                 if (searchTerm == "") {
                   return val;
@@ -123,9 +137,7 @@ function AdminProfilePage() {
               .map(({ username, email, createdAt, id }) => (
                 <Table.Row textAlign="center" key={username}>
                   <Table.Cell collapsing>
-                    <Checkbox
-                      slider
-                    />{" "}
+                    <Checkbox slider />{" "}
                   </Table.Cell>
                   <Table.Cell>
                     <Table.Cell as={Link} to={`/users/${id}`}>
@@ -139,7 +151,8 @@ function AdminProfilePage() {
                     <DeleteButton userId={id} />
                   </Table.Cell>
                 </Table.Row>
-              )))}
+              ))
+          )}
         </Table.Body>
       </Table>
 

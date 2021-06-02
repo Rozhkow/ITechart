@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SliderData } from "./SliderData";
 import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 
-var classNames = require('classnames');
+var classNames = require("classnames");
 
 const ImageSlider = ({ slides }) => {
   const [current, setCurrent] = useState(0);
@@ -10,7 +10,7 @@ const ImageSlider = ({ slides }) => {
   if (!Array.isArray(slides) || slides.length <= 0) {
     return null;
   }
-  
+
   const length = slides.length;
 
   const nextSlide = () => {
@@ -20,8 +20,6 @@ const ImageSlider = ({ slides }) => {
   const prevSlide = () => {
     setCurrent(current === 0 ? length - 1 : current - 1);
   };
-
-  
 
   return (
     <section className="sliderr">

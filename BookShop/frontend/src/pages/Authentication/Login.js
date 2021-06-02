@@ -13,17 +13,19 @@ function Login(props) {
 
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
     username: "",
-    password: ""
+    password: "",
   });
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, { data: { login: userData } }) {
-      console.log(userData);
       context.login(userData);
       props.history.push("/");
     },
+    // onError(err) {
+    //   alert(err.graphQLErrors[0].message);
+    // },
     onError(err) {
-      alert(err.graphQLErrors[0].message);
+      setErrors(err.message);
     },
     variables: values,
   });
@@ -58,7 +60,6 @@ function Login(props) {
           Login
         </Button>
         <Message>
-          
           <Message.Header>Rouls of Login</Message.Header>
           <hr />
           <p>* Username must not be empty</p>
@@ -67,11 +68,7 @@ function Login(props) {
       </Form>
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">
-          <ul className="list">
-            {Object.values(errors).map((value) => (
-              <li key={value}>{value}</li>
-            ))}
-          </ul>
+          <ul className="list">{Object.values(errors)}</ul>
         </div>
       )}
     </div>

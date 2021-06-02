@@ -55,17 +55,16 @@ module.exports = {
   updateEvent: async (args, req) => {
     try {
       return Event.findOneAndUpdate(
-        
-         Event.findById(args.id), 
-        
-        {  
+        Event.findById(args.id),
+
+        {
           id: args.id,
           title: args.title,
-          description: args.description, 
-          price: args.price, 
-          autor: args.autor, 
-          pageNumber: args.pageNumber, 
-          publishYear: args.publishYear 
+          description: args.description,
+          price: args.price,
+          autor: args.autor,
+          pageNumber: args.pageNumber,
+          publishYear: args.publishYear,
         },
         { new: true }
       );

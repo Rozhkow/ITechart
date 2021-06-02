@@ -16,49 +16,51 @@ function DeleteButton({ userId, id }) {
       // TODO: remove users from cache
       if (userId) {
         const data = proxy.readQuery({
-          query: ALL_USERS
+          query: ALL_USERS,
         });
         let newData = [...data.users];
         newData = [result.data.users, ...newData];
         proxy.writeQuery({
-          query: ALL_USERS, 
+          query: ALL_USERS,
           data: {
             ...data,
             users: {
-              newData
-            }
-          }
+              newData,
+            },
+          },
         });
       }
     },
     variables: {
-      userId
-    }
+      userId,
+    },
   });
 
   const [deleteEvent] = useMutation(DELETE_GOOD_MUTATION, {
     update(proxy, result) {
       // TODO: remove goods from cache
       if (id) {
-        const data = proxy.readQuery({ // read data from cache
-          query: FETCH_ITEMS_QUERY
+        const data = proxy.readQuery({
+          // read data from cache
+          query: FETCH_ITEMS_QUERY,
         });
         let newData = [...data.events];
         newData = [result.data.events, ...newData];
-        proxy.writeQuery({ // update data in cache
-          query: FETCH_ITEMS_QUERY, 
+        proxy.writeQuery({
+          // update data in cache
+          query: FETCH_ITEMS_QUERY,
           data: {
             ...data,
             events: {
-              newData
-            }
-          }
+              newData,
+            },
+          },
         });
       }
     },
     variables: {
-      id
-    }
+      id,
+    },
   });
 
   return (
@@ -72,10 +74,7 @@ function DeleteButton({ userId, id }) {
       <Confirm
         open={confirmOpen}
         onCancel={() => setConfirmOpen(false)}
-        
-        onConfirm={deleteEvent} 
-
-        
+        onConfirm={deleteEvent}
         // onConfirm={deleteUser}
       />
     </>

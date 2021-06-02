@@ -25,7 +25,6 @@ export const DELETE_USER_MUTATION = gql`
 
 export const CREATE_GOOD_MUTATION = gql`
   mutation createEvent(
-    
     $title: String!
     $description: String!
     $price: String!
@@ -35,7 +34,6 @@ export const CREATE_GOOD_MUTATION = gql`
   ) {
     createEvent(
       eventInput: {
-
         title: $title
         description: $description
         price: $price
@@ -44,7 +42,6 @@ export const CREATE_GOOD_MUTATION = gql`
         publishYear: $publishYear
       }
     ) {
-      
       title
       description
       price
@@ -127,30 +124,30 @@ export const ALL_USERS = gql`
 `;
 
 export const UPDATE_GOOD = gql`
-mutation updateEvent(
-  $id: ID!
-  $title: String!
+  mutation updateEvent(
+    $id: ID!
+    $title: String!
     $description: String!
     $price: String!
     $autor: String!
     $pageNumber: String!
     $publishYear: String!
-) {
-  updateEvent (
-    id: $id
-    title: $title
-        description: $description
-        price: $price
-        autor: $autor
-        pageNumber: $pageNumber
-        publishYear: $publishYear
   ) {
-    title
-    description
-    price
-    autor
-    pageNumber
-    publishYear
+    updateEvent(
+      id: $id
+      title: $title
+      description: $description
+      price: $price
+      autor: $autor
+      pageNumber: $pageNumber
+      publishYear: $publishYear
+    ) {
+      title
+      description
+      price
+      autor
+      pageNumber
+      publishYear
+    }
   }
-}
 `;

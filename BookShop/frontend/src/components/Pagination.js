@@ -22,4 +22,4 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
   );
 };
 
-export default {Pagination, Paginationsss};
+export default { Pagination, Paginationsss };

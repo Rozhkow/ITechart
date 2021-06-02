@@ -10,6 +10,7 @@
     "apollo-link-http": "^1.5.17",
     "apollo-react-hooks": "0.0.1",
     "classnames": "^2.3.1",
+    "formik": "^2.2.8",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.12.4",
     "jwt-decode": "^3.1.2",
@@ -24,7 +25,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^2.0.3"
+    "semantic-ui-react": "^2.0.3",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",
