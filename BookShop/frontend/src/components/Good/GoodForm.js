@@ -50,7 +50,7 @@ function GoodForm() {
       });
     },
     onError(err) {
-      alert(err.graphQLErrors[0].message);
+      setErrors(err.message);
     },
   });
 
@@ -123,11 +123,7 @@ function GoodForm() {
       </Form>
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">
-          <ul className="list">
-            {Object.values(errors).map((value) => (
-              <li key={value}>{value}</li>
-            ))}
-          </ul>
+          <ul className="list">{Object.values(errors)}</ul>
         </div>
       )}
     </Container>

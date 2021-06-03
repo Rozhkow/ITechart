@@ -125,7 +125,7 @@ function AdminProfilePage() {
             users &&
             users
               .filter((val) => {
-                if (searchTerm == "") {
+                if (searchTerm === "") {
                   return val;
                 } else if (
                   val.username.toLowerCase().includes(searchTerm.toLowerCase())

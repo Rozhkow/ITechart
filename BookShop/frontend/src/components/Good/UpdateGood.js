@@ -53,7 +53,7 @@ function UpdateGood() {
       // })
     },
     onError(err) {
-      alert(err.graphQLErrors[0].message);
+      setErrors(err.message);
     },
   });
 
@@ -66,7 +66,7 @@ function UpdateGood() {
   // console.log(typeof values.price);
 
   return (
-    <Container className="GoodCard" noValidate>
+    <Container className="GoodCard">
       <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
         <h2>Update a good:</h2>
         <Form.Field>
@@ -133,11 +133,7 @@ function UpdateGood() {
       </Form>
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">
-          <ul className="list">
-            {Object.values(errors).map((value) => (
-              <li key={value}>{value}</li>
-            ))}
-          </ul>
+          <ul className="list">{Object.values(errors)}</ul>
         </div>
       )}
     </Container>

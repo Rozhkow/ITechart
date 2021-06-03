@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
-import { Card, Grid, Image, Accordion, Icon } from "semantic-ui-react";
+import { Card, Grid, Image } from "semantic-ui-react";
 
 import { AuthContext } from "../../../context/auth";
 import DeleteButton from "../../../components/DeleteButton";

@@ -78,7 +78,7 @@ function HomePage() {
             goods &&
             goods
               .filter((val) => {
-                if (searchTerm == "") {
+                if (searchTerm === "") {
                   return val;
                 } else if (
                   val.title.toLowerCase().includes(searchTerm.toLowerCase())

@@ -43,3 +43,75 @@ module.exports.validateLoginInput = (username, password) => {
     valid: Object.keys(errors).length < 1,
   };
 };
+
+module.exports.validateCreateEvent = (
+  title,
+  description,
+  price,
+  autor,
+  pageNumber,
+  publishYear
+) => {
+  const errors = {};
+  if (title.trim() === "") {
+    errors.title = "Title must not be empty";
+  }
+  if (description.trim() === "") {
+    errors.description = "Description must not be empty";
+  }
+  if (price.trim() === "") {
+    errors.price = "Price must not be empty";
+  }
+  if (autor.trim() === "") {
+    errors.autor = "Autor must not be empty";
+  }
+  if (pageNumber.trim() === "") {
+    errors.pageNumber = "PageNumber must not be empty";
+  }
+  if (publishYear.trim() === "") {
+    errors.publishYear = "PublishYear must not be empty";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};
+
+// module.exports.validateUpdateEventInput = (
+//   id,
+//   title,
+//   description,
+//   price,
+//   autor,
+//   pageNumber,
+//   publishYear
+// ) => {
+//   const errors = {};
+//   if (id.trim() === "") {
+//     errors.id = "ID must not be empty";
+//   }
+//   if (title.trim() === "") {
+//     errors.title = "Title must not be empty";
+//   }
+//   if (description.trim() === "") {
+//     errors.description = "Description must not be empty";
+//   }
+//   if (price.trim() === "") {
+//     errors.price = "Price must not be empty";
+//   }
+//   if (autor.trim() === "") {
+//     errors.autor = "Autor must not be empty";
+//   }
+//   if (pageNumber.trim() === "") {
+//     errors.pageNumber = "PageNumber must not be empty";
+//   }
+//   if (publishYear.trim() === "") {
+//     errors.publishYear = "PublishYear must not be empty";
+//   }
+
+//   return {
+//     errors,
+//     valid: Object.keys(errors).length < 1,
+//   };
+// };

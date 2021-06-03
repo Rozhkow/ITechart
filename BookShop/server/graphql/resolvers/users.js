@@ -62,22 +62,12 @@ module.exports = {
   login: async ({ username, password }) => {
     const { errors } = validateLoginInput(username, password);
 
-    // if (username.trim() === "") {
-    //   errors.username = "Username must not be empty";
-    //   throw new Error("Username must not be empty", { errors });
-    // } else if (password.trim() === "") {
-    //   errors.password = "Password must not be empty";
-    //   throw new Error("Password must not be empty", { errors });
-    // }
-
-    for (let i = 0; i < 2; i++) {
-      if (username.trim() === "") {
-        errors.username = "Username must not be empty";
-        throw new Error("Username must not be empty", { errors });
-      } else if (password.trim() === "") {
-        errors.password = "Password must not be empty";
-        throw new Error("Password must not be empty", { errors });
-      }
+    if (username.trim() === "") {
+      errors.username = "Username must not be empty";
+      throw new Error("Username must not be empty", { errors });
+    } else if (password.trim() === "") {
+      errors.password = "Password must not be empty";
+      throw new Error("Password must not be empty", { errors });
     }
 
     const user = await User.findOne({ username });
