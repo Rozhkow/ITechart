@@ -101,10 +101,10 @@ function AdminProfilePage() {
                   column === "username"
                     ? "username"
                     : column === "email"
-                    ? "email"
-                    : column === "createdAt"
-                    ? "createdAt"
-                    : column === "id",
+                      ? "email"
+                      : column === "createdAt"
+                        ? "createdAt"
+                        : column === "id",
               })
             }
           >

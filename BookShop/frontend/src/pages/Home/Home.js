@@ -65,7 +65,7 @@ function HomePage() {
           }}
         />
       </div>
-      <Grid columns={3} className="Cards">
+      <Grid columns={3} className="Cards" stackable>
         <Grid.Row>
           <Grid.Column>
             {user && user.admin === true ? <GoodForm /> : null}

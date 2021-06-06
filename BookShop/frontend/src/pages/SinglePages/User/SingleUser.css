@@ -1,3 +1,16 @@
 .SingleUser {
   margin-bottom: auto !important;
 }
+
+.Data {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 30px;
+  margin: 5px;
+}
+
+@media screen and (max-width: 992px) {
+  .ui.column.grid>[class*="five wide"].column, .ui.grid>.column.row>[class*="five wide"].column, .ui.grid>.row>[class*="five wide"].column, .ui.grid>[class*="five wide"].column {
+    width: 100%!important;
+}
+}

@@ -10,3 +10,28 @@
   line-height: 30px;
   margin: 5px;
 }
+
+@media screen and (max-width: 1440px) {
+  img.ui.image {
+    width: 50%!important;
+    height: 40%!important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  img.ui.image {
+    width: 70%!important;
+    height: 40%!important;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .ui.column.grid>[class*="six wide"].column, .ui.grid>.column.row>[class*="six wide"].column, .ui.grid>.row>[class*="six wide"].column, .ui.grid>[class*="six wide"].column {
+    width: 100%!important;
+}
+img.ui.image {
+  width: 70%!important;
+  height: 100%!important;
+}
+}
+

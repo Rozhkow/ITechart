@@ -63,3 +63,9 @@
 .AdminBlock {
   margin-bottom: auto;
 }
+
+@media screen and (max-width: px) {
+  .Search input {
+    width: 96%;
+  }
+}

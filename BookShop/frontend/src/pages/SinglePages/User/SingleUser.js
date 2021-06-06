@@ -11,12 +11,6 @@ import { FETCH_USER_QUERY } from "../../../util/graphql";
 function SingleUser(props) {
   const userId = props.match.params.userId;
 
-  // if({data: { getUser }} === {}){
-  //     return (
-  //       <div> loading</div>
-  //     )
-  //   }
-
   const { data } = useQuery(FETCH_USER_QUERY, {
     variables: {
       userId,
@@ -36,12 +30,12 @@ function SingleUser(props) {
         <Grid.Row>
           <Grid.Column width={5}>
             <Card fluid>
-              <Card.Content>
-                <Card.Header>{username}</Card.Header>
-                <Card.Header>{email}</Card.Header>
-                <Card.Header>{createdAt}</Card.Header>
-                <Card.Header>{id}</Card.Header>
-              </Card.Content>
+              <Card.Header className="Data">
+                <Card.Content>Username: {username}</Card.Content>
+                <Card.Content>Email: {email}</Card.Content>
+                <Card.Content>Created at: {createdAt}</Card.Content>
+                <Card.Content>ID: {id}</Card.Content>
+              </Card.Header>
               <hr />
               <Card.Content extra>
                 <DeleteButton userId={id} />

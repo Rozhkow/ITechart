@@ -11,3 +11,10 @@
     flex-direction: column;
     justify-content: center;
 } */
+
+@media screen and (max-width: 576px) {
+    .ui.form {
+        margin-right: auto;
+        width: max-content;
+    }
+}

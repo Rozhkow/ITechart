@@ -12,6 +12,7 @@ import MainNavigation from "../components/Navigation/MainNavigation";
 import HomePage from "../pages/Home/Home";
 import LoginPage from "../pages/Authentication/Login";
 import RegisterPage from "../pages/Authentication/Register";
+
 import ProfilePage from "../pages/SinglePages/Profile";
 import AdminProfilePage from "../pages/Admin/AdminProfile";
 import Footer from "../components/Navigation/Footer";

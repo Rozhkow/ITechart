@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { SliderData } from "./SliderData";
 import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 
-var classNames = require("classnames");
+import "./ImageSlider.css";
+
+let classNames = require("classnames");
 
 const ImageSlider = ({ slides }) => {
   const [current, setCurrent] = useState(0);
