@@ -22,7 +22,7 @@ function SingleGood(props) {
   });
 
   console.log(data);
-
+  console.log(id);
   let goodMarkup;
   if (!data) {
     goodMarkup = <p>Loading good..</p>;
@@ -37,18 +37,20 @@ function SingleGood(props) {
         </Grid.Column>
         <Grid.Column width={6}>
           <Card fluid>
-            <Card.Header className="Data">
-              <Card.Content>
+            <Card.Content className="Data">
+              <Card.Header>
                 <h1>{title}</h1>
-              </Card.Content>
-              <Card.Content>Description: {description}</Card.Content>
-              <Card.Content>Autor: {autor}</Card.Content>
-              <Card.Content>Number of page: {pageNumber}</Card.Content>
-              <Card.Content>Year of publishing: {publishYear}</Card.Content>
-              <Card.Content>id: {id}</Card.Content>
+              </Card.Header>
+              <Card.Description>Description: {description}</Card.Description>
+              <Card.Description>Autor: {autor}</Card.Description>
+              <Card.Description>Number of page: {pageNumber}</Card.Description>
+              <Card.Description>
+                Year of publishing: {publishYear}
+              </Card.Description>
+              <Card.Description>id: {id}</Card.Description>
               <hr />
               <Card.Content>{price}$</Card.Content>
-            </Card.Header>
+            </Card.Content>
             <hr />
             <Card.Content extra>
               {user && user.admin === true ? <DeleteButton id={id} /> : null}

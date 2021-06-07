@@ -30,7 +30,7 @@ const ImageSlider = ({ slides }) => {
       {SliderData.map((slide, index) => {
         return (
           <div
-            className={classNames("slide active", "slide")}
+            className={classNames("slide", { active: index === current })}
             // className={index === current ? "slide active" : "slide"}
             key={index}
           >

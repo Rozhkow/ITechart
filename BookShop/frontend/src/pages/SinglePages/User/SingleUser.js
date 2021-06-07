@@ -30,12 +30,12 @@ function SingleUser(props) {
         <Grid.Row>
           <Grid.Column width={5}>
             <Card fluid>
-              <Card.Header className="Data">
-                <Card.Content>Username: {username}</Card.Content>
-                <Card.Content>Email: {email}</Card.Content>
-                <Card.Content>Created at: {createdAt}</Card.Content>
-                <Card.Content>ID: {id}</Card.Content>
-              </Card.Header>
+              <Card.Content className="Data">
+                <Card.Header>Username: {username}</Card.Header>
+                <Card.Description>Email: {email}</Card.Description>
+                <Card.Description>Created at: {createdAt}</Card.Description>
+                <Card.Description>ID: {id}</Card.Description>
+              </Card.Content>
               <hr />
               <Card.Content extra>
                 <DeleteButton userId={id} />

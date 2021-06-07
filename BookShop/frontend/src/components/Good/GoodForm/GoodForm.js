@@ -2,21 +2,18 @@ import React, { useState } from "react";
 import { Form, Button, Container } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 
-import { useForm } from "../../util/hooks";
+import { useForm } from "../../../util/hooks";
 
-import "./GoodForm/GoodForm.css";
+import "./GoodForm.css";
 
-import { UPDATE_GOOD } from "../../util/graphql";
-import { FETCH_GOOD_QUERY } from "../../util/graphql";
+import { CREATE_GOOD_MUTATION } from "../../../util/graphql";
+import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
 
-import { title } from "../../pages/SinglePages/Good/SingleGood";
-
-function UpdateGood() {
+function GoodForm() {
   const [errors, setErrors] = useState({});
 
-  const { values, onChange, onSubmit } = useForm(updateGoodCallback, {
+  const { values, onChange, onSubmit } = useForm(createGoodCallback, {
     // picture: "",
-    id: "",
     title: "",
     description: "",
     price: "",
@@ -25,13 +22,11 @@ function UpdateGood() {
     publishYear: "",
   });
 
-  const [updateEvent, { loading }] = useMutation(UPDATE_GOOD, {
+  const [createEvent, { loading }] = useMutation(CREATE_GOOD_MUTATION, {
     variables: values,
     update(proxy, result) {
-      debugger;
       // TODO: remove goods from cache
       // values.picture = "";
-      values.id = "";
       values.title = "";
       values.description = "";
       values.price = "";
@@ -40,15 +35,15 @@ function UpdateGood() {
       values.publishYear = "";
 
       const data = proxy.readQuery({
-        query: FETCH_GOOD_QUERY,
+        query: FETCH_ITEMS_QUERY,
       });
-      let newData = [...data.getEvent];
-      newData = [result.data.getEvent, ...newData];
+      let newData = [...data.events];
+      newData = [result.data.events, ...newData];
       proxy.writeQuery({
-        query: FETCH_GOOD_QUERY,
+        query: FETCH_ITEMS_QUERY,
         data: {
           ...data,
-          getEvent: {
+          events: {
             newData,
           },
         },
@@ -56,7 +51,7 @@ function UpdateGood() {
     },
     // refetchQueries: [
     //   {
-    //     query: FETCH_GOOD_QUERY,
+    //     query: FETCH_ITEMS_QUERY,
     //   },
     // ],
     onError(err) {
@@ -64,8 +59,8 @@ function UpdateGood() {
     },
   });
 
-  function updateGoodCallback() {
-    updateEvent();
+  function createGoodCallback() {
+    createEvent();
   }
 
   // console.log(typeof(values.title))
@@ -74,8 +69,8 @@ function UpdateGood() {
 
   return (
     <Container className="GoodCard">
-      <Form onSubmit={onSubmit} noValidate className={loading && "loading"}>
-        <h2>Update a good:</h2>
+      <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
+        <h2>Create a good:</h2>
         <Form.Field>
           {/* <Form.Input
             name="picture"
@@ -83,52 +78,55 @@ function UpdateGood() {
             onChange={onChange}
             value={String(values.picture)}
           /> */}
-
           <Form.Input
             placeholder="Title"
             name="title"
-            onChange={onChange}
-            error={errors.title ? true : false}
             value={values.title}
+            error={errors.title ? true : false}
+            onChange={onChange}
           />
           <Form.Input
             placeholder="Description"
             name="description"
-            onChange={onChange}
-            error={errors.description ? true : false}
             value={values.description}
+            error={errors.description ? true : false}
+            onChange={onChange}
           />
           <Form.Input
             type="number"
             placeholder="Price"
             name="price"
-            onChange={onChange}
-            error={errors.price ? true : false}
             value={values.price}
+            error={errors.price ? true : false}
+            onChange={onChange}
           />
           <Form.Input
             placeholder="Autor"
             name="autor"
-            onChange={onChange}
-            error={!!errors.autor}
             value={values.autor}
+            error={errors.autor ? true : false}
+            onChange={onChange}
           />
           <Form.Input
             placeholder="pageNumber"
             name="pageNumber"
-            onChange={onChange}
-            error={errors.pageNumber ? true : false}
             value={values.pageNumber}
+            error={errors.pageNumber ? true : false}
+            onChange={onChange}
           />
           <Form.Input
             placeholder="publishYear"
             name="publishYear"
-            onChange={onChange}
-            error={errors.publishYear ? true : false}
             value={values.publishYear}
+            error={errors.publishYear ? true : false}
+            onChange={onChange}
           />
-          <Button type="submit" color="teal">
-            Update
+          <Button
+            type="submit"
+            color="teal"
+            loading={loading ? <Button loading>Loading</Button> : ""}
+          >
+            Submit
           </Button>
         </Form.Field>
       </Form>
@@ -141,4 +139,4 @@ function UpdateGood() {
   );
 }
 
-export default UpdateGood;
+export default GoodForm;

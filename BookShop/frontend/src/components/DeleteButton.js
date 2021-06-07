@@ -44,7 +44,9 @@ function DeleteButton({ userId, id }) {
           // read data from cache
           query: FETCH_ITEMS_QUERY,
         });
+
         let newData = [...data.events];
+
         newData = [result.data.events, ...newData];
         proxy.writeQuery({
           // update data in cache

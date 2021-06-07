@@ -37,6 +37,23 @@ function sortReducer(state, action) {
       throw new Error();
   }
 }
+function sorting(column) {
+  debugger;
+  switch (column) {
+    case "username":
+      alert("username");
+      break;
+    case "email":
+      alert("email");
+      break;
+    case "createdAt":
+      alert("createdAt");
+      break;
+    case "id":
+      alert("id");
+      break;
+  }
+}
 
 function AdminProfilePage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -90,30 +107,27 @@ function AdminProfilePage() {
           <Table.Row
             textAlign="center"
             sorted={
-              column === "username" || "email" || "createdAt" || "id"
+              column === ("username" || "email" || "createdAt" || "id")
                 ? direction
                 : null
             }
-            onClick={() =>
+            onClick={(column) =>
               dispatch({
                 type: "CHANGE_SORT",
-                column:
-                  column === "username"
-                    ? "username"
-                    : column === "email"
-                      ? "email"
-                      : column === "createdAt"
-                        ? "createdAt"
-                        : column === "id",
+                column: "createdAt",
+                // (column = "username") &&
+                // (column = "email") &&
+                // (column = "createdAt") &&
+                // (column = "id"),
               })
             }
           >
             <Table.HeaderCell>
               <Checkbox slider />
             </Table.HeaderCell>
-            <Table.HeaderCell>username</Table.HeaderCell>
-            <Table.HeaderCell>email</Table.HeaderCell>
-            <Table.HeaderCell>createdAt</Table.HeaderCell>
+            <Table.HeaderCell column="username">username</Table.HeaderCell>
+            <Table.HeaderCell column="email">email</Table.HeaderCell>
+            <Table.HeaderCell column="createdAt">createdAt</Table.HeaderCell>
             <Table.HeaderCell>id</Table.HeaderCell>
             <Table.HeaderCell>delete user</Table.HeaderCell>
           </Table.Row>

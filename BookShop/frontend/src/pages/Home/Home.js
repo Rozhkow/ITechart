@@ -2,13 +2,13 @@ import React, { useState, useContext, useEffect, useReducer } from "react";
 import { useQuery } from "@apollo/client";
 import { Container, Grid } from "semantic-ui-react";
 
-import GoodCard from "../../components/Good/GoodCard";
+import GoodCard from "../../components/Good/GoodCard/GoodCard";
 import ReactPaginate from "react-paginate";
 import { AuthContext } from "../../context/auth";
 
 import ImageSlider from "../../components/Slider/ImageSlider";
 import { SliderData } from "../../components/Slider/SliderData";
-import GoodForm from "../../components/Good/GoodForm";
+import GoodForm from "../../components/Good/GoodForm/GoodForm";
 
 import "./Home.css";
 import { FETCH_ITEMS_QUERY } from "../../util/graphql";
