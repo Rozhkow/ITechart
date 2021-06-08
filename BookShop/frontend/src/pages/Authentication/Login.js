@@ -4,6 +4,7 @@ import { useMutation } from "@apollo/client";
 import { AuthContext } from "../../context/auth";
 import { useForm } from "../../util/hooks";
 
+import ReusableComponent from "../../components/Authentication/ReusableComponent";
 import LoginComponent from "../../components/Authentication/LoginComponent";
 
 import { LOGIN_USER } from "../../util/graphql";
@@ -33,13 +34,16 @@ function Login(props) {
   }
 
   return (
-    <LoginComponent
-      onSubmit={onSubmit}
-      onChange={onChange}
-      errors={errors}
-      values={values}
-      loading={loading}
-    />
+    <>
+      <LoginComponent
+        onSubmit={onSubmit}
+        onChange={onChange}
+        errors={errors}
+        values={values}
+        loading={loading}
+      />
+      {/* <ReusableComponent onChange={onChange} errors={errors} values={values} /> */}
+    </>
   );
 }
 

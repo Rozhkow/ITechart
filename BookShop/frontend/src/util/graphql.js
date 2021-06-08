@@ -142,6 +142,7 @@ export const UPDATE_GOOD = gql`
       pageNumber: $pageNumber
       publishYear: $publishYear
     ) {
+      id
       title
       description
       price

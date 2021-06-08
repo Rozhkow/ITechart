@@ -11,7 +11,9 @@ import { FETCH_ITEMS_QUERY } from "../util/graphql";
 function DeleteButton({ userId, id }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const [deleteUser] = useMutation(DELETE_USER_MUTATION, {
+  const mutation = userId ? DELETE_USER_MUTATION : DELETE_GOOD_MUTATION;
+
+  const [deleteEventOrUser] = useMutation(mutation, {
     update(proxy, result) {
       // TODO: remove users from cache
       if (userId) {
@@ -30,23 +32,12 @@ function DeleteButton({ userId, id }) {
           },
         });
       }
-    },
-    variables: {
-      userId,
-    },
-  });
-
-  const [deleteEvent] = useMutation(DELETE_GOOD_MUTATION, {
-    update(proxy, result) {
-      // TODO: remove goods from cache
       if (id) {
         const data = proxy.readQuery({
           // read data from cache
           query: FETCH_ITEMS_QUERY,
         });
-
         let newData = [...data.events];
-
         newData = [result.data.events, ...newData];
         proxy.writeQuery({
           // update data in cache
@@ -61,6 +52,7 @@ function DeleteButton({ userId, id }) {
       }
     },
     variables: {
+      userId,
       id,
     },
   });
@@ -76,13 +68,10 @@ function DeleteButton({ userId, id }) {
       <Confirm
         open={confirmOpen}
         onCancel={() => setConfirmOpen(false)}
-        onConfirm={deleteEvent}
-        // onConfirm={deleteUser}
+        onConfirm={deleteEventOrUser}
       />
     </>
   );
 }
-
-// DeleteButton(onConfirm(deleteUser))
 
 export default DeleteButton;
