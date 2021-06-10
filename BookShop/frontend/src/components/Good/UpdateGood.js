@@ -9,47 +9,63 @@ import "./GoodForm/GoodForm.css";
 import { UPDATE_GOOD } from "../../util/graphql";
 import { FETCH_GOOD_QUERY } from "../../util/graphql";
 
-import { title } from "../../pages/SinglePages/Good/SingleGood";
+import { Link } from "react-router-dom";
 
-function UpdateGood() {
+// import { id } from "../../pages/SinglePages/Good/SingleGood";
+
+function UpdateGood({
+  id,
+  title,
+  description,
+  price,
+  autor,
+  pageNumber,
+  publishYear,
+}) {
   const [errors, setErrors] = useState({});
 
   const { values, onChange, onSubmit } = useForm(updateGoodCallback, {
     // picture: "",
-    id: "",
-    title: "",
-    description: "",
-    price: "",
-    autor: "",
-    pageNumber: "",
-    publishYear: "",
+    id: id,
+    title: title,
+    description: description,
+    price: price,
+    autor: autor,
+    pageNumber: pageNumber,
+    publishYear: publishYear,
   });
 
   const [updateEvent, { loading }] = useMutation(UPDATE_GOOD, {
     variables: values,
     update(proxy, result) {
-      debugger;
       // TODO: remove goods from cache
       // values.picture = "";
-      values.id = "";
-      values.title = "";
-      values.description = "";
-      values.price = "";
-      values.autor = "";
-      values.pageNumber = "";
-      values.publishYear = "";
+      values.id = id;
+      values.title = title;
+      values.description = description;
+      values.price = price;
+      values.autor = autor;
+      values.pageNumber = pageNumber;
+      values.publishYear = publishYear;
 
-      const data = proxy.readQuery({
-        query: FETCH_GOOD_QUERY,
-      });
-      let newData = [...data.getEvent];
-      newData = [result.data.getEvent, ...newData];
-      proxy.writeQuery({
-        query: FETCH_GOOD_QUERY,
-        data: {
-          ...data,
-          getEvent: {
-            newData,
+      // const data = proxy.readQuery({
+      //   query: FETCH_GOOD_QUERY,
+      // });
+      // let newData = [...data.Event];
+      // newData = [result.data.Event, ...newData];
+      // proxy.writeQuery({
+      //   query: FETCH_GOOD_QUERY,
+      //   data: {
+      //     ...data,
+      //     Event: {
+      //       newData,
+      //     },
+      //   },
+      // });
+      proxy.modify({
+        fields: {
+          Event(existingEvents = []) {
+            return [...existingEvents, result.data.updateEvent];
           },
         },
       });
@@ -63,7 +79,7 @@ function UpdateGood() {
       setErrors(err.message);
     },
   });
-
+  // console.log(id);
   function updateGoodCallback() {
     updateEvent();
   }
@@ -83,7 +99,6 @@ function UpdateGood() {
             onChange={onChange}
             value={String(values.picture)}
           /> */}
-
           <Form.Input
             placeholder="Title"
             name="title"

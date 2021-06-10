@@ -4,8 +4,13 @@ import { useMutation } from "@apollo/client";
 import { AuthContext } from "../../context/auth";
 import { useForm } from "../../util/hooks";
 
+import "./Login.css";
+
 import ReusableComponent from "../../components/Authentication/ReusableComponent";
-import LoginComponent from "../../components/Authentication/LoginComponent";
+import { UserLoginButton } from "../../components/Authentication/LoginComponent";
+import { UserLoginFieldSection } from "../../components/Authentication/LoginComponent";
+
+import { Form, Button } from "semantic-ui-react";
 
 import { LOGIN_USER } from "../../util/graphql";
 
@@ -35,16 +40,40 @@ function Login(props) {
 
   return (
     <>
-      <LoginComponent
+      <ReusableComponent
         onSubmit={onSubmit}
         onChange={onChange}
         errors={errors}
-        values={values}
+        title="Login"
+        notes={["Username must not be empty", "Password must not be empty"]}
+        messageTitle="Rules of Login"
         loading={loading}
-      />
-      {/* <ReusableComponent onChange={onChange} errors={errors} values={values} /> */}
+        values={values}
+      >
+        <UserLoginFieldSection
+          values={values}
+          errors={errors}
+          onChange={onChange}
+        />
+      </ReusableComponent>
+      <UserLoginButton onSubmit={onSubmit} loading={loading} />
     </>
   );
 }
 
 export default Login;
+
+// const RegiFieldsSection = ({ values, errors, onChange }) => (
+//   <>
+//     <Form.Input
+//       label="Email"
+//       placeholder="Username.."
+//       name="username"
+//       type="text"
+//       value={values.username}
+//       error={errors.username ? true : false}
+//       onChange={onChange}
+//     />
+//     <UserLoginFieldSection />
+//   </>
+// );

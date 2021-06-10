@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { Card, Grid, Image } from "semantic-ui-react";
 
 import { AuthContext } from "../../../context/auth";
@@ -9,16 +9,38 @@ import UpdateGood from "../../../components/Good/UpdateGood";
 import "./SingleGood.css";
 
 import { FETCH_GOOD_QUERY } from "../../../util/graphql";
+import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
+import { DELETE_GOOD_MUTATION } from "../../../util/graphql";
 
 function SingleGood(props) {
   const id = props.match.params.id;
-
   const { user } = useContext(AuthContext);
 
   const { data } = useQuery(FETCH_GOOD_QUERY, {
     variables: {
       id,
     },
+  });
+  const [deleteEvent] = useMutation(DELETE_GOOD_MUTATION, {
+    update(proxy, result) {
+      debugger;
+      // TODO: remove users from cache
+      const data = proxy.readQuery({
+        query: FETCH_ITEMS_QUERY,
+      });
+      let newData = [...data.events];
+      newData = [result.data.events, ...newData];
+      proxy.writeQuery({
+        query: FETCH_ITEMS_QUERY,
+        data: {
+          ...data,
+          events: {
+            newData,
+          },
+        },
+      });
+    },
+    variables: id,
   });
 
   console.log(data);
@@ -58,7 +80,17 @@ function SingleGood(props) {
           </Card>
         </Grid.Column>
         <Grid.Column width={5}>
-          {user && user.admin === true ? <UpdateGood /> : null}
+          {user && user.admin === true ? (
+            <UpdateGood
+              id={id}
+              title={title}
+              description={description}
+              price={price}
+              autor={autor}
+              pageNumber={pageNumber}
+              publishYear={publishYear}
+            />
+          ) : null}
         </Grid.Column>
       </Grid>
     );

@@ -4,7 +4,10 @@ import { useMutation } from "@apollo/client";
 import { AuthContext } from "../../context/auth";
 import { useForm } from "../../util/hooks";
 
-import RegisterComponent from "../../components/Authentication/RegisterComponent";
+import ReusableComponent from "../../components/Authentication/ReusableComponent";
+import { UserRegisterButton } from "../../components/Authentication/RegisterComponent";
+import { RegiFieldsSection } from "../../components/Authentication/RegisterComponent";
+import { UserLoginFieldSection } from "../../components/Authentication/LoginComponent";
 
 import { REGISTER_USER } from "../../util/graphql";
 
@@ -35,13 +38,34 @@ function Register(props) {
   }
 
   return (
-    <RegisterComponent
-      onSubmit={onSubmit}
-      onChange={onChange}
-      errors={errors}
-      values={values}
-      loading={loading}
-    />
+    <>
+      <ReusableComponent
+        onSubmit={onSubmit}
+        onChange={onChange}
+        errors={errors}
+        title="Register"
+        buttonTitle="Register"
+        notes={[
+          "Username must be unique",
+          "Email must be valid",
+          "Passwords must match",
+        ]}
+        messageTitle="Rules of Register"
+        loading={loading}
+      >
+        <UserLoginFieldSection
+          values={values}
+          errors={errors}
+          onChange={onChange}
+        />
+        <RegiFieldsSection
+          values={values}
+          errors={errors}
+          onChange={onChange}
+        />
+      </ReusableComponent>
+      <UserRegisterButton onSubmit={onSubmit} loading={loading} />
+    </>
   );
 }
 

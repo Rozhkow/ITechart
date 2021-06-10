@@ -21,6 +21,12 @@ const AuthContext = createContext({
   logout: () => {},
 });
 
+const LoginLogoutContext = createContext({
+  user: null,
+  login: (userData) => {},
+  logout: () => {},
+});
+
 function authReducer(state, action) {
   switch (action.type) {
     case "LOGIN":
@@ -62,4 +68,4 @@ function AuthProvider(props) {
   );
 }
 
-export { AuthContext, AuthProvider };
+export { AuthContext, LoginLogoutContext, AuthProvider };

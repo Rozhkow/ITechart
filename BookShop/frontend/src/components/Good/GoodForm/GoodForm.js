@@ -11,8 +11,59 @@ import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
 
 import ReusableComponent from "../../Authentication/ReusableComponent";
 
-function GoodForm() {
+const GoodFieldSection = ({ values, errors, onChange }) => (
+  <>
+    <Form.Input
+      placeholder="Title"
+      name="title"
+      onChange={onChange}
+      error={errors.title ? true : false}
+      value={values.title}
+    />
+    <Form.Input
+      placeholder="Description"
+      name="description"
+      onChange={onChange}
+      error={errors.description ? true : false}
+      value={values.description}
+    />
+    <Form.Input
+      type="number"
+      placeholder="Price"
+      name="price"
+      onChange={onChange}
+      error={errors.price ? true : false}
+      value={values.price}
+    />
+    <Form.Input
+      placeholder="Autor"
+      name="autor"
+      onChange={onChange}
+      error={!!errors.autor}
+      value={values.autor}
+    />
+    <Form.Input
+      placeholder="pageNumber"
+      name="pageNumber"
+      onChange={onChange}
+      error={errors.pageNumber ? true : false}
+      value={values.pageNumber}
+    />
+    <Form.Input
+      placeholder="publishYear"
+      name="publishYear"
+      onChange={onChange}
+      error={errors.publishYear ? true : false}
+      value={values.publishYear}
+    />
+  </>
+);
+
+function GoodForm(props) {
   const [errors, setErrors] = useState({});
+
+  const data = props.data;
+  console.log(data);
 
   const { values, onChange, onSubmit } = useForm(createGoodCallback, {
     // picture: "",
@@ -54,7 +105,8 @@ function GoodForm() {
       proxy.modify({
         fields: {
           events(existingEvents = []) {
-            debugger;
+            console.log(result.data.createEvent);
+            console.log(existingEvents);
             return [...existingEvents, result.data.createEvent];
           },
         },
@@ -69,26 +121,28 @@ function GoodForm() {
     createEvent();
   }
 
-  // console.log(typeof(values.title))
-  // console.log(typeof(values.description))
-  // console.log(typeof values.price);
-
   return (
     <Container className="GoodCard">
       <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
-        <h2>Create a good:</h2>
         <ReusableComponent
+          title="Create a good:"
           onChange={onChange}
           errors={errors}
           values={values}
-        />
+        >
+          <GoodFieldSection
+            values={values}
+            errors={errors}
+            onChange={onChange}
+          />
+        </ReusableComponent>
         <Button
           type="submit"
           color="teal"
           loading={loading ? <Button loading>Loading</Button> : ""}
           style={{ marginTop: 10 }}
         >
-          Submit
+          Create a good
         </Button>
       </Form>
     </Container>
@@ -96,3 +150,5 @@ function GoodForm() {
 }
 
 export default GoodForm;
+
+export { GoodFieldSection };

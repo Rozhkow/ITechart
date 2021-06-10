@@ -5,11 +5,36 @@ import { Link } from "react-router-dom";
 import DeleteButton from "../../DeleteButton";
 import "./GoodCard.css";
 import { AuthContext } from "../../../context/auth";
+import { useMutation } from "@apollo/client";
+
+import { DELETE_GOOD_MUTATION } from "../../../util/graphql";
+import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
 
 function GoodCard({ good: { title, description, price, id } }) {
   const { user } = useContext(AuthContext);
 
   const [toggle, handleClick] = React.useState(0);
+
+  const [deleteEvent] = useMutation(DELETE_GOOD_MUTATION, {
+    update(proxy, result) {
+      // TODO: remove users from cache
+
+      const data = proxy.readQuery({
+        query: FETCH_ITEMS_QUERY,
+      });
+      let newData = [...data.events];
+      newData = [result.data.events, ...newData];
+      proxy.writeQuery({
+        query: FETCH_ITEMS_QUERY,
+        data: {
+          ...data,
+          events: {
+            newData,
+          },
+        },
+      });
+    },
+  });
 
   const GoodCard = (
     <Card>
@@ -38,7 +63,9 @@ function GoodCard({ good: { title, description, price, id } }) {
       <Card.Content extra>
         <Card.Meta>{price}$</Card.Meta>
         <br />
-        {user && user.admin === true ? <DeleteButton id={id} /> : null}
+        {user && user.admin === true ? (
+          <DeleteButton id={id} onConfirm={console.log("blyyy")} />
+        ) : null}
       </Card.Content>
     </Card>
   );

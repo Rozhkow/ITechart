@@ -3,27 +3,44 @@ import { Button, Form, Message } from "semantic-ui-react";
 
 import ReusableComponent from "./ReusableComponent";
 
-const LoginComponent = ({ onSubmit, onChange, errors, values, loading }) => (
-  <div className="form-container">
-    <Form
-      className="qweqwe"
-      onSubmit={onSubmit}
-      noValidate
-      className={loading ? "loading" : ""}
+export const UserLoginButton = ({ onSubmit, loading }) => (
+  <Form
+    onSubmit={onSubmit}
+    className="form-container"
+    noValidate
+    className={loading ? "loading" : ""}
+  >
+    <Button
+      type="submit"
+      primary
+      style={{ marginTop: 10 }}
+      className="LoginButton"
+      loading={loading ? <Button loading>Loading</Button> : ""}
     >
-      <h1>Login</h1>
-      <ReusableComponent onChange={onChange} errors={errors} values={values} />
-      <Button type="submit" primary style={{ marginTop: 10 }}>
-        Login
-      </Button>
-      <Message>
-        <Message.Header>Rules of Login</Message.Header>
-        <hr />
-        <p>* Username must not be empty</p>
-        <p>* Password must not be empty</p>
-      </Message>
-    </Form>
-  </div>
+      Login
+    </Button>
+  </Form>
 );
 
-export default LoginComponent;
+export const UserLoginFieldSection = ({ values, errors, onChange }) => (
+  <>
+    <Form.Input
+      label="Username"
+      placeholder="Username.."
+      name="username"
+      type="text"
+      value={values.username}
+      error={errors.username ? true : false}
+      onChange={onChange}
+    />
+    <Form.Input
+      label="Password"
+      placeholder="Password.."
+      name="password"
+      type="password"
+      value={values.password}
+      error={errors.password ? true : false}
+      onChange={onChange}
+    />
+  </>
+);

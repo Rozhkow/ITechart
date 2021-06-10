@@ -68,7 +68,7 @@ function HomePage() {
       <Grid columns={3} className="Cards" stackable>
         <Grid.Row>
           <Grid.Column>
-            {user && user.admin === true ? <GoodForm /> : null}
+            {user && user.admin === true ? <GoodForm data={data} /> : null}
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>

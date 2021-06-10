@@ -1,43 +1,45 @@
 import React from "react";
-import { Button, Form, Message } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 
 import ReusableComponent from "./ReusableComponent";
 
-const RegisterComponent = ({ onSubmit, onChange, errors, values, loading }) => (
-  <div className="form-container">
-    <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
-      <h1>Register</h1>
-      <ReusableComponent onChange={onChange} errors={errors} values={values} />
-      <Form.Input
-        label="Email"
-        placeholder="Email.."
-        name="email"
-        type="email"
-        value={values.email}
-        error={errors.email ? true : false}
-        onChange={onChange}
-      />
-      <Form.Input
-        label="Confirm Password"
-        placeholder="Confirm Password.."
-        name="confirmPassword"
-        type="password"
-        value={values.confirmPassword}
-        error={errors.confirmPassword ? true : false}
-        onChange={onChange}
-      />
-      <Button type="submit" primary>
-        Register
-      </Button>
-      <Message>
-        <Message.Header>Rules of register</Message.Header>
-        <hr />
-        <p>* Username must be unique</p>
-        <p>* Email must be valid</p>
-        <p>* Passwords must match</p>
-      </Message>
-    </Form>
-  </div>
+export const UserRegisterButton = ({ onSubmit, loading }) => (
+  <Form
+    onSubmit={onSubmit}
+    className="form-container"
+    noValidate
+    className={loading ? "loading" : ""}
+  >
+    <Button
+      type="submit"
+      primary
+      style={{ marginTop: 10 }}
+      loading={loading ? <Button loading>Loading</Button> : ""}
+    >
+      Register
+    </Button>
+  </Form>
 );
 
-export default RegisterComponent;
+export const RegiFieldsSection = ({ values, errors, onChange }) => (
+  <>
+    <Form.Input
+      label="Email"
+      placeholder="Email.."
+      name="email"
+      type="email"
+      value={values.email}
+      error={errors.email ? true : false}
+      onChange={onChange}
+    />
+    <Form.Input
+      label="Confirm Password"
+      placeholder="Confirm Password.."
+      name="confirmPassword"
+      type="password"
+      value={values.confirmPassword}
+      error={errors.confirmPassword ? true : false}
+      onChange={onChange}
+    />
+  </>
+);
