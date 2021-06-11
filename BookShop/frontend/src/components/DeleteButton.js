@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
 import { Button, Confirm, Icon } from "semantic-ui-react";
-
-import { DELETE_USER_MUTATION } from "../util/graphql";
-import { DELETE_GOOD_MUTATION } from "../util/graphql";
-
-import { ALL_USERS } from "../util/graphql";
-import { FETCH_ITEMS_QUERY } from "../util/graphql";
 
 import { Link } from "react-router-dom";
 
-function DeleteButton({ userId, id, onConfirm }) {
+function DeleteButton({ onConfirm }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   return (
@@ -23,8 +16,8 @@ function DeleteButton({ userId, id, onConfirm }) {
       </Button>
       <Confirm
         open={confirmOpen}
-        // as={Link}
-        // to="/"
+        as={Link}
+        to="/"
         onCancel={() => setConfirmOpen(false)}
         onConfirm={onConfirm}
       />

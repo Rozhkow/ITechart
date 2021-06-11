@@ -14,21 +14,21 @@ import { DELETE_USER_MUTATION } from "../../util/graphql";
 
 function sortReducer(state, action) {
   switch (action.type) {
-    // case "CHANGE_SORT":
-    //   if (state.column === action.column) {
-    //     return {
-    //       ...state,
-    //       users: state.users.slice().reverse(),
-    //       direction:
-    //         state.direction === "ascending" ? "descending" : "ascending",
-    //     };
-    //   }
+    case "CHANGE_SORT":
+      if (state.column === action.column) {
+        return {
+          ...state,
+          users: state.users.slice().reverse(),
+          direction:
+            state.direction === "ascending" ? "descending" : "ascending",
+        };
+      }
 
-    //   return {
-    //     column: action.column,
-    //     users: _.sortBy(state.users, [action.column]),
-    //     direction: "ascending",
-    //   };
+      return {
+        column: action.column,
+        users: _.sortBy(state.users, [action.column]),
+        direction: "ascending",
+      };
     case "UPDATE_USERS":
       return {
         ...state,
@@ -39,62 +39,8 @@ function sortReducer(state, action) {
   }
 }
 
-function setSortedColumn(state, action) {
-  if (action.type) {
-    if (state.sortedColumn === action.sortedColumn) {
-      return {
-        ...state,
-        users: state.users.slice().reverse(),
-        direction: state.direction === "ascending" ? "descending" : "ascending",
-      };
-    }
-
-    return {
-      sortedColumn: action.sortedColumn,
-      users: _.sortBy(state.users, [action.sortedColumn]),
-      direction: "ascending",
-    };
-  }
-}
-
 function AdminProfilePage({ id }) {
   const [searchTerm, setSearchTerm] = useState("");
-
-  const [deleteUser] = useMutation(DELETE_USER_MUTATION, {
-    update(proxy, result) {
-      // TODO: remove users from cache
-      if (id) {
-        const data = proxy.readQuery({
-          query: ALL_USERS,
-        });
-        let newData = [...data.users];
-        newData = [result.data.users, ...newData];
-        proxy.writeQuery({
-          query: ALL_USERS,
-          data: {
-            ...data,
-            users: {
-              newData,
-            },
-          },
-        });
-      }
-    },
-    variables: {
-      id,
-    },
-  });
-
-  const [sortedColumn, setSortedColumn] = useState({
-    sortedColumn: null,
-    direction: null,
-  });
-
-  function FFF(value) {
-    return () => {
-      setSortedColumn(value);
-    };
-  }
 
   const { loading, data } = useQuery(ALL_USERS);
 
@@ -128,6 +74,28 @@ function AdminProfilePage({ id }) {
     data: users,
   };
 
+  const [deleteUser] = useMutation(DELETE_USER_MUTATION, {
+    update(proxy, result) {
+      // TODO: remove users from cache
+
+      const data = proxy.readQuery({
+        query: ALL_USERS,
+      });
+      let newData = [...data.users];
+      newData = [result.data.users, ...newData];
+      proxy.writeQuery({
+        query: ALL_USERS,
+        data: {
+          ...data,
+          users: {
+            newData,
+          },
+        },
+      });
+    },
+    variables: { id: id },
+  });
+
   return (
     <Container className="AdminBlock">
       <div className="Search">
@@ -142,18 +110,37 @@ function AdminProfilePage({ id }) {
 
       <Table sortable celled compact>
         <Table.Header>
-          <Table.Row textAlign="center" sorted={sortedColumn}>
+          <Table.Row
+            textAlign="center"
+            sorted={column === "username" && "email" && "createdAt" && "id"}
+          >
             <Table.HeaderCell>
               <Checkbox slider />
             </Table.HeaderCell>
-            <Table.HeaderCell onClick={FFF("username")}>
+            <Table.HeaderCell
+              onClick={() =>
+                dispatch({ type: "CHANGE_SORT", column: "username" })
+              }
+            >
               username
             </Table.HeaderCell>
-            <Table.HeaderCell onClick={FFF("email")}>email</Table.HeaderCell>
-            <Table.HeaderCell onClick={FFF("createdAt")}>
+            <Table.HeaderCell
+              onClick={() => dispatch({ type: "CHANGE_SORT", column: "email" })}
+            >
+              email
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              onClick={() =>
+                dispatch({ type: "CHANGE_SORT", column: "createdAt" })
+              }
+            >
               createdAt
             </Table.HeaderCell>
-            <Table.HeaderCell onClick={FFF("id")}>id</Table.HeaderCell>
+            <Table.HeaderCell
+              onClick={() => dispatch({ type: "CHANGE_SORT", column: "id" })}
+            >
+              id
+            </Table.HeaderCell>
             <Table.HeaderCell>delete user</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -187,7 +174,7 @@ function AdminProfilePage({ id }) {
                   <Table.Cell>{createdAt}</Table.Cell>
                   <Table.Cell>{id}</Table.Cell>
                   <Table.Cell>
-                    <DeleteButton userId={id} onConfirm={() => deleteUser} />
+                    <DeleteButton onConfirm={deleteUser} />
                   </Table.Cell>
                 </Table.Row>
               ))

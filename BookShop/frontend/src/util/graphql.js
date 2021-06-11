@@ -18,8 +18,8 @@ export const DELETE_GOOD_MUTATION = gql`
 `;
 
 export const DELETE_USER_MUTATION = gql`
-  mutation deleteUser($userId: ID!) {
-    deleteUser(userId: $userId)
+  mutation deleteUser($id: ID!) {
+    deleteUser(id: $id)
   }
 `;
 
@@ -87,8 +87,8 @@ export const REGISTER_USER = gql`
 `;
 
 export const FETCH_USER_QUERY = gql`
-  query ($userId: ID!) {
-    getUser(userId: $userId) {
+  query ($id: ID!) {
+    getUser(id: $id) {
       username
       email
       admin
@@ -119,6 +119,16 @@ export const ALL_USERS = gql`
       email
       createdAt
       id
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation updateUser($id: ID!, $username: String!, $email: String!) {
+    updateUser(id: $id, username: $username, email: $email) {
+      id
+      username
+      email
     }
   }
 `;

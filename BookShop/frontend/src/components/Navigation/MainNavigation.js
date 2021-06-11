@@ -56,7 +56,7 @@ function MainNavigation() {
         {user && user.admin === false ? (
           <Menu.Item
             name={user.username}
-            active={activeItem === user.username || activeItem === "profile"}
+            active={activeItem === user.username || activeItem === "/profile"}
             onClick={handleItemClick}
             as={Link}
             to="/profile"

@@ -35,7 +35,7 @@ function App() {
           <AuthRoute exact path="/profile" component={ProfilePage} />
           <AuthRoute exact path="/adminProfile" component={AdminProfilePage} />
           <AuthRoute exact path="/shopping" component={ShoppingPage} />
-          <AuthRoute exact path="/users/:userId" component={SingleUser} />
+          <AuthRoute exact path="/users/:id" component={SingleUser} />
           <Route exact path="/goods/:id" component={SingleGood} />
           <Footer />
         </Container>

@@ -4,9 +4,9 @@ const { transformShopping, transformEvent } = require("./merge");
 
 module.exports = {
   shoppings: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error("Unauthenticated!");
-    }
+    // if (!req.isAuth) {
+    //   throw new Error("Unauthenticated!");
+    // }
     try {
       const shoppings = await Shopping.find();
       return shoppings.map((shopping) => {
@@ -17,21 +17,21 @@ module.exports = {
     }
   },
   shopEvent: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error("Unauthenticated!");
-    }
-    const fetchedEvent = await Event.findOne({ id: args.eventId });
+    // if (!req.isAuth) {
+    //   throw new Error("Unauthenticated!");
+    // }
+    const fetchedEvent = await Event.findOne({ id: args.id });
     const shopping = new Shopping({
-      user: req.userId,
+      user: req.id,
       event: fetchedEvent,
     });
     const result = await shopping.save();
     return transformShopping(result);
   },
   cancelShopping: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error("Unauthenticated!");
-    }
+    // if (!req.isAuth) {
+    //   throw new Error("Unauthenticated!");
+    // }
     try {
       const shopping = await Shopping.findById(args.shoppingId).populate(
         "event"

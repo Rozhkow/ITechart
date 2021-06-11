@@ -1,6 +1,8 @@
 const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
+
+
 type Shopping {
     id: ID!
     event: Event!
@@ -29,7 +31,7 @@ type User {
 }
 
 type AuthData {
-    userId: ID!
+    id: ID!
     token: String!
     tokenExpiration: Int!
     admin: Boolean!
@@ -44,11 +46,6 @@ input EventInput {
     publishYear: String!
 }
 
-input UserInput {
-    email: String!
-    password: String!
-}
-
 input RegisterInput {
     username: String!
     password: String!
@@ -57,7 +54,7 @@ input RegisterInput {
 }
 
 type RootQuery {
-    getUser(userId: ID!): User
+    getUser(id: ID!): User
     getEvent(id: ID!): Event
     users: [User]
     events: [Event]
@@ -69,10 +66,10 @@ type RootMutation {
     register(registerInput: RegisterInput): User
     login(username: String!, password: String!): User
     createEvent(eventInput: EventInput): Event
-    createUser(userInput: UserInput): User
-    deleteUser(userId: ID!): String!
+    deleteUser(id: ID!): String!
     deleteEvent(id: ID!): String!
     updateEvent(id: ID!, title: String!, description: String!, price: String!, autor: String!, pageNumber: String!, publishYear: String!): Event
+    updateUser(id: ID!, username: String!, email: String!): User
     shopEvent(id: ID!): Shopping!
     cancelShopping(shoppingId: ID!): Event!
 }

@@ -9,11 +9,11 @@ import "./SingleUser.css";
 import { FETCH_USER_QUERY } from "../../../util/graphql";
 
 function SingleUser(props) {
-  const userId = props.match.params.userId;
+  const id = props.match.params.id;
 
   const { data } = useQuery(FETCH_USER_QUERY, {
     variables: {
-      userId,
+      id,
     },
   });
 
@@ -25,7 +25,7 @@ function SingleUser(props) {
   } else {
     const { username, email, createdAt, id } = data.getUser;
 
-    userMarkup = (
+    return (
       <Grid className="SingleUser">
         <Grid.Row>
           <Grid.Column width={5}>
@@ -38,7 +38,7 @@ function SingleUser(props) {
               </Card.Content>
               <hr />
               <Card.Content extra>
-                <DeleteButton userId={id} />
+                <DeleteButton id={id} />
               </Card.Content>
             </Card>
           </Grid.Column>
@@ -46,7 +46,7 @@ function SingleUser(props) {
       </Grid>
     );
   }
-  return userMarkup;
+  return SingleUser;
 }
 
 export default SingleUser;

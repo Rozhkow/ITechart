@@ -40,7 +40,7 @@ function SingleGood(props) {
         },
       });
     },
-    variables: id,
+    variables: { id: id },
   });
 
   console.log(data);
@@ -52,7 +52,7 @@ function SingleGood(props) {
     const { title, description, price, id, autor, pageNumber, publishYear } =
       data.getEvent;
 
-    goodMarkup = (
+    return (
       <Grid className="SingleGood">
         <Grid.Column className="img" width={5}>
           <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
@@ -75,7 +75,9 @@ function SingleGood(props) {
             </Card.Content>
             <hr />
             <Card.Content extra>
-              {user && user.admin === true ? <DeleteButton id={id} /> : null}
+              {user && user.admin === true ? (
+                <DeleteButton onConfirm={deleteEvent} />
+              ) : null}
             </Card.Content>
           </Card>
         </Grid.Column>
@@ -95,7 +97,7 @@ function SingleGood(props) {
       </Grid>
     );
   }
-  return goodMarkup;
+  return SingleGood;
 }
 
 export default SingleGood;

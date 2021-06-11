@@ -62,18 +62,3 @@ function Login(props) {
 }
 
 export default Login;
-
-// const RegiFieldsSection = ({ values, errors, onChange }) => (
-//   <>
-//     <Form.Input
-//       label="Email"
-//       placeholder="Username.."
-//       name="username"
-//       type="text"
-//       value={values.username}
-//       error={errors.username ? true : false}
-//       onChange={onChange}
-//     />
-//     <UserLoginFieldSection />
-//   </>
-// );

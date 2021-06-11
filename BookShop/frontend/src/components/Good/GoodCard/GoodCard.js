@@ -34,6 +34,7 @@ function GoodCard({ good: { title, description, price, id } }) {
         },
       });
     },
+    variables: { id: id },
   });
 
   const GoodCard = (
@@ -42,7 +43,7 @@ function GoodCard({ good: { title, description, price, id } }) {
         <Image
           centered
           size="medium"
-          src="https://react.semantic-ui.com/images/wireframe/image.png"
+          src={"https://react.semantic-ui.com/images/wireframe/image.png"}
         />
         <Card.Header as={Link} to={`/goods/${id}`}>
           {title}
@@ -64,7 +65,7 @@ function GoodCard({ good: { title, description, price, id } }) {
         <Card.Meta>{price}$</Card.Meta>
         <br />
         {user && user.admin === true ? (
-          <DeleteButton id={id} onConfirm={console.log("blyyy")} />
+          <DeleteButton id={id} onConfirm={deleteEvent} />
         ) : null}
       </Card.Content>
     </Card>

@@ -12,18 +12,18 @@ const events = async (eventIds) => {
   }
 };
 
-const singleEvent = async (eventId) => {
+const singleEvent = async (id) => {
   try {
-    const event = await Event.findById(eventId);
+    const event = await Event.findById(id);
     return transformEvent(event);
   } catch (err) {
     throw err;
   }
 };
 
-const user = async (userId) => {
+const user = async (id) => {
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(id);
     return {
       ...user._doc,
       id: user.id,

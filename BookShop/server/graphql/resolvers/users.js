@@ -24,9 +24,20 @@ function generateToken(user) {
 }
 
 module.exports = {
-  deleteUser: async ({ userId }) => {
+  updateUser: async (args, req) => {
+    return User.findOneAndUpdate(
+      User.findById(args.id),
+
+      {
+        username: args.username,
+        email: args.email,
+      },
+      { new: true }
+    );
+  },
+  deleteUser: async ({ id }) => {
     try {
-      const user = await User.findById(userId);
+      const user = await User.findById(id);
       // if (user.username === "admin") {
       await user.delete();
       return "User deleted successfully";
@@ -37,9 +48,9 @@ module.exports = {
       throw new Error(err);
     }
   },
-  getUser: async ({ userId }) => {
+  getUser: async ({ id }) => {
     try {
-      const user = await User.findById(userId);
+      const user = await User.findById(id);
       if (user) {
         return user;
       } else {

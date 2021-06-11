@@ -1,7 +1,5 @@
 import React from "react";
-import { Button, Form, Message } from "semantic-ui-react";
-
-import ReusableComponent from "./ReusableComponent";
+import { Button, Form } from "semantic-ui-react";
 
 export const UserLoginButton = ({ onSubmit, loading }) => (
   <Form
@@ -22,7 +20,12 @@ export const UserLoginButton = ({ onSubmit, loading }) => (
   </Form>
 );
 
-export const UserLoginFieldSection = ({ values, errors, onChange }) => (
+export const UserLoginFieldSection = ({
+  values,
+  errors,
+  onChange,
+  children,
+}) => (
   <>
     <Form.Input
       label="Username"
@@ -42,5 +45,6 @@ export const UserLoginFieldSection = ({ values, errors, onChange }) => (
       error={errors.password ? true : false}
       onChange={onChange}
     />
+    {children}
   </>
 );

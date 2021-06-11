@@ -27,6 +27,7 @@ function ReusableComponent({
           {title}
         </Button>
       </Form>
+
       {notes && (
         <Message>
           <Message.Header>{messageTitle}</Message.Header>

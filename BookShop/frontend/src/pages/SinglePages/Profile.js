@@ -1,10 +1,53 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useQuery } from "@apollo/client";
+import { Card, Grid } from "semantic-ui-react";
 
-function ProfilePage() {
-  return (
-    <div>
-      <h1>The Profile Page</h1>
-    </div>
-  );
+import { AuthContext } from "../../context/auth";
+
+import { FETCH_USER_QUERY } from "../../util/graphql";
+import UpdateUser from "../../components/UpdateUser";
+
+function Profile() {
+  const user = useContext(AuthContext);
+  const { id } = user.user;
+
+  const { data } = useQuery(FETCH_USER_QUERY, {
+    variables: {
+      id,
+    },
+  });
+
+  console.log(data);
+
+  let userMarkup;
+  if (!data) {
+    userMarkup = <p>Loading user..</p>;
+  } else {
+    const { username, email, createdAt, id } = data.getUser;
+
+    return (
+      <>
+        <Grid className="SingleUser">
+          <Grid.Row>
+            <Grid.Column width={5}>
+              <Card fluid>
+                <Card.Content className="Data">
+                  <Card.Header>Username: {username}</Card.Header>
+                  <Card.Description>Email: {email}</Card.Description>
+                  <Card.Description>Created at: {createdAt}</Card.Description>
+                  <Card.Description>ID: {id}</Card.Description>
+                </Card.Content>
+              </Card>
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <UpdateUser id={id} username={username} email={email} />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </>
+    );
+  }
+  return Profile;
 }
-export default ProfilePage;
+
+export default Profile;
