@@ -9,7 +9,7 @@ import "./GoodForm.css";
 import { CREATE_GOOD_MUTATION } from "../../../util/graphql";
 import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
 
-import ReusableComponent from "../../Authentication/ReusableComponent";
+import FormComponent from "../../Authentication/FormComponent";
 
 const GoodFieldSection = ({ values, errors, onChange }) => (
   <>
@@ -123,28 +123,21 @@ function GoodForm(props) {
 
   return (
     <Container className="GoodCard">
-      <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
-        <ReusableComponent
-          title="Create a good:"
-          onChange={onChange}
-          errors={errors}
+
+      <FormComponent
+        title="Create a good:"
+        onChange={onChange}
+        onSubmit={onSubmit}
+        errors={errors}
+        values={values}
+      >
+        <GoodFieldSection
           values={values}
-        >
-          <GoodFieldSection
-            values={values}
-            errors={errors}
-            onChange={onChange}
-          />
-        </ReusableComponent>
-        <Button
-          type="submit"
-          color="teal"
-          loading={loading ? <Button loading>Loading</Button> : ""}
-          style={{ marginTop: 10 }}
-        >
-          Create a good
-        </Button>
-      </Form>
+          errors={errors}
+          onChange={onChange}
+        />
+      </FormComponent>
+
     </Container>
   );
 }

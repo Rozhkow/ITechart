@@ -84,7 +84,7 @@ function SingleGood(props) {
         <Grid.Column width={5}>
           {user && user.admin === true ? (
             <UpdateGood
-              id={id}
+            id={id}
               title={title}
               description={description}
               price={price}

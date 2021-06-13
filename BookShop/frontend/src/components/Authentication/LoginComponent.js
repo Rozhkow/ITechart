@@ -1,24 +1,5 @@
 import React from "react";
-import { Button, Form } from "semantic-ui-react";
-
-export const UserLoginButton = ({ onSubmit, loading }) => (
-  <Form
-    onSubmit={onSubmit}
-    className="form-container"
-    noValidate
-    className={loading ? "loading" : ""}
-  >
-    <Button
-      type="submit"
-      primary
-      style={{ marginTop: 10 }}
-      className="LoginButton"
-      loading={loading ? <Button loading>Loading</Button> : ""}
-    >
-      Login
-    </Button>
-  </Form>
-);
+import { Form } from "semantic-ui-react";
 
 export const UserLoginFieldSection = ({
   values,

@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@apollo/client";
 import _ from "lodash";
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useState, useReducer, useEffect, useRef } from "react";
 import { Table, Button, Container, Checkbox } from "semantic-ui-react";
 import { CSVLink } from "react-csv";
 
@@ -39,10 +39,12 @@ function sortReducer(state, action) {
   }
 }
 
-function AdminProfilePage({ id }) {
+function AdminProfilePage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const { loading, data } = useQuery(ALL_USERS);
+
+  const [selectedUsers, setSelectedUsers] = useState([])
 
   const [state, dispatch] = useReducer(sortReducer, {
     checked: false,
@@ -93,7 +95,7 @@ function AdminProfilePage({ id }) {
         },
       });
     },
-    variables: { id: id },
+
   });
 
   return (
@@ -115,7 +117,9 @@ function AdminProfilePage({ id }) {
             sorted={column === "username" && "email" && "createdAt" && "id"}
           >
             <Table.HeaderCell>
-              <Checkbox slider />
+              <Checkbox
+                checked={selectedUsers.length > 0}
+                onClick={() => selectedUsers.length > 0 ? setSelectedUsers([]) : setSelectedUsers([...users.map(user => user.id)])} slider />
             </Table.HeaderCell>
             <Table.HeaderCell
               onClick={() =>
@@ -163,9 +167,11 @@ function AdminProfilePage({ id }) {
               .map(({ username, email, createdAt, id }) => (
                 <Table.Row textAlign="center" key={username}>
                   <Table.Cell collapsing>
-                    <Checkbox slider />{" "}
+                    <Checkbox
+                      checked={selectedUsers.includes(id)}
+                      onClick={() => selectedUsers.includes(id) ? setSelectedUsers(set => set.filter(selectedId => selectedId != id)) : setSelectedUsers([...selectedUsers, id])} slider />{" "}
                   </Table.Cell>
-                  <Table.Cell>
+                  <Table.Cell> 
                     <Table.Cell as={Link} to={`/users/${id}`}>
                       {username}
                     </Table.Cell>
@@ -174,7 +180,9 @@ function AdminProfilePage({ id }) {
                   <Table.Cell>{createdAt}</Table.Cell>
                   <Table.Cell>{id}</Table.Cell>
                   <Table.Cell>
-                    <DeleteButton onConfirm={deleteUser} />
+                    <DeleteButton onConfirm={() => {
+                      deleteUser({ variables: { id } })
+                    }} />
                   </Table.Cell>
                 </Table.Row>
               ))
@@ -197,7 +205,7 @@ function AdminProfilePage({ id }) {
       </div>
 
       <Button className="exportData">
-        <CSVLink {...csvReport}>Export data</CSVLink>
+        <CSVLink filename="Report.csv" data={users.filter(user => selectedUsers.includes(user.id))}>Export data</CSVLink>
       </Button>
     </Container>
   );

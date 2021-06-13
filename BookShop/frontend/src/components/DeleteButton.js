@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Button, Confirm, Icon } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 
+import { ConfirmPopup } from "./ConfirmPopup";
 import { Link } from "react-router-dom";
 
 function DeleteButton({ onConfirm }) {
@@ -8,19 +9,20 @@ function DeleteButton({ onConfirm }) {
 
   return (
     <>
-      <Button
-        class="ui right floated button"
-        onClick={() => setConfirmOpen(true)}
-      >
-        <Icon name="trash" color="red" style={{ margin: 0 }} />
-      </Button>
-      <Confirm
+      <ConfirmPopup
         open={confirmOpen}
         as={Link}
         to="/"
         onCancel={() => setConfirmOpen(false)}
         onConfirm={onConfirm}
-      />
+      >
+        <Button
+          class="ui right floated button"
+          onClick={() => setConfirmOpen(true)}
+        >
+          <Icon name="trash" color="red" style={{ margin: 0 }} />
+        </Button>
+      </ConfirmPopup>
     </>
   );
 }

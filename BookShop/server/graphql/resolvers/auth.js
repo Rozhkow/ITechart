@@ -34,12 +34,12 @@ module.exports = {
       throw new Error("Password is incorrect!");
     }
     const token = jwt.sign(
-      { userId: user.id, email: user.email },
+      { id: user.id, email: user.email },
       "something",
       {
         expiresIn: "1h",
       }
     );
-    return { userId: user.id, token: token, tokenExpiration: 1 };
+    return { id: user.id, token: token, tokenExpiration: 1 };
   },
 };

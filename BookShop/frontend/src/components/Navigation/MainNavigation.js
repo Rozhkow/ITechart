@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
 
 function MainNavigation() {
-  const { user, logout } = useContext(AuthContext);
+  const { user, login, logout } = useContext(AuthContext);
 
   // When we want to go to another page, navbarItem will be active
   const pathname = window.location.pathname;
@@ -42,7 +42,7 @@ function MainNavigation() {
             to="/adminProfile"
           />
         ) : null}
-        {user && user.admin === false ? (
+        {user && user.admin === false  ? (
           <Menu.Item
             name="shopping cart"
             active={activeItem === "shopping cart"}

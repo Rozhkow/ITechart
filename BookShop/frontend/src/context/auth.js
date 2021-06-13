@@ -17,15 +17,15 @@ if (localStorage.getItem("jwtToken")) {
 
 const AuthContext = createContext({
   user: null,
-  login: (userData) => {},
-  logout: () => {},
+  login: (userData) => { },
+  logout: () => { },
 });
 
-const LoginLogoutContext = createContext({
-  user: null,
-  login: (userData) => {},
-  logout: () => {},
-});
+// const LoginLogoutContext = createContext({
+//   user: null,
+//   login: (userData) => { },
+//   logout: () => { },
+// });
 
 function authReducer(state, action) {
   switch (action.type) {
@@ -68,4 +68,4 @@ function AuthProvider(props) {
   );
 }
 
-export { AuthContext, LoginLogoutContext, AuthProvider };
+export { AuthContext, AuthProvider };

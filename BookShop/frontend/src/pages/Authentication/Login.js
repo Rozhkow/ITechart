@@ -6,11 +6,8 @@ import { useForm } from "../../util/hooks";
 
 import "./Login.css";
 
-import ReusableComponent from "../../components/Authentication/ReusableComponent";
-import { UserLoginButton } from "../../components/Authentication/LoginComponent";
+import FormComponent from "../../components/Authentication/FormComponent";
 import { UserLoginFieldSection } from "../../components/Authentication/LoginComponent";
-
-import { Form, Button } from "semantic-ui-react";
 
 import { LOGIN_USER } from "../../util/graphql";
 
@@ -37,10 +34,9 @@ function Login(props) {
   function loginUserCallback() {
     loginUser();
   }
-
   return (
     <>
-      <ReusableComponent
+      <FormComponent
         onSubmit={onSubmit}
         onChange={onChange}
         errors={errors}
@@ -55,8 +51,7 @@ function Login(props) {
           errors={errors}
           onChange={onChange}
         />
-      </ReusableComponent>
-      <UserLoginButton onSubmit={onSubmit} loading={loading} />
+      </FormComponent>
     </>
   );
 }

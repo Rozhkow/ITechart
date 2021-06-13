@@ -4,14 +4,13 @@ import { useMutation } from "@apollo/client";
 import { AuthContext } from "../../context/auth";
 import { useForm } from "../../util/hooks";
 
-import ReusableComponent from "../../components/Authentication/ReusableComponent";
-import { UserRegisterButton } from "../../components/Authentication/RegisterComponent";
+import FormComponent from "../../components/Authentication/FormComponent";
 import { RegiFieldsSection } from "../../components/Authentication/RegisterComponent";
 import { UserLoginFieldSection } from "../../components/Authentication/LoginComponent";
 
 import { REGISTER_USER } from "../../util/graphql";
 
-function Register(props) {
+function Register(props) { 
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
@@ -39,7 +38,7 @@ function Register(props) {
 
   return (
     <>
-      <ReusableComponent
+      <FormComponent
         onSubmit={onSubmit}
         onChange={onChange}
         errors={errors}
@@ -63,8 +62,7 @@ function Register(props) {
           errors={errors}
           onChange={onChange}
         />
-      </ReusableComponent>
-      <UserRegisterButton onSubmit={onSubmit} loading={loading} />
+      </FormComponent>
     </>
   );
 }

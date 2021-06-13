@@ -6,7 +6,6 @@ module.exports = buildSchema(`
 type Shopping {
     id: ID!
     event: Event!
-    user: User!
     createdAt: String!
     updatedAt: String!
 }

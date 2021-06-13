@@ -1,25 +1,5 @@
 import React from "react";
-import { Button, Form } from "semantic-ui-react";
-
-import ReusableComponent from "./ReusableComponent";
-
-export const UserRegisterButton = ({ onSubmit, loading }) => (
-  <Form
-    onSubmit={onSubmit}
-    className="form-container"
-    noValidate
-    className={loading ? "loading" : ""}
-  >
-    <Button
-      type="submit"
-      primary
-      style={{ marginTop: 10 }}
-      loading={loading ? <Button loading>Loading</Button> : ""}
-    >
-      Register
-    </Button>
-  </Form>
-);
+import { Form } from "semantic-ui-react";
 
 export const RegiFieldsSection = ({ values, errors, onChange }) => (
   <>

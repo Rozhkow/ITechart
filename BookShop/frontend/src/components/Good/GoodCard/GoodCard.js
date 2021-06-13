@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Card, Icon, Image, Accordion } from "semantic-ui-react";
+import { Card, Icon, Image, Accordion, Button } from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
 import DeleteButton from "../../DeleteButton";
@@ -9,6 +9,8 @@ import { useMutation } from "@apollo/client";
 
 import { DELETE_GOOD_MUTATION } from "../../../util/graphql";
 import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
+
+import img from "../../../img/1.jpg"
 
 function GoodCard({ good: { title, description, price, id } }) {
   const { user } = useContext(AuthContext);
@@ -43,7 +45,7 @@ function GoodCard({ good: { title, description, price, id } }) {
         <Image
           centered
           size="medium"
-          src={"https://react.semantic-ui.com/images/wireframe/image.png"}
+          src={img}
         />
         <Card.Header as={Link} to={`/goods/${id}`}>
           {title}
@@ -64,9 +66,14 @@ function GoodCard({ good: { title, description, price, id } }) {
       <Card.Content extra>
         <Card.Meta>{price}$</Card.Meta>
         <br />
-        {user && user.admin === true ? (
+        {user?.admin && (
           <DeleteButton id={id} onConfirm={deleteEvent} />
-        ) : null}
+        )}
+        {user && !user.admin && (
+          <Button primary>
+            <Icon name="shopping cart" />
+          </Button>
+        )}
       </Card.Content>
     </Card>
   );
