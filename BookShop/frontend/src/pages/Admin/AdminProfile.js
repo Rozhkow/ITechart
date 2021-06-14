@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@apollo/client";
 import _ from "lodash";
-import React, { useState, useReducer, useEffect, useRef } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import { Table, Button, Container, Checkbox } from "semantic-ui-react";
 import { CSVLink } from "react-csv";
 
@@ -52,6 +52,8 @@ function AdminProfilePage() {
     users: data ? data.users : [],
     direction: null,
   });
+  
+  
 
   useEffect(() => {
     if (!loading && data && data.users) {

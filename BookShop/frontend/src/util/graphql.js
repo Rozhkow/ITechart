@@ -162,3 +162,20 @@ export const UPDATE_GOOD = gql`
     }
   }
 `;
+
+export const SHOPPING_ALL = gql`
+query{
+  shoppings{
+    id
+    event{
+      id
+      title
+      description
+      price
+      autor
+      pageNumber
+      publishYear
+    }
+  }
+}
+`;
