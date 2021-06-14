@@ -18,6 +18,24 @@ function GoodCard({ good: { title, description, price, id } }) {
   const { user } = useContext(AuthContext);
 
   const [shopEvent] = useMutation(SHOP_EVENT, {
+    // update(proxy, result) {
+    //   // TODO: remove users from cache
+
+    //   const data = proxy.readQuery({
+    //     query: SHOPPING_ALL,
+    //   });
+    //   let newData = [...data.shopping];
+    //   newData = [result.data.shopping, ...newData];
+    //   proxy.writeQuery({
+    //     query: SHOPPING_ALL,
+    //     data: {
+    //       ...data,
+    //       shopping: {
+    //         newData,
+    //       },
+    //     },
+    //   });
+    // },
     variables: { id: id },
   });
 

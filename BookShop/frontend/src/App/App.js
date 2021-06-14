@@ -18,7 +18,7 @@ import AdminProfilePage from "../pages/Admin/AdminProfile";
 import Footer from "../components/Navigation/Footer";
 import SingleUser from "../pages/SinglePages/User/SingleUser";
 import SingleGood from "../pages/SinglePages/Good/SingleGood";
-import ShoppingPage from "../pages/SinglePages/Shopping";
+import ShoppingPage from "../pages/SinglePages/Shopping/Shopping";
 
 // parameter EXACT need to us because it desables partial matching for
 // routs and we can be sure that it returns route only in case that our way match to current URL
