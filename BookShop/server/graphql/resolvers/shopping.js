@@ -1,12 +1,10 @@
 const Event = require("../../models/event");
 const Shopping = require("../../models/shopping");
-const { dateToString } = require('../../date');
+const { dateToString } = require("../../date");
 
-
-
-const singleEvent = async eventId => {
+const singleEvent = async (id) => {
   try {
-    const event = await Event.findById(eventId);
+    const event = await Event.findById(id);
     return {
       ...event._doc,
       id: event.id,
@@ -21,15 +19,8 @@ const transformShopping = (shopping) => {
     ...shopping._doc,
     id: shopping.id,
     event: singleEvent.bind(this, shopping._doc.event),
-    // createdAt: dateToString(shopping._doc.createdAt),
+    createdAt: dateToString(shopping._doc.createdAt),
     // updatedAt: dateToString(shopping._doc.updatedAt),
-  };
-};
-const transformEvent = event => {
-  return {
-    ...event._doc,
-    id: event.id,
-    // date: dateToString(event._doc.date)
   };
 };
 
@@ -45,27 +36,24 @@ module.exports = {
     }
   },
   shopEvent: async (args) => {
-    const fetchedEvent = await Event.findOne({ id: args.eventId });
+    const fetchedEvent = await Event.findById({ _id: args.id });
     const shopping = new Shopping({
       event: fetchedEvent,
     });
     const result = await shopping.save();
     return transformShopping(result);
   },
-  cancelShopping: async (args, req) => {
-    // if (!req.isAuth) {
-    //   throw new Error("Unauthenticated!");
-    // }
+  cancelShopping: async (args) => {
     try {
-      const shopping = await Shopping.findById(args.shoppingId).populate(
-        "event"
-      );
-      const event = transformEvent(shopping.event);
-      await Shopping.deleteOne({ id: args.shoppingId });
+      const shopping = await Shopping.findById(args.id).populate("event");
+      const event = {
+        ...shopping.event._doc,
+        id: shopping.event.id,
+      };
+      await shopping.delete();
       return event;
     } catch (err) {
       throw err;
     }
   },
 };
-

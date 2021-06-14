@@ -44,7 +44,7 @@ function AdminProfilePage() {
 
   const { loading, data } = useQuery(ALL_USERS);
 
-  const [selectedUsers, setSelectedUsers] = useState([])
+  const [selectedUsers, setSelectedUsers] = useState([]);
 
   const [state, dispatch] = useReducer(sortReducer, {
     checked: false,
@@ -52,8 +52,6 @@ function AdminProfilePage() {
     users: data ? data.users : [],
     direction: null,
   });
-  
-  
 
   useEffect(() => {
     if (!loading && data && data.users) {
@@ -97,7 +95,6 @@ function AdminProfilePage() {
         },
       });
     },
-
   });
 
   return (
@@ -121,7 +118,13 @@ function AdminProfilePage() {
             <Table.HeaderCell>
               <Checkbox
                 checked={selectedUsers.length > 0}
-                onClick={() => selectedUsers.length > 0 ? setSelectedUsers([]) : setSelectedUsers([...users.map(user => user.id)])} slider />
+                onClick={() =>
+                  selectedUsers.length > 0
+                    ? setSelectedUsers([])
+                    : setSelectedUsers([...users.map((user) => user.id)])
+                }
+                slider
+              />
             </Table.HeaderCell>
             <Table.HeaderCell
               onClick={() =>
@@ -171,9 +174,17 @@ function AdminProfilePage() {
                   <Table.Cell collapsing>
                     <Checkbox
                       checked={selectedUsers.includes(id)}
-                      onClick={() => selectedUsers.includes(id) ? setSelectedUsers(set => set.filter(selectedId => selectedId != id)) : setSelectedUsers([...selectedUsers, id])} slider />{" "}
+                      onClick={() =>
+                        selectedUsers.includes(id)
+                          ? setSelectedUsers((set) =>
+                              set.filter((selectedId) => selectedId != id)
+                            )
+                          : setSelectedUsers([...selectedUsers, id])
+                      }
+                      slider
+                    />{" "}
                   </Table.Cell>
-                  <Table.Cell> 
+                  <Table.Cell>
                     <Table.Cell as={Link} to={`/users/${id}`}>
                       {username}
                     </Table.Cell>
@@ -182,9 +193,11 @@ function AdminProfilePage() {
                   <Table.Cell>{createdAt}</Table.Cell>
                   <Table.Cell>{id}</Table.Cell>
                   <Table.Cell>
-                    <DeleteButton onConfirm={() => {
-                      deleteUser({ variables: { id } })
-                    }} />
+                    <DeleteButton
+                      onConfirm={() => {
+                        deleteUser({ variables: { id } });
+                      }}
+                    />
                   </Table.Cell>
                 </Table.Row>
               ))
@@ -207,7 +220,12 @@ function AdminProfilePage() {
       </div>
 
       <Button className="exportData">
-        <CSVLink filename="Report.csv" data={users.filter(user => selectedUsers.includes(user.id))}>Export data</CSVLink>
+        <CSVLink
+          filename="Report.csv"
+          data={users.filter((user) => selectedUsers.includes(user.id))}
+        >
+          Export data
+        </CSVLink>
       </Button>
     </Container>
   );

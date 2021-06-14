@@ -164,18 +164,43 @@ export const UPDATE_GOOD = gql`
 `;
 
 export const SHOPPING_ALL = gql`
-query{
-  shoppings{
-    id
-    event{
+  query {
+    shoppings {
       id
-      title
-      description
-      price
-      autor
-      pageNumber
-      publishYear
+      createdAt
+      event {
+        id
+        title
+        description
+        price
+        autor
+        pageNumber
+        publishYear
+      }
     }
   }
-}
+`;
+
+export const SHOP_EVENT = gql`
+  mutation shopEvent($id: ID!) {
+    shopEvent(id: $id) {
+      id
+      event {
+        id
+        title
+        autor
+        price
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const CANCEL_SHOPPING = gql`
+  mutation cancelShopping($id: ID!) {
+    cancelShopping(id: $id) {
+      id
+    }
+  }
 `;

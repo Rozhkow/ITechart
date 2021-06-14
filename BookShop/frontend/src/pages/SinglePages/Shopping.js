@@ -1,115 +1,141 @@
 import React, { useState, useReducer, useEffect } from "react";
 import _ from "lodash";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 
-import { Table, Button, Container, Checkbox } from "semantic-ui-react";
+import { Table, Button, Container, Icon } from "semantic-ui-react";
+
+import DeleteButton from "../../components/DeleteButton";
 
 import { SHOPPING_ALL } from "../../util/graphql";
+import { CANCEL_SHOPPING } from "../../util/graphql";
 
 function sortReducer(state, action) {
-    switch (action.type) {
-      case "CHANGE_SORT":
-        if (state.column === action.column) {
-          return {
-            ...state,
-            shoppings: state.shoppings.slice().reverse(),
-            direction:
-              state.direction === "ascending" ? "descending" : "ascending",
-          };
-        }
-  
-        return {
-          column: action.column,
-          shoppings: _.sortBy(state.shoppings, [action.column]),
-          direction: "ascending",
-        };
-      case "SHOPPING_ALL":
+  switch (action.type) {
+    case "CHANGE_SORT":
+      if (state.column === action.column) {
         return {
           ...state,
-          shoppings: action.payload,
+          event: state.event.slice().reverse(),
+          direction:
+            state.direction === "ascending" ? "descending" : "ascending",
         };
-      default:
-        throw new Error();
-    }
+      }
+
+      return {
+        column: action.column,
+        event: _.sortBy(state.event, [action.column]),
+        direction: "ascending",
+      };
+    case "SHOPPING_ALL":
+      return {
+        ...state,
+        event: action.payload,
+      };
+    default:
+      throw new Error();
   }
+}
 
-function Shopping(){
-    const { loading, data } = useQuery(SHOPPING_ALL);
+// function setTotalPrice(){
+//   const totalPrice = event;
+//   return totalPrice
+// }
 
-    const [state, dispatch] = useReducer(sortReducer, {
-        checked: false,
-        column: null,
-        event: data ? data.shoppings : [],
-        direction: null,
+function Shopping() {
+  const { loading, data } = useQuery(SHOPPING_ALL);
+
+  const [state, dispatch] = useReducer(sortReducer, {
+    checked: false,
+    column: null,
+    event: data ? data.shoppings : [],
+    direction: null,
+  });
+
+  const { column, event, direction } = state;
+
+  let totalPrice = "";
+
+  // const [event] = data.shoppings;
+
+  // console.log(event.event)
+  // const events = event.event
+  // console.log(events)
+  // console.log(data.shoppings);
+  console.log(event);
+
+  const [cancelShopping] = useMutation(CANCEL_SHOPPING, {
+    update(proxy, result) {
+      // TODO: remove users from cache
+      const data = proxy.readQuery({
+        query: SHOPPING_ALL,
       });
+      let newData = [...data.shoppings];
+      newData = [result.data.shoppings, ...newData];
+      proxy.writeQuery({
+        query: SHOPPING_ALL,
+        data: {
+          ...data,
+          shoppings: {
+            newData,
+          },
+        },
+      });
+    },
+  });
 
-    const { column, event } = state;
+  useEffect(() => {
+    if (!loading && event) {
+      dispatch({ type: "SHOPPING_ALL", payload: event });
+    }
+  }, [event, loading]);
 
-    // const [event] = data.shoppings;
-     
-    // console.log(event.event)
-    // const events = event.event
-    // console.log(events)
-    console.log(data.shoppings)
-
-    useEffect(() => {
-        if (!loading && data && data.shoppings) {
-          dispatch({ type: "UPDATE_USERS", payload: data.shoppings });
-        }
-      }, [data, loading])
-
-    return (
-        <Container>
-        <Table sortable celled compact>
+  return (
+    <Container>
+      <h1>Shopping cart:</h1>
+      <Table sortable celled compact>
         <Table.Header>
           <Table.Row
             textAlign="center"
-            sorted={column === "title" && "autor" && "id" && "price"}
+            sorted={
+              column === "title" && "autor" && "id" && "createdAt" && "price"
+            }
           >
-            <Table.HeaderCell
-              onClick={() =>
-                dispatch({ type: "CHANGE_SORT", column: "title" })
-              }
-            >
-              title
-            </Table.HeaderCell>
-            <Table.HeaderCell
-              onClick={() => dispatch({ type: "CHANGE_SORT", column: "autor" })}
-            >
-              autor
-            </Table.HeaderCell>
-            <Table.HeaderCell
-              onClick={() =>
-                dispatch({ type: "CHANGE_SORT", column: "id" })
-              }
-            >
-              id
-            </Table.HeaderCell>
-            <Table.HeaderCell
-              onClick={() => dispatch({ type: "CHANGE_SORT", column: "price" })}
-            >
-              price
-            </Table.HeaderCell>
+            <Table.HeaderCell>title</Table.HeaderCell>
+            <Table.HeaderCell>autor</Table.HeaderCell>
+            <Table.HeaderCell>id</Table.HeaderCell>
+            <Table.HeaderCell>createdAt</Table.HeaderCell>
+            <Table.HeaderCell>price</Table.HeaderCell>
+            <Table.HeaderCell>cancel</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {loading ? (
             <h1>Loading goods..</h1>
           ) : (
-            event
-              .map(({ title, autor, id, price }) => (
-                <Table.Row textAlign="center" key={id}> 
-                  <Table.Cell>{title}</Table.Cell>
-                  <Table.Cell>{autor}</Table.Cell>
-                  <Table.Cell>{id}</Table.Cell>
-                  <Table.Cell>{price}</Table.Cell>
-                </Table.Row>
-              ))
+            event.map(({ event: { title, autor, id, price }, createdAt }) => (
+              <Table.Row textAlign="center" key={id}>
+                <Table.Cell>{title}</Table.Cell>
+                <Table.Cell>{autor}</Table.Cell>
+                <Table.Cell>{id}</Table.Cell>
+                <Table.Cell>{createdAt}</Table.Cell>
+                <Table.Cell>{price}</Table.Cell>
+                <Table.Cell>
+                  <DeleteButton
+                    onConfirm={() => {
+                      cancelShopping({ variables: { id } });
+                    }}
+                  />
+                </Table.Cell>
+              </Table.Row>
+            ))
           )}
         </Table.Body>
       </Table>
-      </Container>
-)
+      {/* {event.map(({ event: { price } }) => (
+        <h1>Total price: {(totalPrice += price)}</h1>
+      ))} */}
+    </Container>
+  );
 }
 
 export default Shopping;

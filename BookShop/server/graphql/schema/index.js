@@ -70,7 +70,7 @@ type RootMutation {
     updateEvent(id: ID!, title: String!, description: String!, price: String!, autor: String!, pageNumber: String!, publishYear: String!): Event
     updateUser(id: ID!, username: String!, email: String!): User
     shopEvent(id: ID!): Shopping!
-    cancelShopping(shoppingId: ID!): Event!
+    cancelShopping(id: ID!): Event!
 }
 
 schema {
