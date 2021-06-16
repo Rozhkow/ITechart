@@ -14,7 +14,7 @@ import { DELETE_USER_MUTATION } from "../../util/graphql";
 
 function sortReducer(state, action) {
   switch (action.type) {
-    case "CHANGE_SORT":
+    case "CHANGE_SORT": debugger
       if (state.column === action.column) {
         return {
           ...state,
@@ -47,7 +47,6 @@ function AdminProfilePage() {
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const [state, dispatch] = useReducer(sortReducer, {
-    checked: false,
     column: null,
     users: data ? data.users : [],
     direction: null,

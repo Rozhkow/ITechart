@@ -17,7 +17,7 @@ const singleEvent = async (id) => {
 const transformShopping = (shopping) => {
   return {
     ...shopping._doc,
-    id: shopping.id,
+    shoppingId: shopping.id,
     event: singleEvent.bind(this, shopping._doc.event),
     createdAt: dateToString(shopping._doc.createdAt),
     // updatedAt: dateToString(shopping._doc.updatedAt),
@@ -45,10 +45,12 @@ module.exports = {
   },
   cancelShopping: async (args) => {
     try {
-      const shopping = await Shopping.findById(args.id).populate("event");
+      const shopping = await Shopping.findById(args.shoppingId).populate(
+        "event"
+      );
       const event = {
         ...shopping.event._doc,
-        id: shopping.event.id,
+        shoppingId: shopping.event.id,
       };
       await shopping.delete();
       return event;

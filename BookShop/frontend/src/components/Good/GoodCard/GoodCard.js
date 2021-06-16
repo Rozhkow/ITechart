@@ -1,5 +1,12 @@
 import React, { useContext } from "react";
-import { Card, Icon, Image, Accordion, Button } from "semantic-ui-react";
+import {
+  Card,
+  Icon,
+  Image,
+  Accordion,
+  Button,
+  Message,
+} from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
 import DeleteButton from "../../DeleteButton";
@@ -17,7 +24,7 @@ import img from "../../../img/1.jpg";
 function GoodCard({ good: { title, description, price, id } }) {
   const { user } = useContext(AuthContext);
 
-  const [shopEvent] = useMutation(SHOP_EVENT, {
+  const [shopEvent, { loading }] = useMutation(SHOP_EVENT, {
     // update(proxy, result) {
     //   // TODO: remove users from cache
 
@@ -91,12 +98,17 @@ function GoodCard({ good: { title, description, price, id } }) {
         {user?.admin && <DeleteButton id={id} onConfirm={deleteEvent} />}
         {user && !user.admin && (
           <Button
+            animated="vertical"
             primary
             style={{ backgroundColor: "#00B5AD" }}
             onClick={shopEvent}
             id={id}
+            loading={loading}
           >
-            <Icon name="shopping cart" />
+            <Button.Content hidden>Shop</Button.Content>
+            <Button.Content visible>
+              <Icon name="shop" />
+            </Button.Content>
           </Button>
         )}
       </Card.Content>

@@ -164,9 +164,9 @@ export const UPDATE_GOOD = gql`
 `;
 
 export const SHOPPING_ALL = gql`
-  query {
+  query shoppings {
     shoppings {
-      id
+      shoppingId
       createdAt
       event {
         id
@@ -184,7 +184,7 @@ export const SHOPPING_ALL = gql`
 export const SHOP_EVENT = gql`
   mutation shopEvent($id: ID!) {
     shopEvent(id: $id) {
-      id
+      shoppingId
       event {
         id
         title
@@ -198,8 +198,8 @@ export const SHOP_EVENT = gql`
 `;
 
 export const CANCEL_SHOPPING = gql`
-  mutation cancelShopping($id: ID!) {
-    cancelShopping(id: $id) {
+  mutation cancelShopping($shoppingId: ID!) {
+    cancelShopping(shoppingId: $shoppingId) {
       id
     }
   }

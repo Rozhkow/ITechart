@@ -27,7 +27,7 @@ function sortReducer(state, action) {
         event: _.sortBy(state.event, [action.column]),
         direction: "ascending",
       };
-    case "SHOPPING_ALL":
+    case "UPDATE_SHOPPING":
       return {
         ...state,
         event: action.payload,
@@ -37,32 +37,24 @@ function sortReducer(state, action) {
   }
 }
 
-// function setTotalPrice(){
-//   const totalPrice = event;
-//   return totalPrice
-// }
-
 function Shopping() {
   const { loading, data } = useQuery(SHOPPING_ALL);
 
   const [state, dispatch] = useReducer(sortReducer, {
-    checked: false,
     column: null,
     event: data ? data.shoppings : [],
     direction: null,
   });
 
+  useEffect(() => {
+    if (!loading && event && data) {
+      dispatch({ type: "UPDATE_SHOPPING", payload: data.shoppings });
+    }
+  }, [data, loading]);
+
   const { column, event, direction } = state;
 
   let totalPrice = 0;
-
-  // const [event] = data.shoppings;
-
-  // console.log(event.event)
-  // const events = event.event
-  // console.log(events)
-  // console.log(data.shoppings);
-  console.log(event);
 
   const [cancelShopping] = useMutation(CANCEL_SHOPPING, {
     update(proxy, result) {
@@ -84,12 +76,6 @@ function Shopping() {
     },
   });
 
-  useEffect(() => {
-    if (!loading && event) {
-      dispatch({ type: "SHOPPING_ALL", payload: event });
-    }
-  }, [event, loading]);
-
   return (
     <Container className="Shopping">
       <h1>Shopping cart:</h1>
@@ -98,37 +84,68 @@ function Shopping() {
           <Table.Row
             textAlign="center"
             sorted={
-              column === "title" && "autor" && "id" && "createdAt" && "price"
+              column === "title" &&
+              "autor" &&
+              "shoppingId" &&
+              "createdAt" &&
+              "price"
             }
           >
-            <Table.HeaderCell>title</Table.HeaderCell>
-            <Table.HeaderCell>autor</Table.HeaderCell>
-            <Table.HeaderCell>shoppingId</Table.HeaderCell>
-            <Table.HeaderCell>createdAt</Table.HeaderCell>
-            <Table.HeaderCell>price</Table.HeaderCell>
+            <Table.HeaderCell
+              onClick={() => dispatch({ type: "CHANGE_SORT", column: "title" })}
+            >
+              title
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              onClick={() => dispatch({ type: "CHANGE_SORT", column: "autor" })}
+            >
+              autor
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              onClick={() =>
+                dispatch({ type: "CHANGE_SORT", column: "shoppingId" })
+              }
+            >
+              shoppingId
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              onClick={() =>
+                dispatch({ type: "CHANGE_SORT", column: "createdAt" })
+              }
+            >
+              createdAt
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              onClick={() => dispatch({ type: "CHANGE_SORT", column: "price" })}
+            >
+              price
+            </Table.HeaderCell>
             <Table.HeaderCell>cancel</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {loading ? (
-            <h1>Loading goods..</h1>
+            <h1>Loading cart..</h1>
           ) : (
-            event.map(({ event: { title, autor, price }, createdAt, id }) => (
-              <Table.Row textAlign="center" key={id}>
-                <Table.Cell>{title}</Table.Cell>
-                <Table.Cell>{autor}</Table.Cell>
-                <Table.Cell>{id}</Table.Cell>
-                <Table.Cell>{createdAt}</Table.Cell>
-                <Table.Cell>{price}</Table.Cell>
-                <Table.Cell>
-                  <DeleteButton
-                    onConfirm={() => {
-                      cancelShopping({ variables: { id } });
-                    }}
-                  />
-                </Table.Cell>
-              </Table.Row>
-            ))
+            event &&
+            event.map(
+              ({ event: { title, autor, price }, createdAt, shoppingId }) => (
+                <Table.Row textAlign="center" key={shoppingId}>
+                  <Table.Cell>{title}</Table.Cell>
+                  <Table.Cell>{autor}</Table.Cell>
+                  <Table.Cell>{shoppingId}</Table.Cell>
+                  <Table.Cell>{createdAt}</Table.Cell>
+                  <Table.Cell>{price}</Table.Cell>
+                  <Table.Cell>
+                    <DeleteButton
+                      onConfirm={() => {
+                        cancelShopping({ variables: { shoppingId } });
+                      }}
+                    />
+                  </Table.Cell>
+                </Table.Row>
+              )
+            )
           )}
         </Table.Body>
       </Table>

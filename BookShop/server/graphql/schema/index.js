@@ -4,7 +4,7 @@ module.exports = buildSchema(`
 
 
 type Shopping {
-    id: ID!
+    shoppingId: ID!
     event: Event!
     createdAt: String!
     updatedAt: String!
@@ -70,7 +70,7 @@ type RootMutation {
     updateEvent(id: ID!, title: String!, description: String!, price: String!, autor: String!, pageNumber: String!, publishYear: String!): Event
     updateUser(id: ID!, username: String!, email: String!): User
     shopEvent(id: ID!): Shopping!
-    cancelShopping(id: ID!): Event!
+    cancelShopping(shoppingId: ID!): Event!
 }
 
 schema {
