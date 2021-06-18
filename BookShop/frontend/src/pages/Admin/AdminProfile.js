@@ -14,7 +14,8 @@ import { DELETE_USER_MUTATION } from "../../util/graphql";
 
 function sortReducer(state, action) {
   switch (action.type) {
-    case "CHANGE_SORT": debugger
+    case "CHANGE_SORT":
+      debugger;
       if (state.column === action.column) {
         return {
           ...state,
@@ -77,6 +78,7 @@ function AdminProfilePage() {
 
   const [deleteUser] = useMutation(DELETE_USER_MUTATION, {
     update(proxy, result) {
+      debugger;
       // TODO: remove users from cache
 
       const data = proxy.readQuery({

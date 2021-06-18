@@ -2,6 +2,12 @@ const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
 
+type Comment {
+    id: ID!
+    createdAt: String!
+    username: String!
+    body: String!
+  }
 
 type Shopping {
     shoppingId: ID!
@@ -18,6 +24,7 @@ type Event {
     autor: String!
     pageNumber: String!
     publishYear: String!
+    comments: [Comment]!
 }
 
 type User {
@@ -71,7 +78,10 @@ type RootMutation {
     updateUser(id: ID!, username: String!, email: String!): User
     shopEvent(id: ID!): Shopping!
     cancelShopping(shoppingId: ID!): Event!
+    createComment(id: String!, body: String!): Event!
+    deleteComment(id: ID!, commentId: ID!): Event!
 }
+
 
 schema {
     query: RootQuery
