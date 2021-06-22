@@ -8,6 +8,7 @@ const rootResolver = {
   ...usersResolvers,
   ...shoppingResolver,
   ...commentsResolvers,
+  Event: { commentCount: (parent) => parent.comments.length },
 };
 
 module.exports = rootResolver;

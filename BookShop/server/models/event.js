@@ -27,6 +27,16 @@ const eventSchema = new Schema({
     type: Number,
     required: true,
   },
+  comments: [
+    {
+      body: String,
+      username: String,
+      createdAt: String,
+    },
+  ],
+  commentCount: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("Event", eventSchema);

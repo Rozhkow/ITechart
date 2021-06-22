@@ -6,6 +6,7 @@ import {
   Accordion,
   Button,
   Message,
+  Label,
 } from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
@@ -21,7 +22,7 @@ import { SHOP_EVENT } from "../../../util/graphql";
 
 import img from "../../../img/1.jpg";
 
-function GoodCard({ good: { title, description, price, id } }) {
+function GoodCard({ good: { title, description, price, id, commentCount } }) {
   const { user } = useContext(AuthContext);
 
   const [shopEvent, { loading }] = useMutation(SHOP_EVENT, {
@@ -111,6 +112,14 @@ function GoodCard({ good: { title, description, price, id } }) {
             </Button.Content>
           </Button>
         )}
+        <Button labelPosition="right" as={Link} to={`/goods/${id}`}>
+          <Button color="blue" basic>
+            <Icon name="comments" />
+          </Button>
+          <Label basic color="blue" pointing="left">
+            {commentCount}
+          </Label>
+        </Button>
       </Card.Content>
     </Card>
   );

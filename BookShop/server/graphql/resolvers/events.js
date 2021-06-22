@@ -2,15 +2,13 @@ const { validateCreateEvent } = require("../../middleware/validators");
 const Event = require("../../models/event");
 const User = require("../../models/user");
 
-const { transformEvent } = require("./merge");
-
-const storeUpload = ({ stream, filename }) =>
-  new Promise((resolve, reject) =>
-    stream
-      .pipe(createWriteStream(filename))
-      .on("finish", () => resolve())
-      .on("error", reject)
-  );
+// const storeUpload = ({ stream, filename }) =>
+//   new Promise((resolve, reject) =>
+//     stream
+//       .pipe(createWriteStream(filename))
+//       .on("finish", () => resolve())
+//       .on("error", reject)
+//   );
 
 module.exports = {
   events: async () => {

@@ -25,6 +25,7 @@ type Event {
     pageNumber: String!
     publishYear: String!
     comments: [Comment]!
+    commentCount: Int!
 }
 
 type User {

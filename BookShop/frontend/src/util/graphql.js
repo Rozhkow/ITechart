@@ -108,6 +108,11 @@ export const FETCH_GOOD_QUERY = gql`
       autor
       pageNumber
       publishYear
+      comments {
+        id
+        createdAt
+        body
+      }
     }
   }
 `;
@@ -201,6 +206,32 @@ export const CANCEL_SHOPPING = gql`
   mutation cancelShopping($shoppingId: ID!) {
     cancelShopping(shoppingId: $shoppingId) {
       id
+    }
+  }
+`;
+
+export const DELETE_COMMENT = gql`
+  mutation deleteComment($id: ID!, $commentId: ID!) {
+    deleteComment(id: $id, commentId: $commentId) {
+      id
+      comments {
+        id
+        createdAt
+        body
+      }
+    }
+  }
+`;
+
+export const SUBMIT_COMMENT = gql`
+  mutation ($id: String!, $body: String!) {
+    createComment(id: $id, body: $body) {
+      id
+      comments {
+        id
+        body
+        createdAt
+      }
     }
   }
 `;
