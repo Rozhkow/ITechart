@@ -5,7 +5,6 @@ import {
   Image,
   Accordion,
   Button,
-  Message,
   Label,
 } from "semantic-ui-react";
 
@@ -112,6 +111,7 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
             </Button.Content>
           </Button>
         )}
+        {user && (
         <Button labelPosition="right" as={Link} to={`/goods/${id}`}>
           <Button color="blue" basic>
             <Icon name="comments" />
@@ -120,6 +120,7 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
             {commentCount}
           </Label>
         </Button>
+        )}
       </Card.Content>
     </Card>
   );
