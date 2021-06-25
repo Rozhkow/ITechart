@@ -24,120 +24,126 @@ function generateToken(user) {
 }
 
 module.exports = {
-  updateUser: async (args, req) => {
-    return User.findOneAndUpdate(
-      User.findById(args.id),
-
-      {
-        username: args.username,
-        email: args.email,
-      },
-      { new: true }
-    );
-  },
-  deleteUser: async ({ id }) => {
-    try {
-      const user = await User.findById(id);
-      // if (user.username === "admin") {
-      await user.delete();
-      return "User deleted successfully";
-      // } else {
-      //   throw new Error('Action not allowed');
-      // }
-    } catch (err) {
-      throw new Error(err);
-    }
-  },
-  getUser: async ({ id }) => {
-    try {
-      const user = await User.findById(id);
-      if (user) {
-        return user;
-      } else {
-        throw new Error("User not found");
+  Query: {
+    async getUser(_, { id }) {
+      try {
+        const user = await User.findById(id);
+        if (user) {
+          return user;
+        } else {
+          throw new Error("User not found");
+        }
+      } catch (err) {
+        throw new Error(err);
       }
-    } catch (err) {
-      throw new Error(err);
-    }
-  },
-  users: async () => {
-    try {
-      const users = await User.find();
-      return users.map((user) => {
-        return user;
-      });
-    } catch (err) {
-      throw err;
-    }
-  },
-  login: async ({ username, password }) => {
-    const { errors } = validateLoginInput(username, password);
-
-    const user = await User.findOne({ username });
-
-    if (!user) {
-      errors.general = "User not found";
-      throw new Error("User not found", { errors });
-    }
-
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      errors.general = "Wrong crendetials";
-      throw new Error("Wrong crendetials", { errors });
-    }
-
-    const token = generateToken(user);
-
-    return {
-      ...user._doc,
-      id: user._id,
-      token,
-    };
-  },
-
-  register: async ({
-    registerInput: { username, email, password, confirmPassword },
-  }) => {
-    {
-      // Validate user data
-      const { valid, errors } = validateRegisterInput(
-        username,
-        email,
-        password,
-        confirmPassword
-      );
-
-      if (!valid) {
-        throw new Error({ errors });
-      }
-      // Make sure that user doesn't already exist
-      const user = await User.findOne({ username });
-      if (user) {
-        throw new Error("Username is taken", {
-          errors: {
-            username: "This username is taken",
-          },
+    },
+    async users() {
+      try {
+        const users = await User.find();
+        return users.map((user) => {
+          return user;
         });
+      } catch (err) {
+        throw err;
       }
-      // hash password and create an auth token
-      password = await bcrypt.hash(password, 12);
+    },
+  },
+  Mutation: {
+    async updateUser(_, args, req) {
+      return User.findOneAndUpdate(
+        User.findById(args.id),
 
-      const newUser = new User({
-        email,
-        username,
-        password,
-        createdAt: new Date().toISOString(),
-      });
+        {
+          username: args.username,
+          email: args.email,
+        },
+        { new: true }
+      );
+    },
+    async deleteUser(_, { id }) {
+      try {
+        const user = await User.findById(id);
+        // if (user.username === "admin") {
+        await user.delete();
+        return "User deleted successfully";
+        // } else {
+        //   throw new Error('Action not allowed');
+        // }
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
 
-      const res = await newUser.save();
+    async login(_, { username, password }) {
+      const { errors } = validateLoginInput(username, password);
 
-      const token = generateToken(res);
+      const user = await User.findOne({ username });
+
+      if (!user) {
+        errors.general = "User not found";
+        throw new Error("User not found", { errors });
+      }
+
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        errors.general = "Wrong crendetials";
+        throw new Error("Wrong crendetials", { errors });
+      }
+
+      const token = generateToken(user);
 
       return {
-        ...res._doc,
-        id: res._id,
+        ...user._doc,
+        id: user._id,
         token,
       };
-    }
+    },
+
+    async register(
+      _,
+      { registerInput: { username, email, password, confirmPassword } }
+    ) {
+      {
+        // Validate user data
+        const { valid, errors } = validateRegisterInput(
+          username,
+          email,
+          password,
+          confirmPassword
+        );
+
+        if (!valid) {
+          throw new Error({ errors });
+        }
+        // Make sure that user doesn't already exist
+        const user = await User.findOne({ username });
+        if (user) {
+          throw new Error("Username is taken", {
+            errors: {
+              username: "This username is taken",
+            },
+          });
+        }
+        // hash password and create an auth token
+        password = await bcrypt.hash(password, 12);
+
+        const newUser = new User({
+          email,
+          username,
+          password,
+          createdAt: new Date().toISOString(),
+        });
+
+        const res = await newUser.save();
+
+        const token = generateToken(res);
+
+        return {
+          ...res._doc,
+          id: res._id,
+          token,
+        };
+      }
+    },
   },
 };

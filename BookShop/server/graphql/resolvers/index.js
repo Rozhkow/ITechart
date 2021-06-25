@@ -3,12 +3,17 @@ const usersResolvers = require("./users");
 const shoppingResolver = require("./shopping");
 const commentsResolvers = require("./comments");
 
-const rootResolver = {
-  ...eventsResolver,
-  ...usersResolvers,
-  ...shoppingResolver,
-  ...commentsResolvers,
+module.exports = {
+  Query: {
+    ...eventsResolver.Query,
+    ...usersResolvers.Query,
+    ...shoppingResolver.Query,
+  },
+  Mutation: {
+    ...eventsResolver.Mutation,
+    ...usersResolvers.Mutation,
+    ...shoppingResolver.Mutation,
+    ...commentsResolvers.Mutation,
+  },
   Event: { commentCount: (parent) => parent.comments.length },
 };
-
-module.exports = rootResolver;

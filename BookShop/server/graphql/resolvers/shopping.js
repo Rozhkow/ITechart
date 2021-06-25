@@ -71,37 +71,41 @@ const transformEvent = (event) => {
 };
 
 module.exports = {
-  shoppings: async (args, req) => {
-    try {
-      const shoppings = await Shopping.find();
-      return shoppings.map((shopping) => {
-        return transformShopping(shopping);
+  Query: {
+    async shoppings(_, args, req) {
+      try {
+        const shoppings = await Shopping.find();
+        return shoppings.map((shopping) => {
+          return transformShopping(shopping);
+        });
+      } catch (err) {
+        throw err;
+      }
+    },
+  },
+  Mutation: {
+    async shopEvent(_, args, req) {
+      const fetchedEvent = await Event.findById({ _id: args.id });
+      const shopping = new Shopping({
+        event: fetchedEvent,
       });
-    } catch (err) {
-      throw err;
-    }
-  },
-  shopEvent: async (args, req) => {
-    const fetchedEvent = await Event.findById({ _id: args.id });
-    const shopping = new Shopping({
-      event: fetchedEvent,
-    });
-    const result = await shopping.save();
-    return transformShopping(result);
-  },
-  cancelShopping: async (args) => {
-    try {
-      const shopping = await Shopping.findById(args.shoppingId).populate(
-        "event"
-      );
-      const event = {
-        ...shopping.event._doc,
-        shoppingId: shopping.event.id,
-      };
-      await shopping.delete();
-      return event;
-    } catch (err) {
-      throw err;
-    }
+      const result = await shopping.save();
+      return transformShopping(result);
+    },
+    async cancelShopping(_, args) {
+      try {
+        const shopping = await Shopping.findById(args.shoppingId).populate(
+          "event"
+        );
+        const event = {
+          ...shopping.event._doc,
+          shoppingId: shopping.event.id,
+        };
+        await shopping.delete();
+        return event;
+      } catch (err) {
+        throw err;
+      }
+    },
   },
 };

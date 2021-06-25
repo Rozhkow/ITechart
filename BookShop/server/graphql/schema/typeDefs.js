@@ -1,6 +1,6 @@
-const { buildSchema } = require("graphql");
+const { gql } = require("apollo-server");
 
-module.exports = buildSchema(`
+module.exports = gql(`
 
 type Comment {
     id: ID!
@@ -60,7 +60,7 @@ input RegisterInput {
     email: String!
 }
 
-type RootQuery {
+type Query {
     getUser(id: ID!): User
     getEvent(id: ID!): Event
     users: [User]
@@ -69,7 +69,7 @@ type RootQuery {
 }
 
 
-type RootMutation {
+type Mutation {
     register(registerInput: RegisterInput): User
     login(username: String!, password: String!): User
     createEvent(eventInput: EventInput): Event
@@ -81,11 +81,5 @@ type RootMutation {
     cancelShopping(shoppingId: ID!): Event!
     createComment(id: String!, body: String!): Event!
     deleteComment(id: ID!, commentId: ID!): Event!
-}
-
-
-schema {
-    query: RootQuery
-    mutation: RootMutation
 }
 `);
