@@ -231,7 +231,9 @@ export const SUBMIT_COMMENT = gql`
         id
         body
         createdAt
+        username
       }
+      commentCount
     }
   }
 `;
