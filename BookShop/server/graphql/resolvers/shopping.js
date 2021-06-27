@@ -4,6 +4,8 @@ const Shopping = require("../../models/shopping");
 const { dateToString } = require("../../date");
 const DataLoader = require("dataloader");
 
+const checkAuth = require("../../middleware/is-auth");
+
 const eventLoader = new DataLoader((eventIds) => {
   return events(eventIds);
 });
@@ -84,11 +86,14 @@ module.exports = {
     },
   },
   Mutation: {
-    async shopEvent(_, args, req) {
+    async shopEvent(_, args, context) {
+      const { username } = checkAuth(context);
       const fetchedEvent = await Event.findById({ _id: args.id });
       const shopping = new Shopping({
         event: fetchedEvent,
+        username: username,
       });
+      
       const result = await shopping.save();
       return transformShopping(result);
     },

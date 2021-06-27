@@ -185,6 +185,7 @@ export const SHOPPING_ALL = gql`
         pageNumber
         publishYear
       }
+      username
     }
   }
 `;
@@ -199,6 +200,7 @@ export const SHOP_EVENT = gql`
         autor
         price
       }
+      username
       createdAt
       updatedAt
     }

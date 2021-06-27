@@ -12,6 +12,7 @@ type Comment {
 type Shopping {
     shoppingId: ID!
     event: Event!
+    username: String!
     createdAt: String!
     updatedAt: String!
 }

@@ -1,7 +1,9 @@
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useState, useReducer, useEffect, useContext } from "react";
 import _ from "lodash";
 import { useQuery, useMutation } from "@apollo/client";
 import { Table, Button, Container, Icon } from "semantic-ui-react";
+
+import { AuthContext } from "../../../context/auth";
 
 import "./Shopping.css";
 
@@ -39,7 +41,8 @@ function sortReducer(state, action) {
 
 function Shopping() {
   const { loading, data } = useQuery(SHOPPING_ALL);
-
+  const { user } = useContext(AuthContext);
+  
   const [state, dispatch] = useReducer(sortReducer, {
     column: null,
     event: data ? data.shoppings : [],
@@ -129,8 +132,9 @@ function Shopping() {
           ) : (
             event &&
             event.map(
-              ({ event: { title, autor, price }, createdAt, shoppingId }) => (
-                <Table.Row textAlign="center" key={shoppingId}>
+              ({ event: { title, autor, price }, createdAt, shoppingId, username }) => (
+                <>
+                {username === user.username && (<Table.Row textAlign="center" key={shoppingId}>
                   <Table.Cell>{title}</Table.Cell>
                   <Table.Cell>{autor}</Table.Cell>
                   <Table.Cell>{shoppingId}</Table.Cell>
@@ -143,12 +147,16 @@ function Shopping() {
                       }}
                     />
                   </Table.Cell>
-                </Table.Row>
+                  </Table.Row>)}
+                </>
               )
             )
           )}
         </Table.Body>
       </Table>
+      {/* <div>
+        {event.map({username === user.username ? (({event: { price } })=> (totalPrice += +price)) : null})}
+      </div> */}
       <div style={{ display: "none" }}>
         {event.map(({ event: { price } }) => (totalPrice += +price))}
       </div>

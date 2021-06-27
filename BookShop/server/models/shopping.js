@@ -6,10 +6,9 @@ const shoppingSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Event",
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
+    username: {
+      type: String,
+    }
   },
   { timestamps: true }
 );
