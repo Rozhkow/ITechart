@@ -56,19 +56,19 @@ function SingleGood(props) {
       const data = proxy.readQuery({
         query: FETCH_GOOD_QUERY,
       });
-      let newData = [...data.getEvent];
-      newData = [result.data.getEvent, ...newData];
-      proxy.writeQuery({
-        query: FETCH_GOOD_QUERY,
-        data: {
-          ...data,
-          getEvent: {
-            newData,
-          },
-        },
-      });
+      return data
+      // let newData = [...data.getEvent];
+      // newData = [result.data.getEvent, ...newData];
+      // proxy.writeQuery({
+      //   query: FETCH_GOOD_QUERY,
+      //   data: {
+      //     ...data,
+      //     getEvent: {
+      //       newData,
+      //     },
+      //   },
+      // });
     },
-    variables: { commentId: id, id: id },
   });
 
   const [submitComment] = useMutation(SUBMIT_COMMENT, {
@@ -97,6 +97,7 @@ function SingleGood(props) {
       pageNumber,
       publishYear,
       comments,
+      commentCount
     } = data.getEvent;
 
     return (
@@ -175,9 +176,11 @@ function SingleGood(props) {
                   <Card.Header>{comment.username}</Card.Header>
                   <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
                   <Card.Description>{comment.body}</Card.Description>
-                  <hr />
+                  <hr /> 
                   {user && user.username === comment.username && (
-                    <DeleteButton onConfirm={deleteComment} />
+                    <DeleteButton onConfirm={() => {
+                      deleteComment({ variables: { id:id, commentId: comment.id } });
+                    }}/>
                   )}
                 </Card.Content>
               </Card>

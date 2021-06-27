@@ -38,14 +38,15 @@ module.exports = {
         const commentIndex = event.comments.findIndex(
           (c) => c.id === commentId
         );
-        if (event.comments[commentIndex].username === username) {
+        console.log(commentIndex)
+        if (event.comments[commentIndex].username) {
           event.comments.splice(commentIndex, 1);
           await event.save();
           return event;
         } else {
           throw new Error("Action not allowed");
         }
-      } else {
+      } else { 
         throw new Error("Post not found");
       }
     },

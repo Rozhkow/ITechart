@@ -78,7 +78,7 @@ type Mutation {
     updateEvent(id: ID!, title: String!, description: String!, price: String!, autor: String!, pageNumber: String!, publishYear: String!): Event
     updateUser(id: ID!, username: String!, email: String!): User
     shopEvent(id: ID!): Shopping!
-    cancelShopping(shoppingId: ID!): Event!
+    cancelShopping(shoppingId: ID!): String!
     createComment(id: String!, body: String!): Event!
     deleteComment(id: ID!, commentId: ID!): Event!
 }

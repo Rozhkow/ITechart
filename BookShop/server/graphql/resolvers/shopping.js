@@ -102,7 +102,7 @@ module.exports = {
           shoppingId: shopping.event.id,
         };
         await shopping.delete();
-        return event;
+        return "Comment closed successfully";
       } catch (err) {
         throw err;
       }

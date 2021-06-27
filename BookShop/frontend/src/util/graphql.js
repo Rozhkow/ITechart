@@ -7,6 +7,7 @@ export const FETCH_ITEMS_QUERY = gql`
       title
       description
       price
+      commentCount
     }
   }
 `;
@@ -108,8 +109,10 @@ export const FETCH_GOOD_QUERY = gql`
       autor
       pageNumber
       publishYear
+      commentCount
       comments {
         id
+        username
         createdAt
         body
       }
@@ -204,9 +207,7 @@ export const SHOP_EVENT = gql`
 
 export const CANCEL_SHOPPING = gql`
   mutation cancelShopping($shoppingId: ID!) {
-    cancelShopping(shoppingId: $shoppingId) {
-      id
-    }
+    cancelShopping(shoppingId: $shoppingId) 
   }
 `;
 
@@ -218,6 +219,7 @@ export const DELETE_COMMENT = gql`
         id
         createdAt
         body
+        username
       }
     }
   }
