@@ -1,0 +1,16 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "protractor conf.js",
+    "wd:update": "webdriver-manager update"
+  },
+  "author": "Dima",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.3.4",
+    "protractor": "^7.0.0"
+  }
+}
