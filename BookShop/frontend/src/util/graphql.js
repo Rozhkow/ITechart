@@ -241,3 +241,9 @@ export const SUBMIT_COMMENT = gql`
     }
   }
 `;
+
+export const uploadFileMutation = gql`
+  mutation UploadFile($file: Upload!) {
+    uploadFile(file: $file)
+  }
+`;

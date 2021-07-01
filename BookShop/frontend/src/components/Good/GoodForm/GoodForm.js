@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useCallback  } from "react";
 import { Form, Button, Container } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 
-import { useForm } from "../../../util/hooks";
+import { useForm } from "react-hook-form";
+
+import { useFormm } from "../../../util/hooks";
 
 import "./GoodForm.css";
 
 import { CREATE_GOOD_MUTATION } from "../../../util/graphql";
 import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
+import { uploadFileMutation } from "../../../util/graphql";
+
+import { useDropzone } from "react-dropzone";
 
 import FormComponent from "../../Authentication/FormComponent";
+
+
 
 const GoodFieldSection = ({ values, errors, onChange }) => (
   <>
@@ -60,12 +67,14 @@ const GoodFieldSection = ({ values, errors, onChange }) => (
 );
 
 function GoodForm(props) {
+ 
   const [errors, setErrors] = useState({});
+  
 
   const data = props.data;
   console.log(data);
 
-  const { values, onChange, onSubmit } = useForm(createGoodCallback, {
+  const { values, onChange, onSubmit } = useFormm(createGoodCallback, {
     // picture: "",
     title: "",
     description: "",
@@ -123,7 +132,6 @@ function GoodForm(props) {
 
   return (
     <Container className="GoodCard">
-
       <FormComponent
         title="Create a good:"
         onChange={onChange}

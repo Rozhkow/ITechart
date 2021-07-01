@@ -2,6 +2,8 @@ const { gql } = require("apollo-server");
 
 module.exports = gql(`
 
+
+  
 type Comment {
     id: ID!
     createdAt: String!
@@ -67,6 +69,7 @@ type Query {
     users: [User]
     events: [Event]
     shoppings: [Shopping!]!
+    files: [String]
 }
 
 

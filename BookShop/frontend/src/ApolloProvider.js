@@ -1,13 +1,16 @@
 import React from "react";
 import App from "./App/App";
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache, from } from "@apollo/client";
 import { createHttpLink } from "apollo-link-http";
 import { ApolloProvider } from "@apollo/client/react";
 import { setContext } from "apollo-link-context";
 
+import { createUploadLink } from "apollo-upload-client";
+
 const httpLink = createHttpLink({
   uri: "http://localhost:8000/graphql", // endpoint to our localserver
 });
+
 
 const authLink = setContext(() => {
   const token = localStorage.getItem("jwtToken"); // let us keep pair of key/defenition in brouser
@@ -19,7 +22,7 @@ const authLink = setContext(() => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([authLink.concat(httpLink)]),
   cache: new InMemoryCache(),
 });
 

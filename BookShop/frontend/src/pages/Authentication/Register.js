@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useMutation } from "@apollo/client";
 
 import { AuthContext } from "../../context/auth";
-import { useForm } from "../../util/hooks";
+import { useFormm } from "../../util/hooks";
 
 import FormComponent from "../../components/Authentication/FormComponent";
 import { RegiFieldsSection } from "../../components/Authentication/RegisterComponent";
@@ -14,7 +14,7 @@ function Register(props) {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
-  const { onChange, onSubmit, values } = useForm(registerUser, {
+  const { onChange, onSubmit, values } = useFormm(registerUser, {
     username: "",
     email: "",
     password: "",

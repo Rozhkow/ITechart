@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "",
     "start": "nodemon app.js",
     "serve": "node index.js"
   },
@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^2.25.2",
+    "apollo-upload-server": "^7.1.0",
     "bcryptjs": "^2.4.3",
     "dataloader": "^2.0.0",
     "express": "^4.17.1",

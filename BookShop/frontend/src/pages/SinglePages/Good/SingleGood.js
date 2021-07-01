@@ -143,7 +143,7 @@ function SingleGood(props) {
           ) : null}
           <Grid.Column width={5}>
             <h1>Comments:</h1>
-            {user && (
+            {user ? (
               <Card fluid>
                 <Card.Content>
                   <p>Post a comment:</p>
@@ -169,7 +169,7 @@ function SingleGood(props) {
                   </Form>
                 </Card.Content>
               </Card>
-            )}
+            ) : (<Card style={{padding: 10}}><h1>If you wanna stay your comment, you need to register.</h1></Card>)}
             {comments.map((comment) => (
               <Card fluid key={comment.id}>
                 <Card.Content>
@@ -177,7 +177,7 @@ function SingleGood(props) {
                   <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
                   <Card.Description>{comment.body}</Card.Description>
                   <hr /> 
-                  {user && user.username === comment.username && (
+                  {user && (user.username === comment.username || user.admin === true) && (
                     <DeleteButton onConfirm={() => {
                       deleteComment({ variables: { id:id, commentId: comment.id } });
                     }}/>

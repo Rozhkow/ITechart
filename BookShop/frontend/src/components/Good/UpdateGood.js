@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Container } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 
-import { useForm } from "../../util/hooks";
+import { useFormm } from "../../util/hooks";
 
 import "./GoodForm/GoodForm.css";
 
@@ -20,7 +20,7 @@ function UpdateGood({
 }) {
   const [errors, setErrors] = useState({});
 
-  const { values, onChange, onSubmit } = useForm(updateGoodCallback, {
+  const { values, onChange, onSubmit } = useFormm(updateGoodCallback, {
     // picture: "",
     id: id,
     title: title,

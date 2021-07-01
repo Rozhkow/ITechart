@@ -15,6 +15,8 @@ const server = new ApolloServer({
   context: ({ req }) => ({ req, pubsub }),
 });
 
+
+
 mongoose
   .connect(MONGODB)
   .then(() => {
