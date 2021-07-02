@@ -18,6 +18,11 @@
   height: 100%;
 }
 
+.ui.card > .content,
+.ui.cards > .card > .content {
+  box-shadow: 2px 2px 6px rgb(0 0 0 / 12%);
+}
+
 @media screen and (max-width: 576px) {
   .ui.container.mainContainer {
     /* width: 100vw!important; */

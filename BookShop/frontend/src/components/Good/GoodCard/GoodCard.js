@@ -23,7 +23,7 @@ import img from "../../../img/1.jpg";
 
 function GoodCard({ good: { title, description, price, id, commentCount } }) {
   const { user } = useContext(AuthContext);
-
+  console.log(img)
   const [shopEvent, { loading }] = useMutation(SHOP_EVENT, {
     // update(proxy, result) {
     //   // TODO: remove users from cache
@@ -75,7 +75,7 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
   const GoodCard = (
     <Card>
       <Card.Content>
-        <Image centered size="medium" src={img} />
+        <Image centered size="medium" src={img} as={Link} to={`/goods/${id}`}/>
         <Card.Header as={Link} to={`/goods/${id}`}>
           {title}
         </Card.Header>
@@ -95,6 +95,7 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
       <Card.Content extra>
         <Card.Meta>{price}$</Card.Meta>
         <br />
+        <div style={{display: "flex", justifyContent: "space-between"}}>
         {user?.admin && <DeleteButton id={id} onConfirm={deleteEvent} />}
         {user && !user.admin && (
           <Button
@@ -112,15 +113,16 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
           </Button>
         )}
         {user && (
-        <Button labelPosition="right" as={Link} to={`/goods/${id}`}>
+        <Button labelPosition="right" as={Link} to={`/goods/${id}`} className="commentButton">
           <Button color="blue" basic>
             <Icon name="comments" />
           </Button>
-          <Label basic color="blue" pointing="left">
+          <Label basic color="blue" pointing="left" >
             {commentCount}
           </Label>
         </Button>
         )}
+        </div>
       </Card.Content>
     </Card>
   );

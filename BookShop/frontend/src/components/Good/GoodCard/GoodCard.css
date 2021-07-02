@@ -5,3 +5,9 @@
 .ui.grid > .row {
   padding-top: 2rem;
 }
+
+.ui.basic.blue.button:hover,
+.ui.basic.blue.buttons:hover .button:hover {
+  color: #ffffff !important;
+  background-color: #2185d0 !important;
+}
