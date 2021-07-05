@@ -242,8 +242,70 @@ export const SUBMIT_COMMENT = gql`
   }
 `;
 
-export const uploadFileMutation = gql`
-  mutation UploadFile($file: Upload!) {
-    uploadFile(file: $file)
+export const ADDING_ORDER = gql`
+  mutation addingOrder($name: String!, $lastname: String!, $address: String!, $shoppingId: ID!) {
+    addingOrder(name: $name, lastname: $lastname, address: $address, shoppingId: $shoppingId) {
+      name
+      lastname
+      address
+      shopping {
+        event {
+          id
+          title
+          autor
+          price
+        }
+        username
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+export const DELETE_ORDER = gql`
+  mutation deleteOrder($orderId: ID!) {
+    deleteOrder(orderId: $orderId)
+  }
+`;
+
+export const ORDER_ALL = gql`
+  query orders {
+    orders {
+      name
+      lastname
+      address
+      shopping {
+        username
+        createdAt
+        event {
+          id
+          title
+          autor
+          price
+        }
+      }
+    }
+  }
+`;
+
+export const FETCH_ORDER_QUERY = gql`
+  query getOrder($orderId: ID!){
+    getOrder(orderId: $orderId){
+      name
+      lastname
+      address
+      shopping {
+        event {
+          id
+          title
+          autor
+          price
+        }
+        username
+        createdAt
+        updatedAt
+      }
+    }
   }
 `;

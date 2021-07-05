@@ -1,7 +1,7 @@
 import React, { useState, useReducer, useEffect, useContext } from "react";
 import _ from "lodash";
 import { useQuery, useMutation } from "@apollo/client";
-import { Table, Button, Container, Icon } from "semantic-ui-react";
+import { Table, Button, Container, Icon, Accordion, Form } from "semantic-ui-react";
 
 import { AuthContext } from "../../../context/auth";
 
@@ -11,6 +11,9 @@ import DeleteButton from "../../../components/DeleteButton";
 
 import { SHOPPING_ALL } from "../../../util/graphql";
 import { CANCEL_SHOPPING } from "../../../util/graphql";
+import { ADDING_ORDER } from "../../../util/graphql";
+
+import { useFormm } from "../../../util/hooks";
 
 function sortReducer(state, action) {
   switch (action.type) {
@@ -42,6 +45,12 @@ function sortReducer(state, action) {
 function Shopping() {
   const { loading, data } = useQuery(SHOPPING_ALL);
   const { user } = useContext(AuthContext);
+
+  const { onChange, onSubmit, values } = useFormm(orderUserCallback, {
+    name: "",
+    lastname: "",
+    address: "",
+  });
   
   const [state, dispatch] = useReducer(sortReducer, {
     column: null,
@@ -58,6 +67,11 @@ function Shopping() {
   const { column, event, direction } = state;
 
   let totalPrice = 0;
+
+  const [addingOrder] = useMutation(ADDING_ORDER, {
+    variables: {name: values.name, lastname: values.lastname, address: values.address, shoppingId: "60e3271dceae6036c8d35754"}
+  });
+  
 
   const [cancelShopping] = useMutation(CANCEL_SHOPPING, {
     update(proxy, result) {
@@ -78,6 +92,43 @@ function Shopping() {
       });
     },
   });
+
+  function orderUserCallback() {
+    addingOrder();
+  }
+
+  const panels = [
+    {
+      title: {
+        content: <Button className="order">Making an order</Button>,
+      },
+      content: {
+        content: (
+          <Form onSubmit={onSubmit}>
+            <Form.Input
+              placeholder="Name"
+              name="name"
+              onChange={onChange}
+              value={values.name}
+            />
+            <Form.Input
+              placeholder="Last Name"
+              name="lastname"
+              onChange={onChange}
+              value={values.lastname}
+            />
+            <Form.Input
+              placeholder="Address"
+              name="address"
+              onChange={onChange}
+              value={values.address}
+            />
+            <Button className="order">Order</Button>
+          </Form>
+        ),
+      },
+    }
+  ]
 
   return (
     <Container className="Shopping">
@@ -161,6 +212,8 @@ function Shopping() {
         {event.map(({ event: { price } }) => (totalPrice += +price))}
       </div>
       <h1>Total price: {totalPrice}$</h1>
+
+      <Accordion panels={panels} />
     </Container>
   );
 }

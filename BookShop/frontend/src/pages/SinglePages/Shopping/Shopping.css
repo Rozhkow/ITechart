@@ -2,3 +2,13 @@
   display: flex !important;
   flex-direction: column !important;
 }
+
+.order {
+  color: white !important;
+  background-color: #01d1d1 !important;
+}
+
+.order:hover {
+  color: rgb(255, 255, 255) !important;
+  background-color: #24b6b6 !important;
+}

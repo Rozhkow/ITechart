@@ -2,14 +2,23 @@ const { gql } = require("apollo-server");
 
 module.exports = gql(`
 
-
+type Order {
+    orderId: ID!
+    name: String!
+    lastname: String!
+    address: String!
+    paymentMethod: String!
+    totalPrice: String!
+    createdAt: String!
+    shopping: Shopping!
+}
   
 type Comment {
     id: ID!
     createdAt: String!
     username: String!
     body: String!
-  }
+}
 
 type Shopping {
     shoppingId: ID!
@@ -69,9 +78,9 @@ type Query {
     users: [User]
     events: [Event]
     shoppings: [Shopping!]!
-    files: [String]
+    orders: [Order]
+    getOrder(orderId: ID!): Order
 }
-
 
 type Mutation {
     register(registerInput: RegisterInput): User
@@ -85,5 +94,7 @@ type Mutation {
     cancelShopping(shoppingId: ID!): String!
     createComment(id: String!, body: String!): Event!
     deleteComment(id: ID!, commentId: ID!): Event!
+    addingOrder(name: String!, lastname: String!, address: String!, shoppingId: ID!): Order
+    deleteOrder(orderId: ID!): String!
 }
 `);

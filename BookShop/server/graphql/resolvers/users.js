@@ -28,7 +28,6 @@ module.exports = {
     async getUser(_, { id }) {
       try {
         const user = await User.findById(id);
-        console.log(user)
         if (user) {
           return user;
         } else {
