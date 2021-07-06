@@ -84,9 +84,9 @@ function SingleGood(props) {
 
   console.log(data);
   console.log(id);
-  let goodMarkup;
+  
   if (!data) {
-    goodMarkup = <p>Loading good..</p>;
+    <p>Loading good..</p>;
   } else {
     const {
       title,
@@ -96,8 +96,7 @@ function SingleGood(props) {
       autor,
       pageNumber,
       publishYear,
-      comments,
-      commentCount
+      comments
     } = data.getEvent;
 
     return (

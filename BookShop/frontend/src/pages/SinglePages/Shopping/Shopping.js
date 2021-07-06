@@ -1,7 +1,7 @@
-import React, { useState, useReducer, useEffect, useContext } from "react";
+import React, { useReducer, useEffect, useContext } from "react";
 import _ from "lodash";
 import { useQuery, useMutation } from "@apollo/client";
-import { Table, Button, Container, Icon, Accordion, Form } from "semantic-ui-react";
+import { Table, Button, Container, Accordion, Form } from "semantic-ui-react";
 
 import { AuthContext } from "../../../context/auth";
 
@@ -59,12 +59,12 @@ function Shopping() {
   });
 
   useEffect(() => {
-    if (!loading && event && data) {
+    if (!loading && data) {
       dispatch({ type: "UPDATE_SHOPPING", payload: data.shoppings });
     }
   }, [data, loading]);
 
-  const { column, event, direction } = state;
+  const { column, event } = state;
 
   let totalPrice = 0;
 

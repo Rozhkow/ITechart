@@ -11,6 +11,7 @@ import ReactPaginate from "react-paginate";
 import "./AdminProfile.css";
 import { ALL_USERS } from "../../util/graphql";
 import { DELETE_USER_MUTATION } from "../../util/graphql";
+import { ORDER_ALL } from "../../util/graphql";
 
 function sortReducer(state, action) {
   switch (action.type) {
@@ -45,6 +46,11 @@ function AdminProfilePage() {
 
   const { loading, data } = useQuery(ALL_USERS);
 
+  const { orderData } = useQuery(ORDER_ALL);
+
+  
+  console.log(orderData)
+
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const [state, dispatch] = useReducer(sortReducer, {
@@ -61,7 +67,7 @@ function AdminProfilePage() {
 
   // Pagination
 
-  const { column, users, direction } = state;
+  const { column, users } = state;
 
   const [pageNumber, setPageNumber] = useState(0);
   const usersPerPage = 5;
@@ -71,10 +77,6 @@ function AdminProfilePage() {
     setPageNumber(selected);
   };
 
-  const csvReport = {
-    filename: "Report.csv",
-    data: users,
-  };
 
   const [deleteUser] = useMutation(DELETE_USER_MUTATION, {
     update(proxy, result) {
@@ -160,7 +162,7 @@ function AdminProfilePage() {
           ) : (
             users &&
             users
-              .filter((val) => {
+              .filter(val => {
                 if (searchTerm === "") {
                   return val;
                 } else if (
@@ -178,7 +180,7 @@ function AdminProfilePage() {
                       onClick={() =>
                         selectedUsers.includes(id)
                           ? setSelectedUsers((set) =>
-                              set.filter((selectedId) => selectedId != id)
+                              set.filter((selectedId) => selectedId !== id)
                             )
                           : setSelectedUsers([...selectedUsers, id])
                       }

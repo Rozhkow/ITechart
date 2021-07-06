@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
 
 function MainNavigation() {
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   // When we want to go to another page, navbarItem will be active
   const pathname = window.location.pathname;

@@ -1,5 +1,5 @@
-import React, { useState, useCallback  } from "react";
-import { Form, Button, Container } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Form, Container } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 
 
@@ -9,8 +9,8 @@ import { useFormm } from "../../../util/hooks";
 import "./GoodForm.css";
 
 import { CREATE_GOOD_MUTATION } from "../../../util/graphql";
-import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
-import { uploadFileMutation } from "../../../util/graphql";
+// import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
+// import { uploadFileMutation } from "../../../util/graphql";
 
 
 import FormComponent from "../../Authentication/FormComponent";
@@ -83,7 +83,7 @@ function GoodForm(props) {
     publishYear: "",
   });
 
-  const [createEvent, { loading }] = useMutation(CREATE_GOOD_MUTATION, {
+  const [createEvent] = useMutation(CREATE_GOOD_MUTATION, {
     variables: values,
     update(proxy, result) {
       // TODO: remove goods from cache

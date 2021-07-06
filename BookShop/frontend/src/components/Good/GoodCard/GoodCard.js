@@ -23,7 +23,6 @@ import img from "../../../img/1.jpg";
 
 function GoodCard({ good: { title, description, price, id, commentCount } }) {
   const { user } = useContext(AuthContext);
-  console.log(img)
   const [shopEvent, { loading }] = useMutation(SHOP_EVENT, {
     // update(proxy, result) {
     //   // TODO: remove users from cache
@@ -45,8 +44,6 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
     // },
     variables: { id: id },
   });
-
-  console.log(shopEvent);
 
   const [toggle, handleClick] = React.useState(0);
 

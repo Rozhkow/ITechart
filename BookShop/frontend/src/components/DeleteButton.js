@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Icon } from "semantic-ui-react";
 
 import { ConfirmPopup } from "./ConfirmPopup";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 function DeleteButton({ onConfirm }) {
   const [confirmOpen, setConfirmOpen] = useState(false);

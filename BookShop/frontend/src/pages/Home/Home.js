@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useReducer } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Container, Grid } from "semantic-ui-react";
 
 import GoodCard from "../../components/Good/GoodCard/GoodCard";

@@ -19,9 +19,8 @@ function SingleUser(props) {
 
   console.log(data);
 
-  let userMarkup;
   if (!data) {
-    userMarkup = <p>Loading user..</p>;
+    <p>Loading user..</p>;
   } else {
     const { username, email, createdAt, id } = data.getUser;
 
