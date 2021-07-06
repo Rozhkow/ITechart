@@ -19,6 +19,7 @@ import Footer from "../components/Navigation/Footer";
 import SingleUser from "../pages/SinglePages/User/SingleUser";
 import SingleGood from "../pages/SinglePages/Good/SingleGood";
 import ShoppingPage from "../pages/SinglePages/Shopping/Shopping";
+import Orders from "../pages/Orders/orders";
 
 // parameter EXACT need to us because it desables partial matching for
 // routs and we can be sure that it returns route only in case that our way match to current URL
@@ -36,6 +37,7 @@ function App() {
           <AuthRoute exact path="/adminProfile" component={AdminProfilePage} />
           <AuthRoute exact path="/shopping" component={ShoppingPage} />
           <AuthRoute exact path="/users/:id" component={SingleUser} />
+          <AuthRoute exact path="/orders" component={Orders} />
           <Route exact path="/goods/:id" component={SingleGood} />
           <Footer />
         </Container>

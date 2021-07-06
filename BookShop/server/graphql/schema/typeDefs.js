@@ -9,7 +9,6 @@ type Order {
     address: String!
     paymentMethod: String!
     totalPrice: String!
-    createdAt: String!
     shopping: Shopping!
 }
   

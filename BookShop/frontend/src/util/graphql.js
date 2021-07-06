@@ -209,7 +209,7 @@ export const SHOP_EVENT = gql`
 
 export const CANCEL_SHOPPING = gql`
   mutation cancelShopping($shoppingId: ID!) {
-    cancelShopping(shoppingId: $shoppingId) 
+    cancelShopping(shoppingId: $shoppingId)
   }
 `;
 
@@ -243,8 +243,18 @@ export const SUBMIT_COMMENT = gql`
 `;
 
 export const ADDING_ORDER = gql`
-  mutation addingOrder($name: String!, $lastname: String!, $address: String!, $shoppingId: ID!) {
-    addingOrder(name: $name, lastname: $lastname, address: $address, shoppingId: $shoppingId) {
+  mutation addingOrder(
+    $name: String!
+    $lastname: String!
+    $address: String!
+    $shoppingId: ID!
+  ) {
+    addingOrder(
+      name: $name
+      lastname: $lastname
+      address: $address
+      shoppingId: $shoppingId
+    ) {
       name
       lastname
       address
@@ -272,6 +282,7 @@ export const DELETE_ORDER = gql`
 export const ORDER_ALL = gql`
   query orders {
     orders {
+      orderId
       name
       lastname
       address
@@ -290,8 +301,8 @@ export const ORDER_ALL = gql`
 `;
 
 export const FETCH_ORDER_QUERY = gql`
-  query getOrder($orderId: ID!){
-    getOrder(orderId: $orderId){
+  query getOrder($orderId: ID!) {
+    getOrder(orderId: $orderId) {
       name
       lastname
       address

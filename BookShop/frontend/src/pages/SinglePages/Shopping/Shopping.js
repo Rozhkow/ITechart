@@ -51,7 +51,7 @@ function Shopping() {
     lastname: "",
     address: "",
   });
-  
+
   const [state, dispatch] = useReducer(sortReducer, {
     column: null,
     event: data ? data.shoppings : [],
@@ -69,9 +69,13 @@ function Shopping() {
   let totalPrice = 0;
 
   const [addingOrder] = useMutation(ADDING_ORDER, {
-    variables: {name: values.name, lastname: values.lastname, address: values.address, shoppingId: "60e3271dceae6036c8d35754"}
+    variables: {
+      name: values.name,
+      lastname: values.lastname,
+      address: values.address,
+      shoppingId: "60e3271dceae6036c8d35754",
+    },
   });
-  
 
   const [cancelShopping] = useMutation(CANCEL_SHOPPING, {
     update(proxy, result) {
@@ -123,12 +127,14 @@ function Shopping() {
               onChange={onChange}
               value={values.address}
             />
-            <Button className="order">Order</Button>
+            <Button loading={loading} className="order">
+              Order
+            </Button>
           </Form>
         ),
       },
-    }
-  ]
+    },
+  ];
 
   return (
     <Container className="Shopping">
@@ -183,22 +189,29 @@ function Shopping() {
           ) : (
             event &&
             event.map(
-              ({ event: { title, autor, price }, createdAt, shoppingId, username }) => (
+              ({
+                event: { title, autor, price },
+                createdAt,
+                shoppingId,
+                username,
+              }) => (
                 <>
-                {username === user.username && (<Table.Row textAlign="center" key={shoppingId}>
-                  <Table.Cell>{title}</Table.Cell>
-                  <Table.Cell>{autor}</Table.Cell>
-                  <Table.Cell>{shoppingId}</Table.Cell>
-                  <Table.Cell>{createdAt}</Table.Cell>
-                  <Table.Cell>{price}</Table.Cell>
-                  <Table.Cell>
-                    <DeleteButton
-                      onConfirm={() => {
-                        cancelShopping({ variables: { shoppingId } });
-                      }}
-                    />
-                  </Table.Cell>
-                  </Table.Row>)}
+                  {username === user.username && (
+                    <Table.Row textAlign="center" key={shoppingId}>
+                      <Table.Cell>{title}</Table.Cell>
+                      <Table.Cell>{autor}</Table.Cell>
+                      <Table.Cell>{shoppingId}</Table.Cell>
+                      <Table.Cell>{createdAt}</Table.Cell>
+                      <Table.Cell>{price}</Table.Cell>
+                      <Table.Cell>
+                        <DeleteButton
+                          onConfirm={() => {
+                            cancelShopping({ variables: { shoppingId } });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                  )}
                 </>
               )
             )
