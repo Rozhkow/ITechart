@@ -12,7 +12,6 @@ import { CREATE_GOOD_MUTATION } from "../../../util/graphql";
 import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
 import { uploadFileMutation } from "../../../util/graphql";
 
-import { useDropzone } from "react-dropzone";
 
 import FormComponent from "../../Authentication/FormComponent";
 
