@@ -247,18 +247,21 @@ export const ADDING_ORDER = gql`
     $name: String!
     $lastname: String!
     $address: String!
-    $shoppingId: ID!
+    $totalPrice: Float!
+    $shoppingIds: [ID]
   ) {
     addingOrder(
       name: $name
       lastname: $lastname
       address: $address
-      shoppingId: $shoppingId
+      totalPrice: $totalPrice
+      shoppingIds: $shoppingIds
     ) {
       name
       lastname
       address
-      shopping {
+      totalPrice
+      shoppings {
         event {
           id
           title
@@ -286,7 +289,9 @@ export const ORDER_ALL = gql`
       name
       lastname
       address
-      shopping {
+      updatedAt
+      username
+      shoppings {
         username
         createdAt
         event {

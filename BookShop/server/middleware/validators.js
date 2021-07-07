@@ -90,3 +90,23 @@ module.exports.validateCreateEvent = (
     valid: Object.keys(errors).length < 1,
   };
 };
+
+module.exports.validateAddOrder = (name, lastname, address) => {
+  const errors = {};
+  if (name.trim() === "") {
+    errors.name = "Name must not be empty";
+    throw new Error("Name must not be empty", { errors });
+  }
+  if (lastname.trim() === "") {
+    errors.lastname = "Lastname must not be empty";
+    throw new Error("Lastname must not be empty", { errors });
+  }
+  if (address.trim() === "") {
+    errors.address = "Address must not be empty";
+    throw new Error("Address must not be empty", { errors });
+  }
+
+  return {
+    errors,
+  };
+};

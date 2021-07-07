@@ -59,7 +59,7 @@ module.exports = {
         event: fetchedEvent,
         username: username,
       });
-      
+
       const result = await shopping.save();
       return transformShopping(result);
     },

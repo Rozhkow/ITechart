@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useContext } from "react";
+import React, { useState, useReducer, useEffect, useContext } from "react";
 import _ from "lodash";
 import { useQuery, useMutation } from "@apollo/client";
 import { Table, Button, Container, Accordion, Form } from "semantic-ui-react";
@@ -46,6 +46,8 @@ function Shopping() {
   const { loading, data } = useQuery(SHOPPING_ALL);
   const { user } = useContext(AuthContext);
 
+  const [errors, setErrors] = useState({});
+
   const { onChange, onSubmit, values } = useFormm(orderUserCallback, {
     name: "",
     lastname: "",
@@ -67,16 +69,21 @@ function Shopping() {
   const { column, event } = state;
 
   let totalPrice = 0;
+  let shoppingIds = [];
 
   const [addingOrder] = useMutation(ADDING_ORDER, {
+    onError(err) {
+      setErrors(err.message);
+    },
     variables: {
       name: values.name,
       lastname: values.lastname,
       address: values.address,
-      shoppingId: "60e3271dceae6036c8d35754",
+      totalPrice: totalPrice,
+      shoppingIds: shoppingIds,
     },
   });
-
+  console.log(totalPrice);
   const [cancelShopping] = useMutation(CANCEL_SHOPPING, {
     update(proxy, result) {
       // TODO: remove users from cache
@@ -114,18 +121,21 @@ function Shopping() {
               name="name"
               onChange={onChange}
               value={values.name}
+              errors={errors}
             />
             <Form.Input
               placeholder="Last Name"
               name="lastname"
               onChange={onChange}
               value={values.lastname}
+              errors={errors}
             />
             <Form.Input
               placeholder="Address"
               name="address"
               onChange={onChange}
               value={values.address}
+              errors={errors}
             />
             <Button loading={loading} className="order">
               Order
@@ -136,6 +146,8 @@ function Shopping() {
     },
   ];
 
+  console.log(shoppingIds);
+
   return (
     <Container className="Shopping">
       <h1>Shopping cart:</h1>
@@ -144,13 +156,15 @@ function Shopping() {
           <Table.Row
             textAlign="center"
             sorted={
-              column === "title" &&
+              column === "number" &&
+              "title" &&
               "autor" &&
               "shoppingId" &&
               "createdAt" &&
               "price"
             }
           >
+            <Table.HeaderCell>number</Table.HeaderCell>
             <Table.HeaderCell
               onClick={() => dispatch({ type: "CHANGE_SORT", column: "title" })}
             >
@@ -198,6 +212,7 @@ function Shopping() {
                 <>
                   {username === user.username && (
                     <Table.Row textAlign="center" key={shoppingId}>
+                      <Table.Cell>{shoppingIds.push(shoppingId)}</Table.Cell>
                       <Table.Cell>{title}</Table.Cell>
                       <Table.Cell>{autor}</Table.Cell>
                       <Table.Cell>{shoppingId}</Table.Cell>
@@ -222,11 +237,18 @@ function Shopping() {
         {event.map({username === user.username ? (({event: { price } })=> (totalPrice += +price)) : null})}
       </div> */}
       <div style={{ display: "none" }}>
-        {event.map(({ event: { price } }) => (totalPrice += +price))}
+        {event
+          .filter((event) => event.username === user.username)
+          .map(({ event: { price } }) => (totalPrice += +price))}
       </div>
       <h1>Total price: {totalPrice}$</h1>
 
       <Accordion panels={panels} />
+      {Object.keys(errors).length > 0 && (
+        <div className="ui error message">
+          <ul className="list">{Object.values(errors)}</ul>
+        </div>
+      )}
     </Container>
   );
 }

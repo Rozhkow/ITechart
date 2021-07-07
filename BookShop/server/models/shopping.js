@@ -8,7 +8,10 @@ const shoppingSchema = new Schema(
     },
     username: {
       type: String,
-    }
+    },
+    totalPrice: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );

@@ -77,6 +77,8 @@ function Orders() {
     },
   });
 
+  let totalPrice = 0;
+
   return (
     <Container classname="Orders">
       <h1>Orders</h1>
@@ -87,6 +89,7 @@ function Orders() {
             sorted={
               column === "name" &&
               "lastname" &&
+              "username" &&
               "address" &&
               "orderId" &&
               "goods" &&
@@ -105,6 +108,13 @@ function Orders() {
               }
             >
               lastname
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              onClick={() =>
+                dispatch({ type: "CHANGE_SORT", column: "username" })
+              }
+            >
+              username
             </Table.HeaderCell>
             <Table.HeaderCell
               onClick={() =>
@@ -151,19 +161,34 @@ function Orders() {
                 lastname,
                 address,
                 orderId,
-                shopping: {
-                  createdAt,
-                  event: { price, title },
-                },
+                updatedAt,
+                shoppings,
+                username,
               }) => (
                 <Table.Row textAlign="center" key={name}>
                   <Table.Cell>{name}</Table.Cell>
                   <Table.Cell>{lastname}</Table.Cell>
+                  <Table.Cell>{username}</Table.Cell>
                   <Table.Cell>{address}</Table.Cell>
                   <Table.Cell>{orderId}</Table.Cell>
-                  <Table.Cell>{title}</Table.Cell>
-                  <Table.Cell>{createdAt}</Table.Cell>
-                  <Table.Cell>{price}</Table.Cell>
+                  <Table.Cell>
+                    {shoppings
+                      .filter((purchase) => purchase.username === username)
+                      .map(({ event: { title } }) => (
+                        <div>{title}</div>
+                      ))}
+                  </Table.Cell>
+                  <Table.Cell>{updatedAt}</Table.Cell>
+                  <Table.Cell>
+                    {shoppings
+                      .filter((purchase) => purchase.username === username)
+                      .map(({ event: { price } }) => (
+                        <div style={{ display: "none" }}>
+                          {(totalPrice += +price)}
+                        </div>
+                      ))}
+                    {totalPrice}
+                  </Table.Cell>
                   <Table.Cell>
                     <DeleteButton
                       onConfirm={() => {

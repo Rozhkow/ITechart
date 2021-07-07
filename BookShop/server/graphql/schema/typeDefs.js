@@ -8,8 +8,11 @@ type Order {
     lastname: String!
     address: String!
     paymentMethod: String!
-    totalPrice: String!
-    shopping: Shopping!
+    totalPrice: Float!
+    shoppings: [Shopping!]
+    createdAt: String!
+    updatedAt: String!
+    username: String!
 }
   
 type Comment {
@@ -25,6 +28,7 @@ type Shopping {
     username: String!
     createdAt: String!
     updatedAt: String!
+    totalPrice: Float!
 }
 
 type Event {
@@ -93,7 +97,7 @@ type Mutation {
     cancelShopping(shoppingId: ID!): String!
     createComment(id: String!, body: String!): Event!
     deleteComment(id: ID!, commentId: ID!): Event!
-    addingOrder(name: String!, lastname: String!, address: String!, shoppingId: ID!): Order
+    addingOrder(name: String!, lastname: String!, address: String!, totalPrice: Float!, shoppingIds: [ID]): Order
     deleteOrder(orderId: ID!): String!
 }
 `);
