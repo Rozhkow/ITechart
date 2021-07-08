@@ -12,6 +12,8 @@ import DeleteButton from "../../../components/DeleteButton";
 import { SHOPPING_ALL } from "../../../util/graphql";
 import { CANCEL_SHOPPING } from "../../../util/graphql";
 import { ADDING_ORDER } from "../../../util/graphql";
+import { ORDER_ALL } from "../../../util/graphql";
+import OrderCard from "../../../components/Order";
 
 import { useFormm } from "../../../util/hooks";
 
@@ -46,7 +48,14 @@ function Shopping() {
   const { loading, data } = useQuery(SHOPPING_ALL);
   const { user } = useContext(AuthContext);
 
+  console.log(data);
   const [errors, setErrors] = useState({});
+
+  let [totalPrice, setTotalPrice] = useState(0);
+
+  setTotalPrice = (price) => {
+    totalPrice += +price;
+  };
 
   const { onChange, onSubmit, values } = useFormm(orderUserCallback, {
     name: "",
@@ -68,10 +77,28 @@ function Shopping() {
 
   const { column, event } = state;
 
-  let totalPrice = 0;
   let shoppingIds = [];
 
   const [addingOrder] = useMutation(ADDING_ORDER, {
+    update(proxy, result) {
+      // TODO: remove users from cache
+
+      const data = proxy.readQuery({
+        query: ORDER_ALL,
+      });
+
+      let newData = [...data.orders];
+      newData = [result.data.orders, ...newData];
+      proxy.writeQuery({
+        query: ORDER_ALL,
+        data: {
+          ...data,
+          orders: {
+            newData,
+          },
+        },
+      });
+    },
     onError(err) {
       setErrors(err.message);
     },
@@ -83,7 +110,9 @@ function Shopping() {
       shoppingIds: shoppingIds,
     },
   });
+
   console.log(totalPrice);
+
   const [cancelShopping] = useMutation(CANCEL_SHOPPING, {
     update(proxy, result) {
       // TODO: remove users from cache
@@ -239,9 +268,9 @@ function Shopping() {
       <div style={{ display: "none" }}>
         {event
           .filter((event) => event.username === user.username)
-          .map(({ event: { price } }) => (totalPrice += +price))}
+          .map(({ event: { price } }) => setTotalPrice(price))}
       </div>
-      <h1>Total price: {totalPrice}$</h1>
+      <h2 className="totalPrice">Total price: {totalPrice}$</h2>
 
       <Accordion panels={panels} />
       {Object.keys(errors).length > 0 && (
@@ -249,6 +278,7 @@ function Shopping() {
           <ul className="list">{Object.values(errors)}</ul>
         </div>
       )}
+      <OrderCard />
     </Container>
   );
 }

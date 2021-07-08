@@ -40,12 +40,17 @@ const transformEvent = (event) => {
 
 module.exports = {
   Query: {
-    async shoppings(_, args, req) {
+    async shoppings(_, args, context) {
       try {
+        const { username } = checkAuth(context);
+
         const shoppings = await Shopping.find();
-        return shoppings.map((shopping) => {
-          return transformShopping(shopping);
-        });
+
+        return shoppings
+          .filter((shopping) => shopping.username === username)
+          .map((shopping) => {
+            return transformShopping(shopping);
+          });
       } catch (err) {
         throw err;
       }

@@ -187,6 +187,9 @@ function Orders() {
                           {(totalPrice += +price)}
                         </div>
                       ))}
+                    {/* .map(({ event: { totalPrice } }) => (
+                        <div>{totalPrice}</div>
+                      ))} */}
                     {totalPrice}
                   </Table.Cell>
                   <Table.Cell>

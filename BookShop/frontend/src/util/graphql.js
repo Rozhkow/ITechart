@@ -291,6 +291,7 @@ export const ORDER_ALL = gql`
       address
       updatedAt
       username
+      totalPrice
       shoppings {
         username
         createdAt
