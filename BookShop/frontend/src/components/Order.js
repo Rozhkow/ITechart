@@ -62,7 +62,7 @@ function OrderCard() {
   return (
     <Grid columns={3} className="Cards" stackable>
       <Grid.Column
-        width={10}
+        width={5}
         style={{
           marginBottom: 20,
           display: "flex",
@@ -73,35 +73,37 @@ function OrderCard() {
           <h1>Loading orders..</h1>
         ) : (
           orders &&
-          orders.map(
-            ({
-              name,
-              lastname,
-              address,
-              orderId,
-              updatedAt,
-              shoppings,
-              username,
-              totalPrice,
-            }) => (
-              <Card fluid style={{ margin: 10 }}>
-                <Card.Content>
-                  <Card.Header>{name}'s order</Card.Header>
-                  <hr />
-                  <Card.Description>Lastname: {lastname}</Card.Description>
-                  <Card.Description>Address: {address}</Card.Description>
-                  <Card.Description>OrderID: {orderId}</Card.Description>
-                  <Card.Description>Username: {username}</Card.Description>
-                  <Card.Description>Created at: {updatedAt}</Card.Description>
+          orders
+            .filter((purchase) => purchase.username === user.username)
+            .map(
+              ({
+                name,
+                lastname,
+                address,
+                orderId,
+                createdAt,
+                shoppings,
+                username,
+                totalPrice,
+              }) => (
+                <Card fluid style={{ margin: 10 }}>
+                  <Card.Content>
+                    <Card.Header>{name}'s order</Card.Header>
+                    <hr />
+                    <Card.Description>Lastname: {lastname}</Card.Description>
+                    <Card.Description>Address: {address}</Card.Description>
+                    <Card.Description>OrderID: {orderId}</Card.Description>
+                    <Card.Description>Username: {username}</Card.Description>
+                    <Card.Description>Created at: {createdAt}</Card.Description>
 
-                  <Card.Header>
-                    Goods:
-                    {shoppings.map(({ event: { title } }) => (
-                      <div>{title}</div>
-                    ))}
-                  </Card.Header>
-                  <Card.Header>Price: {totalPrice}</Card.Header>
-                  {/* <Card.Content>
+                    <Card.Header>
+                      Goods:
+                      {shoppings.map(({ event: { title } }) => (
+                        <div>{title}</div>
+                      ))}
+                    </Card.Header>
+                    <Card.Header>Price: {totalPrice}</Card.Header>
+                    {/* <Card.Content>
                   {shoppings
                     .filter((purchase) => purchase.username === username)
                     .map(({ event: { price } }) => (
@@ -111,17 +113,17 @@ function OrderCard() {
                     ))}
                   {totalPrice}
                 </Card.Content> */}
-                  <Card.Content extra style={{ marginTop: 10 }}>
-                    <DeleteButton
-                      onConfirm={() => {
-                        deleteOrder({ variables: { orderId } });
-                      }}
-                    />
+                    <Card.Content extra style={{ marginTop: 10 }}>
+                      <DeleteButton
+                        onConfirm={() => {
+                          deleteOrder({ variables: { orderId } });
+                        }}
+                      />
+                    </Card.Content>
                   </Card.Content>
-                </Card.Content>
-              </Card>
+                </Card>
+              )
             )
-          )
         )}
       </Grid.Column>
     </Grid>

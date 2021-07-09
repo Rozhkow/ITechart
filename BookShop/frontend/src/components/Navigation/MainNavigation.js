@@ -42,10 +42,10 @@ function MainNavigation() {
             to="/adminProfile"
           />
         ) : null}
-        {user && user.admin === false  ? (
+        {user && user.admin === false ? (
           <Menu.Item
             name="shopping cart"
-            active={activeItem === "shopping cart"}
+            active={activeItem === "shopping cart" || activeItem === "shopping"}
             onClick={handleItemClick}
             as={Link}
             to="/shopping"
@@ -56,13 +56,15 @@ function MainNavigation() {
         {user && user.admin === false ? (
           <Menu.Item
             name={user.username}
-            active={activeItem === user.username || activeItem === "/profile"}
+            active={activeItem === user.username || activeItem === "profile"}
             onClick={handleItemClick}
             as={Link}
             to="/profile"
           />
         ) : null}
-        {user ? <Menu.Item name="Logout" onClick={logout} /> : null}
+        {user ? (
+          <Menu.Item name="Logout" onClick={logout} as={Link} to="/login" />
+        ) : null}
         {!user ? (
           <Menu.Item
             name="login"

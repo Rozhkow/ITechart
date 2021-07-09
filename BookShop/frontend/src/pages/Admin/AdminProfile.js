@@ -215,14 +215,13 @@ function AdminProfilePage() {
         />
       </div>
 
-      <Button className="exportData">
-        <CSVLink
-          filename="Report.csv"
-          data={users.filter((user) => selectedUsers.includes(user.id))}
-        >
-          Export data
-        </CSVLink>
-      </Button>
+      <CSVLink
+        filename="Report.csv"
+        data={users.filter((user) => selectedUsers.includes(user.id))}
+      >
+        <Button className="exportData">Export data</Button>
+      </CSVLink>
+
       <Button
         className="exportData"
         as={Link}

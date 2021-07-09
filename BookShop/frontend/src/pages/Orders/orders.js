@@ -161,7 +161,7 @@ function Orders() {
                 lastname,
                 address,
                 orderId,
-                updatedAt,
+                createdAt,
                 shoppings,
                 username,
               }) => (
@@ -178,18 +178,18 @@ function Orders() {
                         <div>{title}</div>
                       ))}
                   </Table.Cell>
-                  <Table.Cell>{updatedAt}</Table.Cell>
+                  <Table.Cell>{createdAt}</Table.Cell>
                   <Table.Cell>
                     {shoppings
                       .filter((purchase) => purchase.username === username)
-                      .map(({ event: { price } }) => (
-                        <div style={{ display: "none" }}>
-                          {(totalPrice += +price)}
-                        </div>
-                      ))}
-                    {/* .map(({ event: { totalPrice } }) => (
+                      // .map(({ event: { price } }) => (
+                      //   <div style={{ display: "none" }}>
+                      //     {(totalPrice += +price)}
+                      //   </div>
+                      // ))}
+                      .map(({ event: { totalPrice } }) => (
                         <div>{totalPrice}</div>
-                      ))} */}
+                      ))}
                     {totalPrice}
                   </Table.Cell>
                   <Table.Cell>

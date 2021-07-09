@@ -2,6 +2,7 @@ import React, { useState, useReducer, useEffect, useContext } from "react";
 import _ from "lodash";
 import { useQuery, useMutation } from "@apollo/client";
 import { Table, Button, Container, Accordion, Form } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 import { AuthContext } from "../../../context/auth";
 
@@ -75,7 +76,7 @@ function Shopping() {
     }
   }, [data, loading]);
 
-  const { column, event } = state;
+  const { column, event, direction } = state;
 
   let shoppingIds = [];
 
@@ -185,8 +186,7 @@ function Shopping() {
           <Table.Row
             textAlign="center"
             sorted={
-              column === "number" &&
-              "title" &&
+              column === "title" &&
               "autor" &&
               "shoppingId" &&
               "createdAt" &&
@@ -233,7 +233,7 @@ function Shopping() {
             event &&
             event.map(
               ({
-                event: { title, autor, price },
+                event: { title, autor, price, id },
                 createdAt,
                 shoppingId,
                 username,
@@ -242,7 +242,11 @@ function Shopping() {
                   {username === user.username && (
                     <Table.Row textAlign="center" key={shoppingId}>
                       <Table.Cell>{shoppingIds.push(shoppingId)}</Table.Cell>
-                      <Table.Cell>{title}</Table.Cell>
+                      <Table.Cell>
+                        <Table.Cell as={Link} to={`/goods/${id}`}>
+                          {title}
+                        </Table.Cell>
+                      </Table.Cell>
                       <Table.Cell>{autor}</Table.Cell>
                       <Table.Cell>{shoppingId}</Table.Cell>
                       <Table.Cell>{createdAt}</Table.Cell>

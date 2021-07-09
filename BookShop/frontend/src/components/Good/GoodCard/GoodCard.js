@@ -1,12 +1,5 @@
 import React, { useContext } from "react";
-import {
-  Card,
-  Icon,
-  Image,
-  Accordion,
-  Button,
-  Label,
-} from "semantic-ui-react";
+import { Card, Icon, Image, Accordion, Button, Label } from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
 import DeleteButton from "../../DeleteButton";
@@ -18,30 +11,30 @@ import { DELETE_GOOD_MUTATION } from "../../../util/graphql";
 import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
 
 import { SHOP_EVENT } from "../../../util/graphql";
+import { SHOPPING_ALL } from "../../../util/graphql";
 
 import img from "../../../img/1.jpg";
 
 function GoodCard({ good: { title, description, price, id, commentCount } }) {
   const { user } = useContext(AuthContext);
   const [shopEvent, { loading }] = useMutation(SHOP_EVENT, {
-    // update(proxy, result) {
-    //   // TODO: remove users from cache
-
-    //   const data = proxy.readQuery({
-    //     query: SHOPPING_ALL,
-    //   });
-    //   let newData = [...data.shopping];
-    //   newData = [result.data.shopping, ...newData];
-    //   proxy.writeQuery({
-    //     query: SHOPPING_ALL,
-    //     data: {
-    //       ...data,
-    //       shopping: {
-    //         newData,
-    //       },
-    //     },
-    //   });
-    // },
+    update(proxy, result) {
+      // TODO: remove users from cache
+      const data = proxy.readQuery({
+        query: SHOPPING_ALL,
+      });
+      let newData = [...data.shoppings];
+      newData = [result.data.shoppings, ...newData];
+      proxy.writeQuery({
+        query: SHOPPING_ALL,
+        data: {
+          ...data,
+          shoppings: {
+            newData,
+          },
+        },
+      });
+    },
     variables: { id: id },
   });
 
@@ -69,22 +62,22 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
     variables: { id: id },
   });
 
-  const GoodCard = (
+  return (
     <Card>
       <Card.Content>
-        <Image centered size="medium" src={img} as={Link} to={`/goods/${id}`}/>
+        <Image centered size="medium" src={img} as={Link} to={`/goods/${id}`} />
         <Card.Header as={Link} to={`/goods/${id}`}>
           {title}
         </Card.Header>
         <Accordion>
           <Accordion.Title
-            active={toggle === false}
+            active={toggle === true}
             onClick={() => handleClick(!!!toggle)}
           >
             <Icon name="dropdown" />
             Description
           </Accordion.Title>
-          <Accordion.Content active={toggle === false}>
+          <Accordion.Content active={toggle === true}>
             <p>{description}</p>
           </Accordion.Content>
         </Accordion>
@@ -92,38 +85,42 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
       <Card.Content extra>
         <Card.Meta>{price}$</Card.Meta>
         <br />
-        <div style={{display: "flex", justifyContent: "space-between"}}>
-        {user?.admin && <DeleteButton id={id} onConfirm={deleteEvent} />}
-        {user && !user.admin && (
-          <Button
-            animated="vertical"
-            primary
-            style={{ backgroundColor: "#00B5AD" }}
-            onClick={shopEvent}
-            id={id}
-            loading={loading}
-          >
-            <Button.Content hidden>Shop</Button.Content>
-            <Button.Content visible>
-              <Icon name="shop" />
-            </Button.Content>
-          </Button>
-        )}
-        {user && (
-        <Button labelPosition="right" as={Link} to={`/goods/${id}`} className="commentButton">
-          <Button color="blue" basic>
-            <Icon name="comments" />
-          </Button>
-          <Label basic color="blue" pointing="left" >
-            {commentCount}
-          </Label>
-        </Button>
-        )}
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          {user?.admin && <DeleteButton id={id} onConfirm={deleteEvent} />}
+          {user && !user.admin && (
+            <Button
+              animated="vertical"
+              primary
+              style={{ backgroundColor: "#00B5AD" }}
+              onClick={shopEvent}
+              id={id}
+              loading={loading}
+            >
+              <Button.Content hidden>Shop</Button.Content>
+              <Button.Content visible>
+                <Icon name="shop" />
+              </Button.Content>
+            </Button>
+          )}
+          {user && (
+            <Button
+              labelPosition="right"
+              as={Link}
+              to={`/goods/${id}`}
+              className="commentButton"
+            >
+              <Button color="blue" basic>
+                <Icon name="comments" />
+              </Button>
+              <Label basic color="blue" pointing="left">
+                {commentCount}
+              </Label>
+            </Button>
+          )}
         </div>
       </Card.Content>
     </Card>
   );
-  return GoodCard;
 }
 
 export default GoodCard;

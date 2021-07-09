@@ -289,7 +289,7 @@ export const ORDER_ALL = gql`
       name
       lastname
       address
-      updatedAt
+      createdAt
       username
       totalPrice
       shoppings {
