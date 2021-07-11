@@ -98,7 +98,7 @@ function OrderCard() {
 
                     <Card.Header>
                       Goods:
-                      {shoppings.map(({ event: { title } }) => (
+                      {shoppings.filter((purchase) => purchase.username === username).map(({ event: { title } }) => (
                         <div>{title}</div>
                       ))}
                     </Card.Header>

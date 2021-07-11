@@ -4,6 +4,10 @@ const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../../config");
 const User = require("../../models/user");
 
+const { UserInputError } = require('apollo-server');
+
+const checkAuth = require("../../middleware/is-auth");
+
 const {
   validateRegisterInput,
   validateLoginInput,
@@ -25,8 +29,9 @@ function generateToken(user) {
 
 module.exports = {
   Query: {
-    async getUser(_, { id }) {
+    async getUser(_, { id }, context) {
       try {
+        checkAuth(context);
         const user = await User.findById(id);
         if (user) {
           return user;
@@ -49,7 +54,8 @@ module.exports = {
     },
   },
   Mutation: {
-    async updateUser(_, args, req) {
+    async updateUser(_, args, context) {
+      checkAuth(context);
       return User.findOneAndUpdate(
         User.findById(args.id),
 
@@ -60,8 +66,13 @@ module.exports = {
         { new: true }
       );
     },
-    async deleteUser(_, { id }) {
+    async deleteUser(_, { id }, context) {
       try {
+        const { username } = checkAuth(context);
+
+        if(username !== "admin"){
+          throw new Error('Action not allowed');
+        }
         const user = await User.findById(id);
         // if (user.username === "admin") {
         await user.delete();
@@ -75,7 +86,11 @@ module.exports = {
     },
 
     async login(_, { username, password }) {
-      const { errors } = validateLoginInput(username, password);
+      const { errors, valid } = validateLoginInput(username, password);
+      
+      if(!valid) {
+        throw new UserInputError('Errors', { errors });
+      }
 
       const user = await User.findOne({ username });
 
@@ -113,7 +128,7 @@ module.exports = {
         );
 
         if (!valid) {
-          throw new Error({ errors });
+          throw new UserInputError('Errors', { errors });
         }
         // Make sure that user doesn't already exist
         const user = await User.findOne({ username });

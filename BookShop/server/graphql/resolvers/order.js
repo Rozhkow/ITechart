@@ -1,72 +1,14 @@
 const { validateAddOrder } = require("../../middleware/validators");
 const Order = require("../../models/order");
 const Shopping = require("../../models/shopping");
-const Event = require("../../models/event");
-const { dateToString } = require("../../date");
-const shopping = require("../../models/shopping");
 
 const checkAuth = require("../../middleware/is-auth");
 
-const transformOrder = (order) => {
-  return {
-    ...order._doc,
-    orderId: order.id,
-    shoppings: allShoppings.bind(this, order._doc.shoppings),
-    createdAt: dateToString(order._doc.createdAt),
-  };
-};
-
-const allShoppings = async (_, args, req) => {
-    try {
-      const shoppings = await Shopping.find();
-      return shoppings.map((shopping) => {
-        return transformShopping(shopping);
-      });
-    } catch (err) {
-      throw err;
-    }
-  },
-  transformShopping = (shopping) => {
-    return {
-      ...shopping._doc,
-      shoppingId: shopping.id,
-      // user: user.bind(this, shopping._doc.user),
-      event: singleEvent.bind(this, shopping._doc.event),
-      createdAt: dateToString(shopping._doc.createdAt),
-      // updatedAt: dateToString(shopping._doc.updatedAt),
-    };
-  };
-
-const singleShopping = async (shoppingId) => {
-  try {
-    const shopping = await Shopping.findById(shoppingId);
-    return {
-      ...shopping._doc,
-      _id: shopping.shoppingId,
-      event: singleEvent.bind(this, shopping._doc.event),
-      // date: dateToString(event._doc.date)
-    };
-  } catch (err) {
-    throw err;
-  }
-};
-
-const singleEvent = async (id) => {
-  try {
-    const event = await Event.findById(id);
-    return {
-      ...event._doc,
-      id: event.id,
-      // date: dateToString(event._doc.date)
-    };
-  } catch (err) {
-    throw err;
-  }
-};
+const { transformOrder } = require('./merge');
 
 module.exports = {
   Query: {
-    async orders(_, args, req) {
+    async orders(_) {
       try {
         const orders = await Order.find();
         return orders.map((order) => {
@@ -76,8 +18,9 @@ module.exports = {
         throw err;
       }
     },
-    async getOrder(_, { orderId }) {
+    async getOrder(_, { orderId }, context) {
       try {
+        checkAuth(context);
         const order = await Order.findById(orderId);
         if (order) {
           return transformOrder(order);
@@ -101,11 +44,15 @@ module.exports = {
         );
       }
 
-      const { errors } = validateAddOrder(
+      const { valid, errors } = validateAddOrder(
         args.name,
         args.lastname,
         args.address
       );
+
+      if (!valid) {
+        throw new Error({ errors });
+      }
 
       const order = new Order({
         name: args.name,
@@ -117,11 +64,12 @@ module.exports = {
       });
 
       const addingOrder = await order.save();
-      console.log(addingOrder);
+      
       return transformOrder(addingOrder);
     },
-    async deleteOrder(_, { orderId }) {
+    async deleteOrder(_, { orderId }, context) {
       try {
+        checkAuth(context);
         const order = await Order.findById(orderId).populate("shopping");
         await order.delete();
         return "Order deleted successfully";
