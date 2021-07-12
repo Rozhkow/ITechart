@@ -11,6 +11,7 @@ const checkAuth = require("../../middleware/is-auth");
 const {
   validateRegisterInput,
   validateLoginInput,
+  validateUpdateUser,
 } = require("../../middleware/validators");
 
 function generateToken(user) {
@@ -56,12 +57,20 @@ module.exports = {
   Mutation: {
     async updateUser(_, args, context) {
       checkAuth(context);
+
+      const { errors, valid } = validateUpdateUser(args.username, args.email);
+      
+      if(!valid) {
+        throw new UserInputError('Errors', { errors });
+      }
+
       return User.findOneAndUpdate(
         User.findById(args.id),
 
         {
           username: args.username,
           email: args.email,
+          message: "Successful"
         },
         { new: true }
       );

@@ -50,6 +50,7 @@ type User {
     username: String!
     admin: Boolean!
     createdAt: String!
+    message: String!
 }
 
 type AuthData {

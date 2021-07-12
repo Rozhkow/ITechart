@@ -2,7 +2,7 @@ module.exports.validateRegisterInput = (
   username,
   email,
   password,
-  confirmPassword
+  confirmPassword 
 ) => {
   const errors = {};
   if (username.trim() === "") {
@@ -93,5 +93,20 @@ module.exports.validateAddOrder = (name, lastname, address) => {
   return {
     errors,
     valid: Object.keys(errors).length < 1
+  };
+};
+
+module.exports.validateUpdateUser = (username, email) => {
+  const errors = {};
+  if (username.trim() === "") {
+    errors.username = "Username must not be empty";
+  }
+  if (email.trim() === "") {
+    errors.email = "E-mail must not be empty";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
   };
 };

@@ -21,7 +21,6 @@ function UpdateGood({
   const [errors, setErrors] = useState({});
 
   const { values, onChange, onSubmit } = useFormm(updateGoodCallback, {
-    // picture: "",
     id: id,
     title: title,
     description: description,
@@ -35,14 +34,13 @@ function UpdateGood({
     variables: values,
     update(proxy, result) {
       // TODO: remove goods from cache
-      // values.picture = "";
-      values.id = id;
-      values.title = title;
-      values.description = description;
-      values.price = price;
-      values.autor = autor;
-      values.pageNumber = pageNumber;
-      values.publishYear = publishYear;
+      values.id = values.id;
+      values.title = values.title;
+      values.description = values.description;
+      values.price = values.price;
+      values.autor = values.autor;
+      values.pageNumber = values.pageNumber;
+      values.publishYear = values.publishYear;
 
       proxy.modify({
         fields: {
@@ -53,7 +51,7 @@ function UpdateGood({
       });
     },
     onError(err) {
-      setErrors(err.message);
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
 
@@ -72,7 +70,11 @@ function UpdateGood({
       </Form>
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">
-          <ul className="list">{Object.values(errors)}</ul>
+          <ul className="list">
+            {Object.values(errors).map((value) => (
+              <li key={value}>{value}</li>
+            ))}
+          </ul>
         </div>
       )}
     </Container>

@@ -1,6 +1,7 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 import DeleteButton from "../../components/DeleteButton";
 
@@ -26,11 +27,6 @@ function sortReducer(state, action) {
         orders: _.sortBy(state.orders, [action.column]),
         direction: "ascending",
       };
-    case "UPDATE_ORDERS":
-      return {
-        ...state,
-        orders: action.payload,
-      };
     default:
       throw new Error();
   }
@@ -41,19 +37,12 @@ function Orders() {
 
   const [state, dispatch] = useReducer(sortReducer, {
     column: null,
-    orders: data ? data.orders : [],
     direction: null,
   });
 
-  useEffect(() => {
-    if (!loading && data && data.orders) {
-      dispatch({ type: "UPDATE_ORDERS", payload: data.orders });
-    }
-  }, [data, loading]); // restart hook if our second argument has changed
+  const orders  = (!loading && data && data?.orders) || [];
 
-  const { column, orders } = state;
-
-  console.log(orders);
+  const { column } = state;
 
   const [deleteOrder] = useMutation(DELETE_ORDER, {
     update(proxy, result) {
@@ -174,8 +163,10 @@ function Orders() {
                   <Table.Cell>
                     {shoppings
                       .filter((purchase) => purchase.username === username)
-                      .map(({ event: { title } }) => (
+                      .map(({ event: { title, id } }) => (
+                        <Table.Cell as={Link} to={`/goods/${id}`}>
                         <div>{title}</div>
+                        </Table.Cell>
                       ))}
                   </Table.Cell>
                   <Table.Cell>{createdAt}</Table.Cell>

@@ -3,6 +3,8 @@ const Event = require("../../models/event");
 
 const checkAuth = require("../../middleware/is-auth");
 
+const { UserInputError } = require('apollo-server');
+
 
 module.exports = {
   Query: {
@@ -33,10 +35,9 @@ module.exports = {
   },
   Mutation: {
     async createEvent(_, args, context) {
-      try {
         checkAuth(context);
 
-        const { valid, errors } = validateCreateEvent(
+        const { errors, valid } = validateCreateEvent(
         args.eventInput.title,
         args.eventInput.description,
         args.eventInput.price,
@@ -45,8 +46,8 @@ module.exports = {
         args.eventInput.publishYear
       );
 
-      if (!valid) {
-        throw new Error({ errors });
+      if(!valid) {
+        throw new UserInputError('Errors', { errors });
       }
 
       const event = new Event({
@@ -58,19 +59,20 @@ module.exports = {
         publishYear: args.eventInput.publishYear,
       });
 
+      if(!event) {
+        errors.general = "Event not created"
+      }
+
       let createdEvent = await event.save(); // save into database
      
       return createdEvent;
-      } catch(err) { 
-        throw new Error(err)
-      }
+      
       
     },
     async updateEvent(_, args, context) {
-      try {
         checkAuth(context);
 
-        validateCreateEvent(
+        const { errors, valid } = validateCreateEvent(
           args.title,
           args.description,
           args.price,
@@ -79,9 +81,12 @@ module.exports = {
           args.publishYear
         );
 
+        if(!valid) {
+          throw new UserInputError('Errors', { errors });
+        }
+
         return Event.findOneAndUpdate(
           Event.findById(args.id),
-
           {
             title: args.title,
             description: args.description,
@@ -92,10 +97,6 @@ module.exports = {
           },
           { new: true }
         );
-      } catch(err) {
-        throw new Error(err)
-      };
-      
     },
     async deleteEvent(_, { id }, context) {
       try {

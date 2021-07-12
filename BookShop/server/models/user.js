@@ -17,6 +17,9 @@ const userSchema = new Schema({
   createdAt: {
     type: String,
   },
+  message: {
+    type: String,
+  }
 });
 
 module.exports = model("User", userSchema);

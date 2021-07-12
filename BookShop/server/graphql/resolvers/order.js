@@ -6,6 +6,8 @@ const checkAuth = require("../../middleware/is-auth");
 
 const { transformOrder } = require('./merge');
 
+const { UserInputError } = require('apollo-server');
+
 module.exports = {
   Query: {
     async orders(_) {
@@ -50,8 +52,8 @@ module.exports = {
         args.address
       );
 
-      if (!valid) {
-        throw new Error({ errors });
+      if(!valid) {
+        throw new UserInputError('Errors', { errors });
       }
 
       const order = new Order({

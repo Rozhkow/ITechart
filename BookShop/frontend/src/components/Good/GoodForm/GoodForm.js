@@ -2,19 +2,13 @@ import React, { useState } from "react";
 import { Form, Container } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 
-
-
 import { useFormm } from "../../../util/hooks";
 
 import "./GoodForm.css";
 
 import { CREATE_GOOD_MUTATION } from "../../../util/graphql";
-// import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
-// import { uploadFileMutation } from "../../../util/graphql";
-
 
 import FormComponent from "../../Authentication/FormComponent";
-
 
 
 const GoodFieldSection = ({ values, errors, onChange }) => (
@@ -74,7 +68,6 @@ function GoodForm(props) {
   console.log(data);
 
   const { values, onChange, onSubmit } = useFormm(createGoodCallback, {
-    // picture: "",
     title: "",
     description: "",
     price: "",
@@ -87,28 +80,12 @@ function GoodForm(props) {
     variables: values,
     update(proxy, result) {
       // TODO: remove goods from cache
-      // values.picture = "";
       values.title = "";
       values.description = "";
       values.price = "";
       values.autor = "";
       values.pageNumber = "";
       values.publishYear = "";
-
-      // const data = proxy.readQuery({
-      //   query: FETCH_ITEMS_QUERY,
-      // });
-      // let newData = [...data.events];
-      // newData = [result.data.events, ...newData];
-      // proxy.writeQuery({
-      //   query: FETCH_ITEMS_QUERY,
-      //   data: {
-      //     ...data,
-      //     events: {
-      //       newData,
-      //     },
-      //   },
-      // });
 
       proxy.modify({
         fields: {
@@ -121,7 +98,7 @@ function GoodForm(props) {
       });
     },
     onError(err) {
-      setErrors(err.message);
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
   });
 

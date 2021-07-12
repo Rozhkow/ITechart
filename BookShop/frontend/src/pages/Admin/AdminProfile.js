@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@apollo/client";
 import _ from "lodash";
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useState, useReducer } from "react";
 import { Table, Button, Container, Checkbox } from "semantic-ui-react";
 import { CSVLink } from "react-csv";
 
@@ -30,11 +30,6 @@ function sortReducer(state, action) {
         users: _.sortBy(state.users, [action.column]),
         direction: "ascending",
       };
-    case "UPDATE_USERS":
-      return {
-        ...state,
-        users: action.payload,
-      };
     default:
       throw new Error();
   }
@@ -49,19 +44,14 @@ function AdminProfilePage() {
 
   const [state, dispatch] = useReducer(sortReducer, {
     column: null,
-    users: data ? data.users : [],
     direction: null,
   });
 
-  useEffect(() => {
-    if (!loading && data && data.users) {
-      dispatch({ type: "UPDATE_USERS", payload: data.users });
-    }
-  }, [data, loading]); // restart hook if our second argument has changed
+  const users  = (!loading && data && data?.users) || [];
 
   // Pagination
 
-  const { column, users } = state;
+  const { column } = state;
 
   const [pageNumber, setPageNumber] = useState(0);
   const usersPerPage = 5;

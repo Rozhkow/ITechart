@@ -11,6 +11,12 @@
   margin: 5px;
 }
 
+.SingleGood {
+  display: flex!important;
+  align-items: center!important;
+  justify-content: center!important;
+}
+
 @media screen and (max-width: 1440px) {
   img.ui.image {
     width: 50%!important;

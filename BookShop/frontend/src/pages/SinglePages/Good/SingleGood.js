@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { Card, Grid, Image, Form } from "semantic-ui-react";
+import { Card, Grid, Image, Form, Container } from "semantic-ui-react";
 import moment from "moment";
 
 import { AuthContext } from "../../../context/auth";
@@ -30,7 +30,6 @@ function SingleGood(props) {
 
   const [deleteEvent] = useMutation(DELETE_GOOD_MUTATION, {
     update(proxy, result) {
-      debugger;
       // TODO: remove users from cache
       const data = proxy.readQuery({
         query: FETCH_ITEMS_QUERY,
@@ -46,28 +45,18 @@ function SingleGood(props) {
           },
         },
       });
+      props.history.push("/");
     },
     variables: { id: id },
   });
 
   const [deleteComment] = useMutation(DELETE_COMMENT, {
-    update(proxy, result) {
+    update(proxy) {
       // TODO: remove users from cache
       const data = proxy.readQuery({
         query: FETCH_GOOD_QUERY,
       });
       return data
-      // let newData = [...data.getEvent];
-      // newData = [result.data.getEvent, ...newData];
-      // proxy.writeQuery({
-      //   query: FETCH_GOOD_QUERY,
-      //   data: {
-      //     ...data,
-      //     getEvent: {
-      //       newData,
-      //     },
-      //   },
-      // });
     },
   });
 
@@ -100,6 +89,7 @@ function SingleGood(props) {
     } = data.getEvent;
 
     return (
+      <>
       <Grid className="SingleGood">
         <Grid.Column className="img" width={5}>
           <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
@@ -128,8 +118,9 @@ function SingleGood(props) {
             </Card.Content>
           </Card>
         </Grid.Column>
-        <Grid.Column width={5}>
+        
           {user && user.admin === true ? (
+          <Grid.Column width={5}>
             <UpdateGood
               id={id}
               title={title}
@@ -139,8 +130,13 @@ function SingleGood(props) {
               pageNumber={pageNumber}
               publishYear={publishYear}
             />
-          ) : null}
-          <Grid.Column width={5}>
+          </Grid.Column>
+          ) : <div style={{display: "none"}}/>}
+          
+          
+        
+      </Grid>
+        <Container>
             <h1>Comments:</h1>
             {user ? (
               <Card fluid>
@@ -184,9 +180,8 @@ function SingleGood(props) {
                 </Card.Content>
               </Card>
             ))}
-          </Grid.Column>
-        </Grid.Column>
-      </Grid>
+          </Container>
+        </>
     );
   }
   return SingleGood;

@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Card, Grid } from "semantic-ui-react";
 
 import DeleteButton from "./DeleteButton";
@@ -9,33 +9,12 @@ import { AuthContext } from "../context/auth";
 import { DELETE_ORDER } from "../util/graphql";
 import { ORDER_ALL } from "../util/graphql";
 
-function reloadReducer(state, action) {
-  switch (action.type) {
-    case "UPDATE_ORDERS":
-      return {
-        ...state,
-        orders: action.payload,
-      };
-    default:
-      throw new Error();
-  }
-}
 
 function OrderCard() {
   const { loading, data } = useQuery(ORDER_ALL);
   const { user } = useContext(AuthContext);
 
-  const [state, dispatch] = useReducer(reloadReducer, {
-    orders: data ? data.orders : [],
-  });
-
-  useEffect(() => {
-    if (!loading && data && data.orders) {
-      dispatch({ type: "UPDATE_ORDERS", payload: data.orders });
-    }
-  }, [data, loading]);
-
-  const { orders } = state;
+  const orders  = (!loading && data && data?.orders) || [];
 
   const [deleteOrder] = useMutation(DELETE_ORDER, {
     update(proxy, result) {
@@ -103,16 +82,6 @@ function OrderCard() {
                       ))}
                     </Card.Header>
                     <Card.Header>Price: {totalPrice}</Card.Header>
-                    {/* <Card.Content>
-                  {shoppings
-                    .filter((purchase) => purchase.username === username)
-                    .map(({ event: { price } }) => (
-                      <div style={{ display: "none" }}>
-                        {(totalPrice += +price)}
-                      </div>
-                    ))}
-                  {totalPrice}
-                </Card.Content> */}
                     <Card.Content extra style={{ marginTop: 10 }}>
                       <DeleteButton
                         onConfirm={() => {

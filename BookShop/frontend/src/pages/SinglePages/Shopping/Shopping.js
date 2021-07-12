@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useContext } from "react";
+import React, { useState, useReducer, useContext } from "react";
 import _ from "lodash";
 import { useQuery, useMutation } from "@apollo/client";
 import { Table, Button, Container, Accordion, Form } from "semantic-ui-react";
@@ -35,11 +35,6 @@ function sortReducer(state, action) {
         event: _.sortBy(state.event, [action.column]),
         direction: "ascending",
       };
-    case "UPDATE_SHOPPING":
-      return {
-        ...state,
-        event: action.payload,
-      };
     default:
       throw new Error();
   }
@@ -49,7 +44,8 @@ function Shopping() {
   const { loading, data } = useQuery(SHOPPING_ALL);
   const { user } = useContext(AuthContext);
 
-  console.log(data);
+  const event  = (!loading && data && data?.shoppings) || [];
+
   const [errors, setErrors] = useState({});
 
   let [totalPrice, setTotalPrice] = useState(0);
@@ -66,17 +62,10 @@ function Shopping() {
 
   const [state, dispatch] = useReducer(sortReducer, {
     column: null,
-    event: data ? data.shoppings : [],
     direction: null,
   });
 
-  useEffect(() => {
-    if (!loading && data) {
-      dispatch({ type: "UPDATE_SHOPPING", payload: data.shoppings });
-    }
-  }, [data, loading]);
-
-  const { column, event, direction } = state;
+  const { column } = state;
 
   let shoppingIds = [];
 
@@ -101,7 +90,7 @@ function Shopping() {
       });
     },
     onError(err) {
-      setErrors(err.message);
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     variables: {
       name: values.name,
@@ -147,25 +136,31 @@ function Shopping() {
         content: (
           <Form onSubmit={onSubmit}>
             <Form.Input
+              label="Name"
               placeholder="Name"
               name="name"
+              type="text"
               onChange={onChange}
               value={values.name}
-              errors={errors}
+              error={errors.name ? true : false}
             />
             <Form.Input
+              label="Last Name"
               placeholder="Last Name"
               name="lastname"
+              type="text"
               onChange={onChange}
               value={values.lastname}
-              errors={errors}
+              error={errors.lastname ? true : false}
             />
             <Form.Input
+              label="Address"
               placeholder="Address"
               name="address"
+              type="text"
               onChange={onChange}
               value={values.address}
-              errors={errors}
+              error={errors.address ? true : false}
             />
             <Button loading={loading} className="order">
               Order
@@ -279,7 +274,11 @@ function Shopping() {
       <Accordion panels={panels} />
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">
-          <ul className="list">{Object.values(errors)}</ul>
+          <ul className="list">
+            {Object.values(errors).map((value) => (
+              <li key={value}>{value}</li>
+            ))}
+          </ul>
         </div>
       )}
       <OrderCard />

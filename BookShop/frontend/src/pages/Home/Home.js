@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useReducer } from "react";
+import React, { useState, useContext } from "react";
 import { useQuery } from "@apollo/client";
 import { Container, Grid } from "semantic-ui-react";
 
@@ -13,36 +13,13 @@ import GoodForm from "../../components/Good/GoodForm/GoodForm";
 import "./Home.css";
 import { FETCH_ITEMS_QUERY } from "../../util/graphql";
 
-function Reducer(state, action) {
-  switch (action.type) {
-    case "UPDATE_GOODS":
-      console.log(action.payload);
-      return {
-        ...state,
-        goods: action.payload,
-      };
-    default:
-      throw new Error();
-  }
-}
-
 function HomePage() {
   const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState("");
 
   const { loading, data } = useQuery(FETCH_ITEMS_QUERY);
 
-  const [state, dispatch] = useReducer(Reducer, {
-    goods: data ? data.events : [],
-  });
-
-  useEffect(() => {
-    if (!loading && data && data.events) {
-      dispatch({ type: "UPDATE_GOODS", payload: data.events });
-    }
-  }, [data, loading]);
-
-  const { goods } = state;
+  const goods  = (!loading && data && data?.events) || [];
 
   const [pageNumber, setPageNumber] = useState(0);
   const goodsPerPage = 6;
