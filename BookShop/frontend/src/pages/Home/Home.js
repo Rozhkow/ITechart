@@ -19,7 +19,7 @@ function HomePage() {
 
   const { loading, data } = useQuery(FETCH_ITEMS_QUERY);
 
-  const goods  = (!loading && data && data?.events) || [];
+  const goods = (!loading && data && data?.events) || [];
 
   const [pageNumber, setPageNumber] = useState(0);
   const goodsPerPage = 6;
