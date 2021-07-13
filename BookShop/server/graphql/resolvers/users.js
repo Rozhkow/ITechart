@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../../config");
 const User = require("../../models/user");
 
-const { UserInputError } = require('apollo-server');
+const { UserInputError } = require("apollo-server");
 
 const checkAuth = require("../../middleware/is-auth");
 
@@ -59,9 +59,9 @@ module.exports = {
       checkAuth(context);
 
       const { errors, valid } = validateUpdateUser(args.username, args.email);
-      
-      if(!valid) {
-        throw new UserInputError('Errors', { errors });
+
+      if (!valid) {
+        throw new UserInputError("Errors", { errors });
       }
 
       return User.findOneAndUpdate(
@@ -70,7 +70,7 @@ module.exports = {
         {
           username: args.username,
           email: args.email,
-          message: "Successful"
+          message: "Successful!",
         },
         { new: true }
       );
@@ -79,8 +79,8 @@ module.exports = {
       try {
         const { username } = checkAuth(context);
 
-        if(username !== "admin"){
-          throw new Error('Action not allowed');
+        if (username !== "admin") {
+          throw new Error("Action not allowed");
         }
         const user = await User.findById(id);
         // if (user.username === "admin") {
@@ -96,9 +96,9 @@ module.exports = {
 
     async login(_, { username, password }) {
       const { errors, valid } = validateLoginInput(username, password);
-      
-      if(!valid) {
-        throw new UserInputError('Errors', { errors });
+
+      if (!valid) {
+        throw new UserInputError("Errors", { errors });
       }
 
       const user = await User.findOne({ username });
@@ -137,7 +137,7 @@ module.exports = {
         );
 
         if (!valid) {
-          throw new UserInputError('Errors', { errors });
+          throw new UserInputError("Errors", { errors });
         }
         // Make sure that user doesn't already exist
         const user = await User.findOne({ username });

@@ -168,6 +168,7 @@ export const UPDATE_GOOD = gql`
       autor
       pageNumber
       publishYear
+      message
     }
   }
 `;

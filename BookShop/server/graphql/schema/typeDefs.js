@@ -41,6 +41,7 @@ type Event {
     publishYear: String!
     comments: [Comment]!
     commentCount: Int!
+    message: String!
 }
 
 type User {

@@ -1,3 +1,14 @@
 /* .ui.success.message {
-    transition-delay: 500ms;
+  animation-duration: 3s;
+  animation-name: slidein;
+}
+
+@keyframes slidein {
+  from {
+    transition: opacity 0.5s;
+  }
+
+  to {
+    opacity: 0.1;
+  }
 } */

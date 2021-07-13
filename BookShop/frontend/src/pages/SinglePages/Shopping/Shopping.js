@@ -44,7 +44,7 @@ function Shopping() {
   const { loading, data } = useQuery(SHOPPING_ALL);
   const { user } = useContext(AuthContext);
 
-  const event  = (!loading && data && data?.shoppings) || [];
+  const event = (!loading && data && data?.shoppings) || [];
 
   const [errors, setErrors] = useState({});
 
@@ -142,7 +142,7 @@ function Shopping() {
               type="text"
               onChange={onChange}
               value={values.name}
-              error={errors.name ? true : false}
+              error={!!errors.name}
             />
             <Form.Input
               label="Last Name"
@@ -151,7 +151,7 @@ function Shopping() {
               type="text"
               onChange={onChange}
               value={values.lastname}
-              error={errors.lastname ? true : false}
+              error={!!errors.lastname}
             />
             <Form.Input
               label="Address"
@@ -160,7 +160,7 @@ function Shopping() {
               type="text"
               onChange={onChange}
               value={values.address}
-              error={errors.address ? true : false}
+              error={!!errors.address}
             />
             <Button loading={loading} className="order">
               Order

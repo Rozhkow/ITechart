@@ -14,7 +14,7 @@ export const UserLoginFieldSection = ({
       name="username"
       type="text"
       value={values.username}
-      error={errors.username ? true : false}
+      error={!!errors.username}
       onChange={onChange}
     />
     <Form.Input
@@ -23,7 +23,7 @@ export const UserLoginFieldSection = ({
       name="password"
       type="password"
       value={values.password}
-      error={errors.password ? true : false}
+      error={!!errors.password}
       onChange={onChange}
     />
     {children}

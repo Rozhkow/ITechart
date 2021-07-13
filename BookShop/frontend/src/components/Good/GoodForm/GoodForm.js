@@ -10,21 +10,20 @@ import { CREATE_GOOD_MUTATION } from "../../../util/graphql";
 
 import FormComponent from "../../Authentication/FormComponent";
 
-
 const GoodFieldSection = ({ values, errors, onChange }) => (
   <>
     <Form.Input
       placeholder="Title"
       name="title"
       onChange={onChange}
-      error={errors.title ? true : false}
+      error={!!errors.title}
       value={values.title}
     />
     <Form.Input
       placeholder="Description"
       name="description"
       onChange={onChange}
-      error={errors.description ? true : false}
+      error={!!errors.description}
       value={values.description}
     />
     <Form.Input
@@ -32,7 +31,7 @@ const GoodFieldSection = ({ values, errors, onChange }) => (
       placeholder="Price"
       name="price"
       onChange={onChange}
-      error={errors.price ? true : false}
+      error={!!errors.price}
       value={values.price}
     />
     <Form.Input
@@ -46,23 +45,21 @@ const GoodFieldSection = ({ values, errors, onChange }) => (
       placeholder="pageNumber"
       name="pageNumber"
       onChange={onChange}
-      error={errors.pageNumber ? true : false}
+      error={!!errors.pageNumber}
       value={values.pageNumber}
     />
     <Form.Input
       placeholder="publishYear"
       name="publishYear"
       onChange={onChange}
-      error={errors.publishYear ? true : false}
+      error={!!errors.publishYear}
       value={values.publishYear}
     />
   </>
 );
 
 function GoodForm(props) {
- 
   const [errors, setErrors] = useState({});
-  
 
   const data = props.data;
   console.log(data);
@@ -76,7 +73,7 @@ function GoodForm(props) {
     publishYear: "",
   });
 
-  const [createEvent] = useMutation(CREATE_GOOD_MUTATION, {
+  const [createEvent, { loading }] = useMutation(CREATE_GOOD_MUTATION, {
     variables: values,
     update(proxy, result) {
       // TODO: remove goods from cache
@@ -114,14 +111,10 @@ function GoodForm(props) {
         onSubmit={onSubmit}
         errors={errors}
         values={values}
+        loading={loading}
       >
-        <GoodFieldSection
-          values={values}
-          errors={errors}
-          onChange={onChange}
-        />
+        <GoodFieldSection values={values} errors={errors} onChange={onChange} />
       </FormComponent>
-
     </Container>
   );
 }

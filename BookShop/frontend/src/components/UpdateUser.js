@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Form, Button, Container, Message } from "semantic-ui-react";
-import { ApolloCache, useMutation } from "@apollo/client";
+import { Form, Container } from "semantic-ui-react";
+import { useMutation } from "@apollo/client";
 
 import { useFormm } from "../util/hooks";
 import { UPDATE_USER } from "../util/graphql";
+
+import FormComponent from "../components/Authentication/FormComponent";
 
 import "./UpdateUser.css";
 
@@ -13,14 +15,14 @@ const UserFieldSection = ({ values, errors, onChange }) => (
       placeholder="Username"
       name="username"
       onChange={onChange}
-      error={errors.username ? true : false}
+      error={!!errors.username}
       value={values.username}
     />
     <Form.Input
       placeholder="Email"
       name="email"
       onChange={onChange}
-      error={errors.email ? true : false}
+      error={!!errors.email}
       value={values.email}
     />
   </>
@@ -37,10 +39,9 @@ function UpdateUser({ id, username, email }) {
   });
 
   const [updateUser, { loading }] = useMutation(UPDATE_USER, {
-    variables: values, 
+    variables: values,
     update(proxy, result) {
       // TODO: remove goods from cache
-      // values.picture = "";
       values.id = values.id;
       values.username = values.username;
       values.email = values.email;
@@ -56,36 +57,30 @@ function UpdateUser({ id, username, email }) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     onCompleted(message) {
-      setMessage(message.updateUser.message)
-    }
+      setMessage(Object.values(message.updateUser.message));
+    },
   });
 
   function updateUserCallback() {
     updateUser();
   }
-  
+
   return (
     <Container>
-      <Form onSubmit={onSubmit} noValidate className={loading && "loading"}>
-        <h2>Update user:</h2>
+      <FormComponent
+        title="Update user"
+        onChange={onChange}
+        onSubmit={onSubmit}
+        errors={errors}
+        values={values}
+        loading={loading}
+      >
         <UserFieldSection values={values} errors={errors} onChange={onChange} />
-        <Button type="submit" color="teal">
-          Update
-        </Button>
-      </Form>
-      {Object.keys(errors).length > 0 && (
-        <div className="ui error message">
-          <ul className="list">
-            {Object.values(errors).map((value) => (
-              <li key={value}>{value}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {Object.keys(errors).length === 0 && (<div className="ui success message">
-          {Object.values(message)}
-        </div>
-      )}
+        {Object.keys(errors).length === 0 &&
+          Object.values(message).length > 0 && (
+            <div className="ui success message">{Object.values(message)}</div>
+          )}
+      </FormComponent>
     </Container>
   );
 }

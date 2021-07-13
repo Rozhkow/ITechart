@@ -15,7 +15,12 @@ function FormComponent({
       <h1>{title}</h1>
       {children}
 
-      <Button type="submit" primary loading={loading} >
+      <Button
+        type="submit"
+        primary
+        loading={loading}
+        style={{ backgroundColor: "#00b5ad" }}
+      >
         {title}
       </Button>
 

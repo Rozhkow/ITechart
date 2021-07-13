@@ -6,6 +6,7 @@ import { useFormm } from "../../util/hooks";
 
 import "./GoodForm/GoodForm.css";
 
+import FormComponent from "../Authentication/FormComponent";
 import { GoodFieldSection } from "./GoodForm/GoodForm";
 import { UPDATE_GOOD } from "../../util/graphql";
 
@@ -19,6 +20,7 @@ function UpdateGood({
   publishYear,
 }) {
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState({});
 
   const { values, onChange, onSubmit } = useFormm(updateGoodCallback, {
     id: id,
@@ -53,6 +55,9 @@ function UpdateGood({
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
+    onCompleted(message) {
+      setMessage(Object.values(message.updateEvent.message));
+    },
   });
 
   function updateGoodCallback() {
@@ -61,22 +66,20 @@ function UpdateGood({
 
   return (
     <Container className="GoodCard">
-      <Form onSubmit={onSubmit} noValidate className={loading && "loading"}>
-        <h2>Update a good:</h2>
+      <FormComponent
+        title="Update a good"
+        onChange={onChange}
+        onSubmit={onSubmit}
+        errors={errors}
+        values={values}
+        loading={loading}
+      >
         <GoodFieldSection values={values} errors={errors} onChange={onChange} />
-        <Button type="submit" color="teal">
-          Update
-        </Button>
-      </Form>
-      {Object.keys(errors).length > 0 && (
-        <div className="ui error message">
-          <ul className="list">
-            {Object.values(errors).map((value) => (
-              <li key={value}>{value}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+        {Object.keys(errors).length === 0 &&
+          Object.values(message).length > 0 && (
+            <div className="ui success message">{Object.values(message)}</div>
+          )}
+      </FormComponent>
     </Container>
   );
 }

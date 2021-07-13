@@ -9,7 +9,7 @@ export const RegiFieldsSection = ({ values, errors, onChange }) => (
       name="email"
       type="email"
       value={values.email}
-      error={errors.email ? true : false}
+      error={!!errors.email}
       onChange={onChange}
     />
     <Form.Input
@@ -18,7 +18,7 @@ export const RegiFieldsSection = ({ values, errors, onChange }) => (
       name="confirmPassword"
       type="password"
       value={values.confirmPassword}
-      error={errors.confirmPassword ? true : false}
+      error={!!errors.confirmPassword}
       onChange={onChange}
     />
   </>
