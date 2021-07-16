@@ -1,6 +1,9 @@
 const { validateCreateEvent } = require("../../middleware/validators");
 const Event = require("../../models/event");
 
+const path = require('path');
+const fs = require('fs');
+
 const checkAuth = require("../../middleware/is-auth");
 
 const { UserInputError } = require("apollo-server");
@@ -33,6 +36,17 @@ module.exports = {
     },
   },
   Mutation: {
+    async uploadFile(_, {file}) {
+      const { createReadStream, filename } = await file;
+
+      const stream = createReadStream();
+      const pathName = path.join(__dirname, `../../images/${filename}`);
+      await stream.pipe(fs.createWriteStream(pathName));
+
+      return {
+        url: `http://localhost:8000/images/${filename}`
+      }
+    },
     async createEvent(_, args, context) {
       checkAuth(context);
 

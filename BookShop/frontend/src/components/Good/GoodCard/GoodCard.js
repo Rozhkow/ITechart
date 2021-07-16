@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Card, Icon, Image, Accordion, Button, Label } from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
@@ -13,10 +13,17 @@ import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
 import { SHOP_EVENT } from "../../../util/graphql";
 import { SHOPPING_ALL } from "../../../util/graphql";
 
-import img from "../../../img/1.jpg";
+
+function importAll(r) {
+  let images = {};
+  r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+  return images;
+}
 
 function GoodCard({ good: { title, description, price, id, commentCount } }) {
   const { user } = useContext(AuthContext);
+  const images = importAll(require.context('../../../img', false, /\.(png|jpe?g|svg)$/));
+  console.log(images)
   const [shopEvent, { loading }] = useMutation(SHOP_EVENT, {
     update(proxy, result) {
       // TODO: remove users from cache
@@ -38,7 +45,7 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
     variables: { id: id },
   });
 
-  const [toggle, handleClick] = React.useState(0);
+  const [toggle, handleClick] = useState(0);
 
   const [deleteEvent] = useMutation(DELETE_GOOD_MUTATION, {
     update(proxy, result) {
@@ -62,10 +69,18 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
     variables: { id: id },
   });
 
+  // for(let img in images) {
+  //   toString(img)
+  //   console.log(img)
+  // }
+  
   return (
     <Card>
       <Card.Content>
-        <Image centered size="medium" src={img} as={Link} to={`/goods/${id}`} />
+        {Object.keys(images).map((img) => {
+          <Image centered key={img} size="medium" src={images[img].default} as={Link} to={`/goods/${id}`} />
+        })}
+        <Image centered size="medium" src={images["1.jpg"].default} as={Link} to={`/goods/${id}`} />
         <Card.Header as={Link} to={`/goods/${id}`}>
           {title}
         </Card.Header>

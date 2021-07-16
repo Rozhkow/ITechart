@@ -14,6 +14,10 @@ type Order {
     updatedAt: String!
     username: String!
 }
+
+type File {
+    url: String!
+}
   
 type Comment {
     id: ID!
@@ -101,5 +105,6 @@ type Mutation {
     deleteComment(id: ID!, commentId: ID!): Event!
     addingOrder(name: String!, lastname: String!, address: String!, totalPrice: Float!, shoppingIds: [ID]): Order
     deleteOrder(orderId: ID!): String!
+    uploadFile(file: Upload!): File!
 }
 `);

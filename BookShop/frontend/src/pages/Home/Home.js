@@ -9,6 +9,7 @@ import { AuthContext } from "../../context/auth";
 import ImageSlider from "../../components/Slider/ImageSlider";
 import { SliderData } from "../../components/Slider/SliderData";
 import GoodForm from "../../components/Good/GoodForm/GoodForm";
+import UploadForm from "../../components/UploadForm";
 
 import "./Home.css";
 import { FETCH_ITEMS_QUERY } from "../../util/graphql";
@@ -42,6 +43,7 @@ function HomePage() {
           }}
         />
       </div>
+      <UploadForm/>
       <Grid columns={3} className="Cards" stackable>
         <Grid.Row>
           <Grid.Column>
