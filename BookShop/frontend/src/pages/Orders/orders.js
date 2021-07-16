@@ -40,7 +40,7 @@ function Orders() {
     direction: null,
   });
 
-  const orders  = (!loading && data && data?.orders) || [];
+  const orders = (!loading && data && data?.orders) || [];
 
   const { column } = state;
 
@@ -153,6 +153,7 @@ function Orders() {
                 createdAt,
                 shoppings,
                 username,
+                totalPrice,
               }) => (
                 <Table.Row textAlign="center" key={name}>
                   <Table.Cell>{name}</Table.Cell>
@@ -165,7 +166,7 @@ function Orders() {
                       .filter((purchase) => purchase.username === username)
                       .map(({ event: { title, id } }) => (
                         <Table.Cell as={Link} to={`/goods/${id}`}>
-                        <div>{title}</div>
+                          <div>{title}</div>
                         </Table.Cell>
                       ))}
                   </Table.Cell>
@@ -178,7 +179,7 @@ function Orders() {
                       //     {(totalPrice += +price)}
                       //   </div>
                       // ))}
-                      .map(({ event: { totalPrice } }) => (
+                      .map(({ totalPrice }) => (
                         <div>{totalPrice}</div>
                       ))}
                     {totalPrice}

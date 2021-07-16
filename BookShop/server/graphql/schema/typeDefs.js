@@ -99,7 +99,7 @@ type Mutation {
     cancelShopping(shoppingId: ID!): String!
     createComment(id: String!, body: String!): Event!
     deleteComment(id: ID!, commentId: ID!): Event!
-    addingOrder(name: String!, lastname: String!, address: String!, totalPrice: Float!, shoppingIds: [ID]): Order
+    addingOrder(name: String!, lastname: String!, address: String!, shoppingIds: [ID]): Order
     deleteOrder(orderId: ID!): String!
 }
 `);

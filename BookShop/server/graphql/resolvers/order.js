@@ -4,9 +4,9 @@ const Shopping = require("../../models/shopping");
 
 const checkAuth = require("../../middleware/is-auth");
 
-const { transformOrder } = require('./merge');
+const { transformOrder } = require("./merge");
 
-const { UserInputError } = require('apollo-server');
+const { UserInputError } = require("apollo-server");
 
 module.exports = {
   Query: {
@@ -52,21 +52,33 @@ module.exports = {
         args.address
       );
 
-      if(!valid) {
-        throw new UserInputError('Errors', { errors });
+      if (!valid) {
+        throw new UserInputError("Errors", { errors });
       }
+
+      const shoppingIds = args.shoppingIds;
+      const shoppings = await Shopping.find({
+        _id: {
+          $in: shoppingIds,
+        },
+      }).populate("event");
+      const totalPrice = shoppings.reduce(
+        (priceAccumulator, shopping) =>
+          (priceAccumulator += shopping.event.price),
+        0
+      );
 
       const order = new Order({
         name: args.name,
         lastname: args.lastname,
         address: args.address,
-        totalPrice: args.totalPrice,
+        totalPrice: totalPrice,
         shoppings: fetchedShoppings,
         username: username,
       });
 
       const addingOrder = await order.save();
-      
+
       return transformOrder(addingOrder);
     },
     async deleteOrder(_, { orderId }, context) {

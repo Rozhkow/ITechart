@@ -249,14 +249,12 @@ export const ADDING_ORDER = gql`
     $name: String!
     $lastname: String!
     $address: String!
-    $totalPrice: Float!
     $shoppingIds: [ID]
   ) {
     addingOrder(
       name: $name
       lastname: $lastname
       address: $address
-      totalPrice: $totalPrice
       shoppingIds: $shoppingIds
     ) {
       name
