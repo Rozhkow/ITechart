@@ -8,7 +8,7 @@ import DeleteButton from "../../components/DeleteButton";
 import { ORDER_ALL } from "../../util/graphql";
 import { DELETE_ORDER } from "../../util/graphql";
 
-import { Container, Button, Table } from "semantic-ui-react";
+import { Container, Table } from "semantic-ui-react";
 
 function sortReducer(state, action) {
   switch (action.type) {
@@ -65,8 +65,6 @@ function Orders() {
       });
     },
   });
-
-  let totalPrice = 0;
 
   return (
     <Container classname="Orders">

@@ -64,14 +64,8 @@ function GoodCard({
   });
 
   return (
-    <Card style={{ height: "100%" }}>
-      <Card.Content
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
+    <Card className="card">
+      <Card.Content className="cardContent">
         <Image
           centered
           size="medium"
@@ -102,7 +96,7 @@ function GoodCard({
       <Card.Content extra>
         <Card.Meta>{price}$</Card.Meta>
         <br />
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="extraContent">
           {user?.admin && <DeleteButton id={id} onConfirm={deleteEvent} />}
           {user && !user.admin && (
             <Button

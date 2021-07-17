@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useMutation } from "@apollo/client";
 
 import { AuthContext } from "../../context/auth";
-import { useFormm } from "../../util/hooks";
+import { useForm } from "../../util/hooks";
 
 import FormComponent from "../../components/Authentication/FormComponent";
 import { RegiFieldsSection } from "../../components/Authentication/RegisterComponent";
@@ -10,11 +10,11 @@ import { UserLoginFieldSection } from "../../components/Authentication/LoginComp
 
 import { REGISTER_USER } from "../../util/graphql";
 
-function Register(props) { 
+function Register(props) {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
-  const { onChange, onSubmit, values } = useFormm(registerUser, {
+  const { onChange, onSubmit, values } = useForm(registerUser, {
     username: "",
     email: "",
     password: "",

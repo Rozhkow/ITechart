@@ -56,24 +56,28 @@ module.exports = {
   },
   Mutation: {
     async updateUser(_, args, context) {
-      checkAuth(context);
+      try {
+        checkAuth(context);
 
-      const { errors, valid } = validateUpdateUser(args.username, args.email);
+        const { errors, valid } = validateUpdateUser(args.username, args.email);
 
-      if (!valid) {
-        throw new UserInputError("Errors", { errors });
+        if (!valid) {
+          throw new UserInputError("Errors", { errors });
+        }
+
+        return User.findOneAndUpdate(
+          User.findById(args.id),
+
+          {
+            username: args.username,
+            email: args.email,
+            message: "Successful!",
+          },
+          { new: true }
+        );
+      } catch (err) {
+        throw err;
       }
-
-      return User.findOneAndUpdate(
-        User.findById(args.id),
-
-        {
-          username: args.username,
-          email: args.email,
-          message: "Successful!",
-        },
-        { new: true }
-      );
     },
     async deleteUser(_, { id }, context) {
       try {
@@ -83,51 +87,51 @@ module.exports = {
           throw new Error("Action not allowed");
         }
         const user = await User.findById(id);
-        // if (user.username === "admin") {
         await user.delete();
         return "User deleted successfully";
-        // } else {
-        //   throw new Error('Action not allowed');
-        // }
       } catch (err) {
         throw new Error(err);
       }
     },
 
     async login(_, { username, password }) {
-      const { errors, valid } = validateLoginInput(username, password);
+      try {
+        const { errors, valid } = validateLoginInput(username, password);
 
-      if (!valid) {
-        throw new UserInputError("Errors", { errors });
+        if (!valid) {
+          throw new UserInputError("Errors", { errors });
+        }
+
+        const user = await User.findOne({ username });
+
+        if (!user) {
+          errors.general = "User not found";
+          throw new Error("User not found", { errors });
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+          errors.general = "Wrong crendetials";
+          throw new Error("Wrong crendetials", { errors });
+        }
+
+        const token = generateToken(user);
+
+        return {
+          ...user._doc,
+          id: user._id,
+          token,
+        };
+      } catch (err) {
+        throw err;
       }
-
-      const user = await User.findOne({ username });
-
-      if (!user) {
-        errors.general = "User not found";
-        throw new Error("User not found", { errors });
-      }
-
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        errors.general = "Wrong crendetials";
-        throw new Error("Wrong crendetials", { errors });
-      }
-
-      const token = generateToken(user);
-
-      return {
-        ...user._doc,
-        id: user._id,
-        token,
-      };
     },
 
     async register(
       _,
       { registerInput: { username, email, password, confirmPassword } }
     ) {
-      {
+      try {
         // Validate user data
         const { valid, errors } = validateRegisterInput(
           username,
@@ -167,6 +171,8 @@ module.exports = {
           id: res._id,
           token,
         };
+      } catch (err) {
+        throw err;
       }
     },
   },

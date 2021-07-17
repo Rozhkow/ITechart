@@ -77,7 +77,7 @@ function HomePage() {
               })
               .slice(pagesVisited, pagesVisited + goodsPerPage)
               .map((good, index) => (
-                <Grid.Column key={good.id} style={{ marginBottom: 20 }}>
+                <Grid.Column key={good.id} className="goodCards">
                   <GoodCard
                     good={good}
                     image={images[Object.keys(images)[index]]?.default || ""}

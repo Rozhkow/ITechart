@@ -10,7 +10,6 @@ import DeleteButton from "./DeleteButton";
 export const AdminComponent = ({
   setSearchTerm,
   sortedColumn,
-  FFF,
   loading,
   users,
   searchTerm,

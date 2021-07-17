@@ -11,3 +11,18 @@
   color: #ffffff !important;
   background-color: #649dc9 !important;
 }
+
+.cardContent {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+.card {
+  height: 100% !important;
+}
+
+.extraContent {
+  display: flex !important;
+  justify-content: space-between !important;
+}

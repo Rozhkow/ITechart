@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { useMutation } from "@apollo/client";
 
-import { AuthContext } from "../../context/auth"; 
-import { useFormm } from "../../util/hooks";
+import { AuthContext } from "../../context/auth";
+import { useForm } from "../../util/hooks";
 
 import "./Login.css";
 
@@ -15,7 +15,7 @@ function Login(props) {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
-  const { onChange, onSubmit, values } = useFormm(loginUserCallback, {
+  const { onChange, onSubmit, values } = useForm(loginUserCallback, {
     username: "",
     password: "",
   });

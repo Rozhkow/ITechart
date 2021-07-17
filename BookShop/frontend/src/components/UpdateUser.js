@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { Form, Container } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 
-import { useFormm } from "../util/hooks";
+import { useForm } from "../util/hooks";
 import { UPDATE_USER } from "../util/graphql";
 
 import FormComponent from "../components/Authentication/FormComponent";
-
-import "./UpdateUser.css";
 
 const UserFieldSection = ({ values, errors, onChange }) => (
   <>
@@ -32,7 +30,7 @@ function UpdateUser({ id, username, email }) {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState({});
 
-  const { values, onChange, onSubmit } = useFormm(updateUserCallback, {
+  const { values, onChange, onSubmit } = useForm(updateUserCallback, {
     id: id,
     username: username,
     email: email,

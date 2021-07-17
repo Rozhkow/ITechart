@@ -12,32 +12,38 @@
 }
 
 .SingleGood {
-  display: flex!important;
-  align-items: center!important;
-  justify-content: center!important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.unAuthMessage {
+  padding: 10px !important;
 }
 
 @media screen and (max-width: 1440px) {
   img.ui.image {
-    width: 50%!important;
-    height: 40%!important;
+    width: 50% !important;
+    height: 40% !important;
   }
 }
 
 @media screen and (max-width: 768px) {
   img.ui.image {
-    width: 70%!important;
-    height: 40%!important;
+    width: 70% !important;
+    height: 40% !important;
   }
 }
 
 @media screen and (max-width: 576px) {
-  .ui.column.grid>[class*="six wide"].column, .ui.grid>.column.row>[class*="six wide"].column, .ui.grid>.row>[class*="six wide"].column, .ui.grid>[class*="six wide"].column {
-    width: 100%!important;
+  .ui.column.grid > [class*="six wide"].column,
+  .ui.grid > .column.row > [class*="six wide"].column,
+  .ui.grid > .row > [class*="six wide"].column,
+  .ui.grid > [class*="six wide"].column {
+    width: 100% !important;
+  }
+  img.ui.image {
+    width: 70% !important;
+    height: 100% !important;
+  }
 }
-img.ui.image {
-  width: 70%!important;
-  height: 100%!important;
-}
-}
-

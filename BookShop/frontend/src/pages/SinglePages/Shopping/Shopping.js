@@ -16,7 +16,7 @@ import { ADDING_ORDER } from "../../../util/graphql";
 import { ORDER_ALL } from "../../../util/graphql";
 import OrderCard from "../../../components/Order";
 
-import { useFormm } from "../../../util/hooks";
+import { useForm } from "../../../util/hooks";
 
 function sortReducer(state, action) {
   switch (action.type) {
@@ -54,7 +54,7 @@ function Shopping() {
     totalPrice += +price;
   };
 
-  const { onChange, onSubmit, values } = useFormm(orderUserCallback, {
+  const { onChange, onSubmit, values } = useForm(orderUserCallback, {
     name: "",
     lastname: "",
     address: "",
@@ -89,9 +89,9 @@ function Shopping() {
         },
       });
     },
-    // onError(err) {
-    //   setErrors(err.graphQLErrors[0].extensions.exception.errors);
-    // },
+    onError(err) {
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+    },
     variables: {
       name: values.name,
       lastname: values.lastname,
@@ -261,9 +261,7 @@ function Shopping() {
           )}
         </Table.Body>
       </Table>
-      {/* <div>
-        {event.map({username === user.username ? (({event: { price } })=> (totalPrice += +price)) : null})}
-      </div> */}
+
       <div style={{ display: "none" }}>
         {event
           .filter((event) => event.username === user.username)

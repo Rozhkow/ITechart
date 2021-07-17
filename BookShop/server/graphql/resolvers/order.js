@@ -36,50 +36,54 @@ module.exports = {
   },
   Mutation: {
     async addingOrder(_, args, context) {
-      const { username } = checkAuth(context);
-      var fetchedShoppings = [];
-      for (let i = 0; i < args.shoppingIds.length; i++) {
-        fetchedShoppings.push(
-          await Shopping.findById({
-            _id: args.shoppingIds[i],
-          })
+      try {
+        const { username } = checkAuth(context);
+        var fetchedShoppings = [];
+        for (let i = 0; i < args.shoppingIds.length; i++) {
+          fetchedShoppings.push(
+            await Shopping.findById({
+              _id: args.shoppingIds[i],
+            })
+          );
+        }
+
+        const { valid, errors } = validateAddOrder(
+          args.name,
+          args.lastname,
+          args.address
         );
+
+        if (!valid) {
+          throw new UserInputError("Errors", { errors });
+        }
+
+        const shoppingIds = args.shoppingIds;
+        const shoppings = await Shopping.find({
+          _id: {
+            $in: shoppingIds,
+          },
+        }).populate("event");
+        const totalPrice = shoppings.reduce(
+          (priceAccumulator, shopping) =>
+            (priceAccumulator += shopping.event.price),
+          0
+        );
+
+        const order = new Order({
+          name: args.name,
+          lastname: args.lastname,
+          address: args.address,
+          totalPrice: totalPrice,
+          shoppings: fetchedShoppings,
+          username: username,
+        });
+
+        const addingOrder = await order.save();
+
+        return transformOrder(addingOrder);
+      } catch (err) {
+        throw new Error(err);
       }
-
-      const { valid, errors } = validateAddOrder(
-        args.name,
-        args.lastname,
-        args.address
-      );
-
-      if (!valid) {
-        throw new UserInputError("Errors", { errors });
-      }
-
-      const shoppingIds = args.shoppingIds;
-      const shoppings = await Shopping.find({
-        _id: {
-          $in: shoppingIds,
-        },
-      }).populate("event");
-      const totalPrice = shoppings.reduce(
-        (priceAccumulator, shopping) =>
-          (priceAccumulator += shopping.event.price),
-        0
-      );
-
-      const order = new Order({
-        name: args.name,
-        lastname: args.lastname,
-        address: args.address,
-        totalPrice: totalPrice,
-        shoppings: fetchedShoppings,
-        username: username,
-      });
-
-      const addingOrder = await order.save();
-
-      return transformOrder(addingOrder);
     },
     async deleteOrder(_, { orderId }, context) {
       try {

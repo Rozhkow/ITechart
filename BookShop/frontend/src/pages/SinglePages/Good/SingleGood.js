@@ -15,19 +15,7 @@ import { DELETE_GOOD_MUTATION } from "../../../util/graphql";
 import { DELETE_COMMENT } from "../../../util/graphql";
 import { SUBMIT_COMMENT } from "../../../util/graphql";
 
-function importAll(r) {
-  let images = {};
-  r.keys().map((item, index) => {
-    images[item.replace("./", "")] = r(item);
-  });
-  return images;
-}
-
 function SingleGood(props) {
-  const images = importAll(
-    require.context("../../../img", false, /\.(png|jpe?g|svg)$/)
-  );
-
   const id = props.match.params.id;
   const { user } = useContext(AuthContext);
 
@@ -104,9 +92,6 @@ function SingleGood(props) {
       <>
         <Grid className="SingleGood">
           <Grid.Column className="img" width={5}>
-            {/* {Object.keys(images).map((img) => (
-              <Image key={img} src={images[img].default} />
-            ))} */}
             <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
           </Grid.Column>
           <Grid.Column width={6}>
@@ -190,7 +175,7 @@ function SingleGood(props) {
               </Card.Content>
             </Card>
           ) : (
-            <Card style={{ padding: 10 }}>
+            <Card className="unAuthMessage">
               <h1>If you wanna stay your comment, you need to register.</h1>
             </Card>
           )}
