@@ -13,23 +13,11 @@ import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
 import { SHOP_EVENT } from "../../../util/graphql";
 import { SHOPPING_ALL } from "../../../util/graphql";
 
-// function importAll(r) {
-//   let images = {};
-//   r.keys().map((item, index) => {
-//     images[item.replace("./", "")] = r(item);
-//   });
-//   return images;
-// }
-
 function GoodCard({
   good: { title, description, price, id, commentCount },
   image,
 }) {
   const { user } = useContext(AuthContext);
-  // const images = importAll(
-  //   require.context("../../../img", false, /\.(png|jpe?g|svg)$/)
-  // );
-  // console.log(images);
   const [shopEvent, { loading }] = useMutation(SHOP_EVENT, {
     update(proxy, result) {
       // TODO: remove users from cache
@@ -75,11 +63,6 @@ function GoodCard({
     variables: { id: id },
   });
 
-  // for(let img in images) {
-  // toString(img)
-  // console.log(img)
-  // }
-
   return (
     <Card style={{ height: "100%" }}>
       <Card.Content
@@ -89,16 +72,6 @@ function GoodCard({
           justifyContent: "space-between",
         }}
       >
-        {/* {Object.keys(images).map((img) => (
-          <Image
-            centered
-            key={img}
-            size="medium"
-            src={images[img].default}
-            as={Link}
-            to={`/goods/${id}`}
-          />
-        ))} */}
         <Image
           centered
           size="medium"

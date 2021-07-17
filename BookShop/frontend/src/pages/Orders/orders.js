@@ -174,11 +174,6 @@ function Orders() {
                   <Table.Cell>
                     {shoppings
                       .filter((purchase) => purchase.username === username)
-                      // .map(({ event: { price } }) => (
-                      //   <div style={{ display: "none" }}>
-                      //     {(totalPrice += +price)}
-                      //   </div>
-                      // ))}
                       .map(({ totalPrice }) => (
                         <div>{totalPrice}</div>
                       ))}
