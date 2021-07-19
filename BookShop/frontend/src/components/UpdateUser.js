@@ -55,7 +55,7 @@ function UpdateUser({ id, username, email }) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     onCompleted(message) {
-      setMessage(Object.values(message.updateUser.message));
+      setMessage(() => (message = "Successful!"));
     },
   });
 
@@ -74,10 +74,9 @@ function UpdateUser({ id, username, email }) {
         loading={loading}
       >
         <UserFieldSection values={values} errors={errors} onChange={onChange} />
-        {Object.keys(errors).length === 0 &&
-          Object.values(message).length > 0 && (
-            <div className="ui success message">{Object.values(message)}</div>
-          )}
+        {Object.keys(errors).length === 0 && message.length > 0 && (
+          <div className="ui success message">{message}</div>
+        )}
       </FormComponent>
     </Container>
   );

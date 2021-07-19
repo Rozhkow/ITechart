@@ -56,7 +56,7 @@ function UpdateGood({
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     onCompleted(message) {
-      setMessage(Object.values(message.updateEvent.message));
+      setMessage(() => (message = "Successful!"));
     },
   });
 
@@ -75,10 +75,9 @@ function UpdateGood({
         loading={loading}
       >
         <GoodFieldSection values={values} errors={errors} onChange={onChange} />
-        {Object.keys(errors).length === 0 &&
-          Object.values(message).length > 0 && (
-            <div className="ui success message">{Object.values(message)}</div>
-          )}
+        {Object.keys(errors).length === 0 && message.length > 0 && (
+          <div className="ui success message">{message}</div>
+        )}
       </FormComponent>
     </Container>
   );

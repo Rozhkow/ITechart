@@ -71,7 +71,6 @@ module.exports = {
           {
             username: args.username,
             email: args.email,
-            message: "Successful!",
           },
           { new: true }
         );

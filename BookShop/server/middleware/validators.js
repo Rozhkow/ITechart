@@ -2,7 +2,7 @@ module.exports.validateRegisterInput = (
   username,
   email,
   password,
-  confirmPassword 
+  confirmPassword
 ) => {
   const errors = {};
   if (username.trim() === "") {
@@ -44,31 +44,24 @@ module.exports.validateLoginInput = (username, password) => {
   };
 };
 
-module.exports.validateCreateEvent = (
-  title,
-  description,
-  price,
-  autor,
-  pageNumber,
-  publishYear
-) => {
+module.exports.validateCreateEvent = (args) => {
   const errors = {};
-  if (title.trim() === "") {
+  if (args.title.trim() === "") {
     errors.title = "Title must not be empty";
   }
-  if (description.trim() === "") {
+  if (args.description.trim() === "") {
     errors.description = "Description must not be empty";
   }
-  if (price.trim() === "") {
+  if (args.price.trim() === "") {
     errors.price = "Price must not be empty";
   }
-  if (autor.trim() === "") {
+  if (args.autor.trim() === "") {
     errors.autor = "Autor must not be empty";
   }
-  if (pageNumber.trim() === "") {
+  if (args.pageNumber.trim() === "") {
     errors.pageNumber = "PageNumber must not be empty";
   }
-  if (publishYear.trim() === "") {
+  if (args.publishYear.trim() === "") {
     errors.publishYear = "PublishYear must not be empty";
   }
 
@@ -92,7 +85,7 @@ module.exports.validateAddOrder = (name, lastname, address) => {
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 

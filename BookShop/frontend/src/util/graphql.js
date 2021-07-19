@@ -137,7 +137,6 @@ export const UPDATE_USER = gql`
       id
       username
       email
-      message
     }
   }
 `;
@@ -154,12 +153,14 @@ export const UPDATE_GOOD = gql`
   ) {
     updateEvent(
       id: $id
-      title: $title
-      description: $description
-      price: $price
-      autor: $autor
-      pageNumber: $pageNumber
-      publishYear: $publishYear
+      eventInput: {
+        title: $title
+        description: $description
+        price: $price
+        autor: $autor
+        pageNumber: $pageNumber
+        publishYear: $publishYear
+      }
     ) {
       id
       title
@@ -168,7 +169,6 @@ export const UPDATE_GOOD = gql`
       autor
       pageNumber
       publishYear
-      message
     }
   }
 `;

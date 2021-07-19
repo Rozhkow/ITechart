@@ -6,7 +6,7 @@ const transformOrder = (order) => {
   return {
     ...order._doc,
     orderId: order.id,
-    shoppings: allShoppings.bind(this, order._doc.shoppings),
+    shoppings: () => allShoppings(order._doc.shoppings),
     createdAt: dateToString(order._doc.createdAt),
   };
 };
@@ -26,7 +26,7 @@ const transformShopping = (shopping) => {
   return {
     ...shopping._doc,
     shoppingId: shopping.id,
-    event: singleEvent.bind(this, shopping._doc.event),
+    event: () => singleEvent(shopping._doc.event),
     createdAt: dateToString(shopping._doc.createdAt),
   };
 };

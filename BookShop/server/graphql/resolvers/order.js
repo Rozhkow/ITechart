@@ -38,14 +38,12 @@ module.exports = {
     async addingOrder(_, args, context) {
       try {
         const { username } = checkAuth(context);
-        var fetchedShoppings = [];
-        for (let i = 0; i < args.shoppingIds.length; i++) {
-          fetchedShoppings.push(
-            await Shopping.findById({
-              _id: args.shoppingIds[i],
-            })
-          );
-        }
+
+        const fetchedShoppingsPromises = args.shoppingIds.map(
+          async (id) => await Shopping.findById({ _id: id })
+        );
+
+        const fetchedShoppings = await Promise.all(fetchedShoppingsPromises);
 
         const { valid, errors } = validateAddOrder(
           args.name,

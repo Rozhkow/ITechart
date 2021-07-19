@@ -33,30 +33,16 @@ module.exports = {
     },
   },
   Mutation: {
-    async createEvent(_, args, context) {
+    async createEvent(_, { eventInput }, context) {
       checkAuth(context);
 
-      const { errors, valid } = validateCreateEvent(
-        args.eventInput.title,
-        args.eventInput.description,
-        args.eventInput.price,
-        args.eventInput.autor,
-        args.eventInput.pageNumber,
-        args.eventInput.publishYear
-      );
+      const { errors, valid } = validateCreateEvent(eventInput);
 
       if (!valid) {
         throw new UserInputError("Errors", { errors });
       }
 
-      const event = new Event({
-        title: args.eventInput.title,
-        description: args.eventInput.description,
-        price: args.eventInput.price,
-        autor: args.eventInput.autor,
-        pageNumber: args.eventInput.pageNumber,
-        publishYear: args.eventInput.publishYear,
-      });
+      const event = new Event(eventInput);
 
       if (!event) {
         errors.general = "Event not created";
@@ -66,32 +52,19 @@ module.exports = {
 
       return createdEvent;
     },
-    async updateEvent(_, args, context) {
+    async updateEvent(_, { id, eventInput }, context) {
       checkAuth(context);
 
-      const { errors, valid } = validateCreateEvent(
-        args.title,
-        args.description,
-        args.price,
-        args.autor,
-        args.pageNumber,
-        args.publishYear
-      );
+      const { errors, valid } = validateCreateEvent(eventInput);
 
       if (!valid) {
         throw new UserInputError("Errors", { errors });
       }
 
       return Event.findOneAndUpdate(
-        Event.findById(args.id),
+        Event.findById(id),
         {
-          title: args.title,
-          description: args.description,
-          price: args.price,
-          autor: args.autor,
-          pageNumber: args.pageNumber,
-          publishYear: args.publishYear,
-          message: "Successful!",
+          ...eventInput,
         },
         { new: true }
       );
