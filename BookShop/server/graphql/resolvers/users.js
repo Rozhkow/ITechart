@@ -14,6 +14,10 @@ const {
   validateUpdateUser,
 } = require("../../middleware/validators");
 
+const DoesNotExist = require("../../middleware/validators");
+const DoesNotCreate = require("../../middleware/validators");
+const ReceivePermission = require("../../middleware/validators");
+
 function generateToken(user) {
   // Returns the JsonWebToken as string
   return jwt.sign(
@@ -31,66 +35,61 @@ function generateToken(user) {
 module.exports = {
   Query: {
     async getUser(_, { id }, context) {
-      try {
-        checkAuth(context);
-        const user = await User.findById(id);
-        if (user) {
-          return user;
-        } else {
-          throw new Error("User not found");
-        }
-      } catch (err) {
-        throw new Error(err);
+      checkAuth(context);
+      const user = await User.findById(id);
+      if (user) {
+        return user;
+      } else {
+        throw new DoesNotExist("User");
       }
     },
     async users() {
-      try {
-        const users = await User.find();
+      const users = await User.find();
+      if (users) {
         return users.map((user) => {
           return user;
         });
-      } catch (err) {
-        throw err;
+      } else {
+        throw new DoesNotExist("Users");
       }
     },
   },
   Mutation: {
     async updateUser(_, args, context) {
-      try {
-        checkAuth(context);
+      checkAuth(context);
 
-        const { errors, valid } = validateUpdateUser(args.username, args.email);
+      const { errors, valid } = validateUpdateUser(args.username, args.email);
 
-        if (!valid) {
-          throw new UserInputError("Errors", { errors });
-        }
+      if (!valid) {
+        throw new UserInputError("Errors", { errors });
+      }
 
-        return User.findOneAndUpdate(
-          User.findById(args.id),
-
-          {
-            username: args.username,
-            email: args.email,
-          },
-          { new: true }
-        );
-      } catch (err) {
-        throw err;
+      const user = User.findOneAndUpdate(
+        User.findById(args.id),
+        {
+          username: args.username,
+          email: args.email,
+        },
+        { new: true }
+      );
+      if (user) {
+        return user;
+      } else {
+        throw new DoesNotExist("User");
       }
     },
     async deleteUser(_, { id }, context) {
-      try {
-        const { username } = checkAuth(context);
+      const { username } = checkAuth(context);
 
-        if (username !== "admin") {
-          throw new Error("Action not allowed");
-        }
-        const user = await User.findById(id);
-        await user.delete();
-        return "User deleted successfully";
-      } catch (err) {
-        throw new Error(err);
+      if (username !== "admin") {
+        throw new ReceivePermission("Delete");
       }
+      const user = await User.findById(id);
+      if (!user) {
+        throw new DoesNotExist("User");
+      }
+      await user.delete();
+      return "User deleted successfully";
     },
 
     async login(_, { username, password }) {

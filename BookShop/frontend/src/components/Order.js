@@ -9,12 +9,11 @@ import { AuthContext } from "../context/auth";
 import { DELETE_ORDER } from "../util/graphql";
 import { ORDER_ALL } from "../util/graphql";
 
-
 function OrderCard() {
   const { loading, data } = useQuery(ORDER_ALL);
   const { user } = useContext(AuthContext);
 
-  const orders  = (!loading && data && data?.orders) || [];
+  const orders = (!loading && data && data?.orders) || [];
 
   const [deleteOrder] = useMutation(DELETE_ORDER, {
     update(proxy, result) {
@@ -77,9 +76,11 @@ function OrderCard() {
 
                     <Card.Header>
                       Goods:
-                      {shoppings.filter((purchase) => purchase.username === username).map(({ event: { title } }) => (
-                        <div>{title}</div>
-                      ))}
+                      {shoppings
+                        .filter((purchase) => purchase.username === username)
+                        .map(({ event: { title } }) => (
+                          <div>{title}</div>
+                        ))}
                     </Card.Header>
                     <Card.Header>Price: {totalPrice}</Card.Header>
                     <Card.Content extra style={{ marginTop: 10 }}>

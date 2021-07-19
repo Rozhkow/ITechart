@@ -42,23 +42,26 @@ function GoodCard({
   const [toggle, handleClick] = useState(0);
 
   const [deleteEvent] = useMutation(DELETE_GOOD_MUTATION, {
-    update(proxy, result) {
+    update(proxy) {
       // TODO: remove users from cache
 
       const data = proxy.readQuery({
         query: FETCH_ITEMS_QUERY,
       });
-      let newData = [...data.events];
-      newData = [result.data.events, ...newData];
-      proxy.writeQuery({
-        query: FETCH_ITEMS_QUERY,
-        data: {
-          ...data,
-          events: {
-            newData,
-          },
-        },
-      });
+
+      data.events = data.events.filter((p) => p.id !== id);
+      proxy.writeQuery({ query: FETCH_ITEMS_QUERY });
+      // let newData = [...data.events];
+      // newData = [result.data.events, ...newData];
+      // proxy.writeQuery({
+      //   query: FETCH_ITEMS_QUERY,
+      //   data: {
+      //     ...data,
+      //     events: {
+      //       newData,
+      //     },
+      //   },
+      // });
     },
     variables: { id: id },
   });

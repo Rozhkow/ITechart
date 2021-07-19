@@ -11,8 +11,6 @@ function DeleteButton({ onConfirm }) {
     <>
       <ConfirmPopup
         open={confirmOpen}
-        // as={Link}
-        // to="/"
         onCancel={() => setConfirmOpen(false)}
         onConfirm={onConfirm}
       >

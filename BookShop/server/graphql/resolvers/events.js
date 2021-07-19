@@ -12,9 +12,13 @@ module.exports = {
   Query: {
     async events() {
       const events = await Event.find();
-      return events.map((event) => {
-        return event;
-      });
+      if (events) {
+        return events.map((event) => {
+          return event;
+        });
+      } else {
+        throw new DoesNotExist("Events");
+      }
     },
     async getEvent(_, { id }) {
       if (typeof id !== "string") throw new Error("Id isn't valid");

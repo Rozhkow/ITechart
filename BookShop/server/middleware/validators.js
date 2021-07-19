@@ -17,11 +17,11 @@ class DoesNotCreate extends Error {
 }
 
 class ReceivePermission extends Error {
-  constructor(permission) {
+  constructor(action) {
     super();
     this.name = "PermissionError";
-    this.permission = permission;
-    this.message = "You don't have any permissions to " + permission;
+    this.action = action;
+    this.message = "You don't have any permissions to " + action;
   }
 }
 

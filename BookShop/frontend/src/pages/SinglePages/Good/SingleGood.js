@@ -147,7 +147,7 @@ function SingleGood(props) {
             margin: "20px",
           }}
         >
-          <h1>Comments:</h1>
+          <h1 style={{ margin: 20 }}>Comments:</h1>
           {user ? (
             <Card fluid>
               <Card.Content>
@@ -181,7 +181,7 @@ function SingleGood(props) {
           )}
           {comments.map((comment) => (
             <Card fluid key={comment.id}>
-              <Card.Content>
+              <Card.Content style={{ height: 160 }}>
                 <Card.Header>{comment.username}</Card.Header>
                 <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
                 <Card.Description>{comment.body}</Card.Description>
