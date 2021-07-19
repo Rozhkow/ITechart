@@ -1,3 +1,34 @@
+class DoesNotExist extends Error {
+  constructor(entity) {
+    super();
+    this.name = "EntityError";
+    this.entity = entity;
+    this.message = entity + " doesn't exist.";
+  }
+}
+
+class DoesNotCreate extends Error {
+  constructor(entity) {
+    super();
+    this.name = "EntityError";
+    this.entity = entity;
+    this.message = entity + " didn't create.";
+  }
+}
+
+class ReceivePermission extends Error {
+  constructor(permission) {
+    super();
+    this.name = "PermissionError";
+    this.permission = permission;
+    this.message = "You don't have any permissions to " + permission;
+  }
+}
+
+module.exports = DoesNotExist;
+module.exports = DoesNotCreate;
+module.exports = ReceivePermission;
+
 module.exports.validateRegisterInput = (
   username,
   email,
@@ -71,15 +102,15 @@ module.exports.validateCreateEvent = (args) => {
   };
 };
 
-module.exports.validateAddOrder = (name, lastname, address) => {
+module.exports.validateAddOrder = (args) => {
   const errors = {};
-  if (name.trim() === "") {
+  if (args.name.trim() === "") {
     errors.name = "Name must not be empty";
   }
-  if (lastname.trim() === "") {
+  if (args.lastname.trim() === "") {
     errors.lastname = "Lastname must not be empty";
   }
-  if (address.trim() === "") {
+  if (args.address.trim() === "") {
     errors.address = "Address must not be empty";
   }
 

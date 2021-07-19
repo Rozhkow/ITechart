@@ -45,11 +45,7 @@ module.exports = {
 
         const fetchedShoppings = await Promise.all(fetchedShoppingsPromises);
 
-        const { valid, errors } = validateAddOrder(
-          args.name,
-          args.lastname,
-          args.address
-        );
+        const { valid, errors } = validateAddOrder(args);
 
         if (!valid) {
           throw new UserInputError("Errors", { errors });
@@ -68,9 +64,7 @@ module.exports = {
         );
 
         const order = new Order({
-          name: args.name,
-          lastname: args.lastname,
-          address: args.address,
+          ...args,
           totalPrice: totalPrice,
           shoppings: fetchedShoppings,
           username: username,

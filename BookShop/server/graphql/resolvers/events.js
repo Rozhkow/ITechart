@@ -4,31 +4,26 @@ const Event = require("../../models/event");
 const checkAuth = require("../../middleware/is-auth");
 
 const { UserInputError } = require("apollo-server");
+const DoesNotExist = require("../../middleware/validators");
+const DoesNotCreate = require("../../middleware/validators");
+const ReceivePermission = require("../../middleware/validators");
 
 module.exports = {
   Query: {
     async events() {
-      try {
-        const events = await Event.find();
-        return events.map((event) => {
-          return event;
-        });
-      } catch (err) {
-        throw new Error(err);
-      }
+      const events = await Event.find();
+      return events.map((event) => {
+        return event;
+      });
     },
     async getEvent(_, { id }) {
-      try {
-        if (typeof id !== "string") throw new Error("Id isn't valid");
+      if (typeof id !== "string") throw new Error("Id isn't valid");
 
-        const event = await Event.findById(id);
-        if (event) {
-          return event;
-        } else {
-          throw new Error("Good not found");
-        }
-      } catch (err) {
-        throw new Error(err);
+      const event = await Event.findById(id);
+      if (event) {
+        return event;
+      } else {
+        throw new DoesNotExist("Event");
       }
     },
   },
@@ -45,7 +40,7 @@ module.exports = {
       const event = new Event(eventInput);
 
       if (!event) {
-        errors.general = "Event not created";
+        throw new DoesNotCreate("Event");
       }
 
       let createdEvent = await event.save(); // save into database
@@ -61,26 +56,27 @@ module.exports = {
         throw new UserInputError("Errors", { errors });
       }
 
-      return Event.findOneAndUpdate(
+      const event = await Event.findOneAndUpdate(
         Event.findById(id),
         {
           ...eventInput,
         },
         { new: true }
       );
+      if (event) {
+        return event;
+      } else {
+        throw new DoesNotExist("Event");
+      }
     },
     async deleteEvent(_, { id }, context) {
-      try {
-        const { username } = checkAuth(context);
+      const { username } = checkAuth(context);
 
-        if (username !== "admin")
-          throw new Error("You don't have a permission");
-        const event = await Event.findById(id);
-        await event.delete(); // delete from database
-        return "Good deleted successfully";
-      } catch (err) {
-        throw new Error(err);
-      }
+      if (username !== "admin") throw new ReceivePermission("Delete");
+      const event = await Event.findById(id);
+      if (!event) throw new DoesNotExist("Event");
+      await event.delete(); // delete from database
+      return "Good deleted successfully";
     },
   },
 };
