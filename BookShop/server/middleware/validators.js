@@ -29,28 +29,23 @@ module.exports = DoesNotExist;
 module.exports = DoesNotCreate;
 module.exports = ReceivePermission;
 
-module.exports.validateRegisterInput = (
-  username,
-  email,
-  password,
-  confirmPassword
-) => {
+module.exports.validateRegisterInput = (registerData) => {
   const errors = {};
-  if (username.trim() === "") {
+  if (registerData.username.trim() === "") {
     errors.username = "Username must not be empty";
   }
-  if (email.trim() === "") {
+  if (registerData.email.trim() === "") {
     errors.email = "Email must not be empty";
   } else {
     const regEx =
       /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
-    if (!email.match(regEx)) {
+    if (!registerData.email.match(regEx)) {
       errors.email = "Email must be a valid email address";
     }
   }
-  if (password === "") {
+  if (registerData.password === "") {
     errors.password = "Password must not empty";
-  } else if (password !== confirmPassword) {
+  } else if (registerData.password !== registerData.confirmPassword) {
     errors.confirmPassword = "Passwords must match";
   }
 
@@ -60,12 +55,12 @@ module.exports.validateRegisterInput = (
   };
 };
 
-module.exports.validateLoginInput = (username, password) => {
+module.exports.validateLoginInput = (loginData) => {
   const errors = {};
-  if (username.trim() === "") {
+  if (loginData.username.trim() === "") {
     errors.username = "Username must not be empty";
   }
-  if (password.trim() === "") {
+  if (loginData.password.trim() === "") {
     errors.password = "Password must not be empty";
   }
 
@@ -75,24 +70,24 @@ module.exports.validateLoginInput = (username, password) => {
   };
 };
 
-module.exports.validateCreateEvent = (args) => {
+module.exports.validateCreateEvent = (goodData) => {
   const errors = {};
-  if (args.title.trim() === "") {
+  if (goodData.title.trim() === "") {
     errors.title = "Title must not be empty";
   }
-  if (args.description.trim() === "") {
+  if (goodData.description.trim() === "") {
     errors.description = "Description must not be empty";
   }
-  if (args.price.trim() === "") {
+  if (goodData.price.trim() === "") {
     errors.price = "Price must not be empty";
   }
-  if (args.autor.trim() === "") {
+  if (goodData.autor.trim() === "") {
     errors.autor = "Autor must not be empty";
   }
-  if (args.pageNumber.trim() === "") {
+  if (goodData.pageNumber.trim() === "") {
     errors.pageNumber = "PageNumber must not be empty";
   }
-  if (args.publishYear.trim() === "") {
+  if (goodData.publishYear.trim() === "") {
     errors.publishYear = "PublishYear must not be empty";
   }
 
@@ -102,15 +97,15 @@ module.exports.validateCreateEvent = (args) => {
   };
 };
 
-module.exports.validateAddOrder = (args) => {
+module.exports.validateAddOrder = (orderData) => {
   const errors = {};
-  if (args.name.trim() === "") {
+  if (orderData.name.trim() === "") {
     errors.name = "Name must not be empty";
   }
-  if (args.lastname.trim() === "") {
+  if (orderData.lastname.trim() === "") {
     errors.lastname = "Lastname must not be empty";
   }
-  if (args.address.trim() === "") {
+  if (orderData.address.trim() === "") {
     errors.address = "Address must not be empty";
   }
 
@@ -120,12 +115,12 @@ module.exports.validateAddOrder = (args) => {
   };
 };
 
-module.exports.validateUpdateUser = (username, email) => {
+module.exports.validateUpdateUser = (userData) => {
   const errors = {};
-  if (username.trim() === "") {
+  if (userData.username.trim() === "") {
     errors.username = "Username must not be empty";
   }
-  if (email.trim() === "") {
+  if (userData.email.trim() === "") {
     errors.email = "E-mail must not be empty";
   }
 

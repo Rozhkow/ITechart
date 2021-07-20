@@ -4,6 +4,12 @@ const userSchema = new Schema({
   username: {
     type: String,
   },
+  name: {
+    type: String,
+  },
+  lastname: {
+    type: String,
+  },
   password: {
     type: String,
   },

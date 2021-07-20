@@ -27,7 +27,7 @@ function Register(props) {
       props.history.push("/"); // to the HomePage
     },
     onError(err) {
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      setErrors(err.graphQLErrors[0].extensions.errors);
     },
     variables: values,
   });

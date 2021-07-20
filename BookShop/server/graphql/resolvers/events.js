@@ -12,23 +12,21 @@ module.exports = {
   Query: {
     async events() {
       const events = await Event.find();
-      if (events) {
-        return events.map((event) => {
-          return event;
-        });
-      } else {
+      if (!events) {
         throw new DoesNotExist("Events");
       }
+      return events.map((event) => {
+        return event;
+      });
     },
     async getEvent(_, { id }) {
       if (typeof id !== "string") throw new Error("Id isn't valid");
 
       const event = await Event.findById(id);
-      if (event) {
-        return event;
-      } else {
+      if (!event) {
         throw new DoesNotExist("Event");
       }
+      return event;
     },
   },
   Mutation: {
@@ -67,18 +65,19 @@ module.exports = {
         },
         { new: true }
       );
-      if (event) {
-        return event;
-      } else {
+      if (!event) {
         throw new DoesNotExist("Event");
       }
+      return event;
     },
     async deleteEvent(_, { id }, context) {
       const { username } = checkAuth(context);
 
       if (username !== "admin") throw new ReceivePermission("Delete");
       const event = await Event.findById(id);
-      if (!event) throw new DoesNotExist("Event");
+      if (!event) {
+        throw new DoesNotExist("Event");
+      }
       await event.delete(); // delete from database
       return "Good deleted successfully";
     },

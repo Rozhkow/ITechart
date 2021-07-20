@@ -20,15 +20,16 @@ module.exports = {
 
       const event = await Event.findById({ _id: args.id });
 
-      if (event) {
-        event.comments.unshift({
-          body: args.body,
-          username,
-          createdAt: new Date().toISOString(),
-        });
-        await event.save();
-        return event;
-      } else throw new DoesNotExist("Event");
+      if (!event) {
+        throw new DoesNotExist("Event");
+      }
+      event.comments.unshift({
+        body: args.body,
+        username,
+        createdAt: new Date().toISOString(),
+      });
+      await event.save();
+      return event;
     },
     async deleteComment(_, args, context) {
       checkAuth(context);

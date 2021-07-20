@@ -91,6 +91,8 @@ export const FETCH_USER_QUERY = gql`
   query ($id: ID!) {
     getUser(id: $id) {
       username
+      name
+      lastname
       email
       admin
       createdAt
@@ -132,11 +134,25 @@ export const ALL_USERS = gql`
 `;
 
 export const UPDATE_USER = gql`
-  mutation updateUser($id: ID!, $username: String!, $email: String!) {
-    updateUser(id: $id, username: $username, email: $email) {
+  mutation updateUser(
+    $id: ID!
+    $username: String!
+    $email: String!
+    $name: String!
+    $lastname: String!
+  ) {
+    updateUser(
+      id: $id
+      username: $username
+      email: $email
+      name: $name
+      lastname: $lastname
+    ) {
       id
       username
       email
+      name
+      lastname
     }
   }
 `;

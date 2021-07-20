@@ -46,6 +46,8 @@ type Event {
 
 type User {
     id: ID!
+    name: String
+    lastname: String
     email: String!
     token: String!
     username: String!
@@ -94,7 +96,7 @@ type Mutation {
     deleteUser(id: ID!): String!
     deleteEvent(id: ID!): String!
     updateEvent(id: ID!, eventInput: EventInput): Event
-    updateUser(id: ID!, username: String!, email: String!): User
+    updateUser(id: ID!, username: String!, email: String!, name: String!, lastname: String!): User
     shopEvent(id: ID!): Shopping!
     cancelShopping(shoppingId: ID!): String!
     createComment(id: String!, body: String!): Event!

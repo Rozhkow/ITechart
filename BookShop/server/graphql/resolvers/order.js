@@ -12,43 +12,42 @@ const DoesNotCreate = require("../../middleware/validators");
 
 module.exports = {
   Query: {
-    async orders(_) {
+    async orders() {
       const orders = await Order.find();
-      if (orders) {
-        return orders.map((order) => {
-          return transformOrder(order);
-        });
-      } else {
+      if (!orders) {
         throw new DoesNotExist("Orders");
       }
+      return orders.map((order) => {
+        return transformOrder(order);
+      });
     },
     async getOrder(_, { orderId }, context) {
       checkAuth(context);
+
       const order = await Order.findById(orderId);
-      if (order) {
-        return transformOrder(order);
-      } else {
+      if (!order) {
         throw new DoesNotExist("Order");
       }
+      return transformOrder(order);
     },
   },
   Mutation: {
-    async addingOrder(_, args, context) {
+    async addingOrder(_, orderData, context) {
       const { username } = checkAuth(context);
 
-      const fetchedShoppingsPromises = args.shoppingIds.map(
+      const fetchedShoppingsPromises = orderData.shoppingIds.map(
         async (id) => await Shopping.findById({ _id: id })
       );
 
       const fetchedShoppings = await Promise.all(fetchedShoppingsPromises);
 
-      const { valid, errors } = validateAddOrder(args);
+      const { valid, errors } = validateAddOrder(orderData);
 
       if (!valid) {
         throw new UserInputError("Errors", { errors });
       }
 
-      const shoppingIds = args.shoppingIds;
+      const shoppingIds = orderData.shoppingIds;
       const shoppings = await Shopping.find({
         _id: {
           $in: shoppingIds,
@@ -62,7 +61,7 @@ module.exports = {
       );
 
       const order = new Order({
-        ...args,
+        ...orderData,
         totalPrice: totalPrice,
         shoppings: fetchedShoppings,
         username: username,
@@ -81,7 +80,9 @@ module.exports = {
 
       const order = await Order.findById(orderId).populate("shopping");
 
-      if (!order) throw new DoesNotExist("Order");
+      if (!order) {
+        throw new DoesNotExist("Order");
+      }
       await order.delete();
       return "Order deleted successfully";
     },

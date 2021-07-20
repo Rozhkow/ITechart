@@ -12,14 +12,10 @@ const transformOrder = (order) => {
 };
 
 const allShoppings = async (_) => {
-  try {
-    const shoppings = await Shopping.find();
-    return shoppings.map((shopping) => {
-      return transformShopping(shopping);
-    });
-  } catch (err) {
-    throw err;
-  }
+  const shoppings = await Shopping.find();
+  return shoppings.map((shopping) => {
+    return transformShopping(shopping);
+  });
 };
 
 const transformShopping = (shopping) => {
@@ -32,15 +28,11 @@ const transformShopping = (shopping) => {
 };
 
 const singleEvent = async (id) => {
-  try {
-    const event = await Event.findById(id);
-    return {
-      ...event._doc,
-      id: event.id,
-    };
-  } catch (err) {
-    throw err;
-  }
+  const event = await Event.findById(id);
+  return {
+    ...event._doc,
+    id: event.id,
+  };
 };
 
 exports.transformOrder = transformOrder;

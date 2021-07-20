@@ -14,15 +14,14 @@ module.exports = {
       const { username } = checkAuth(context);
 
       const shoppings = await Shopping.find();
-      if (shoppings) {
-        return shoppings
-          .filter((shopping) => shopping.username === username)
-          .map((shopping) => {
-            return transformShopping(shopping);
-          });
-      } else {
+      if (!shoppings) {
         throw new DoesNotExist("Shoppings");
       }
+      return shoppings
+        .filter((shopping) => shopping.username === username)
+        .map((shopping) => {
+          return transformShopping(shopping);
+        });
     },
   },
   Mutation: {
@@ -36,16 +35,21 @@ module.exports = {
         event: fetchedEvent,
         username: username,
       });
-      if (!shopping) throw new DoesNotCreate("Shopping");
+      if (!shopping) {
+        throw new DoesNotCreate("Shopping");
+      }
       const result = await shopping.save();
       return transformShopping(result);
     },
     async cancelShopping(_, args, context) {
       checkAuth(context);
+
       const shopping = await Shopping.findById(args.shoppingId).populate(
         "event"
       );
-      if (!shopping) throw new DoesNotExist("Shopping");
+      if (!shopping) {
+        throw new DoesNotExist("Shopping");
+      }
       await shopping.delete();
       return "Comment closed successfully";
     },
