@@ -143,6 +143,7 @@ function Shopping() {
               onChange={onChange}
               value={values.name}
               error={!!errors.name}
+              disabled
             />
             <Form.Input
               label="Last Name"
@@ -152,6 +153,7 @@ function Shopping() {
               onChange={onChange}
               value={values.lastname}
               error={!!errors.lastname}
+              disabled
             />
             <Form.Input
               label="Address"
@@ -170,8 +172,6 @@ function Shopping() {
       },
     },
   ];
-
-  console.log(shoppingIds);
 
   return (
     <Container className="Shopping">

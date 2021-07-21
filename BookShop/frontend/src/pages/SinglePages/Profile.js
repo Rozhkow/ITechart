@@ -27,7 +27,8 @@ function Profile() {
   if (!data) {
     <p>Loading user..</p>;
   } else {
-    const { username, email, name, lastname, createdAt, id } = data.getUser;
+    const { username, email, name, lastname, phoneNumber, createdAt, id } =
+      data.getUser;
 
     return (
       <>
@@ -40,6 +41,9 @@ function Profile() {
                   <Card.Description>Email: {email}</Card.Description>
                   <Card.Description>Name: {name}</Card.Description>
                   <Card.Description>Lastname: {lastname}</Card.Description>
+                  <Card.Description>
+                    PhoneNumber: {phoneNumber}
+                  </Card.Description>
                   <Card.Description>Created at: {createdAt}</Card.Description>
                   <Card.Description>ID: {id}</Card.Description>
                 </Card.Content>
@@ -52,6 +56,7 @@ function Profile() {
                 email={email}
                 name={name}
                 lastname={lastname}
+                phoneNumber={phoneNumber}
               />
             </Grid.Column>
           </Grid.Row>

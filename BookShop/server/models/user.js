@@ -16,6 +16,9 @@ const userSchema = new Schema({
   email: {
     type: String,
   },
+  phoneNumber: {
+    type: String,
+  },
   admin: {
     type: Boolean,
     default: false,

@@ -1,6 +1,7 @@
 const { validateAddOrder } = require("../../middleware/validators");
 const Order = require("../../models/order");
 const Shopping = require("../../models/shopping");
+const User = require("../../models/user");
 
 const checkAuth = require("../../middleware/is-auth");
 
@@ -60,11 +61,18 @@ module.exports = {
         0
       );
 
+      const user = await User.findOne({ username });
+
+      if (!user) {
+        throw new DoesNotExist("User");
+      }
+
       const order = new Order({
         ...orderData,
         totalPrice: totalPrice,
         shoppings: fetchedShoppings,
         username: username,
+        user: user,
       });
 
       if (!order) {
@@ -72,7 +80,6 @@ module.exports = {
       }
 
       const addingOrder = await order.save();
-
       return transformOrder(addingOrder);
     },
     async deleteOrder(_, { orderId }, context) {

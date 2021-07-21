@@ -4,8 +4,7 @@ module.exports = gql(`
 
 type Order {
     orderId: ID!
-    name: String!
-    lastname: String!
+    user: User!
     address: String!
     paymentMethod: String!
     totalPrice: Float!
@@ -51,6 +50,7 @@ type User {
     email: String!
     token: String!
     username: String!
+    phoneNumber: String
     admin: Boolean!
     createdAt: String!
     message: String!
@@ -96,12 +96,12 @@ type Mutation {
     deleteUser(id: ID!): String!
     deleteEvent(id: ID!): String!
     updateEvent(id: ID!, eventInput: EventInput): Event
-    updateUser(id: ID!, username: String!, email: String!, name: String!, lastname: String!): User
+    updateUser(id: ID!, username: String!, email: String!, name: String, lastname: String, phoneNumber: String): User
     shopEvent(id: ID!): Shopping!
     cancelShopping(shoppingId: ID!): String!
     createComment(id: String!, body: String!): Event!
     deleteComment(id: ID!, commentId: ID!): Event!
-    addingOrder(name: String!, lastname: String!, address: String!, shoppingIds: [ID]): Order
+    addingOrder(address: String!, shoppingIds: [ID]): Order
     deleteOrder(orderId: ID!): String!
 }
 `);

@@ -34,7 +34,7 @@ function generateToken(user) {
 module.exports = {
   Query: {
     async getUser(_, { id }, context) {
-      // checkAuth(context);
+      checkAuth(context);
 
       const user = await User.findById(id);
       if (!user) {

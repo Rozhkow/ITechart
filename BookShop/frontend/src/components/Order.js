@@ -55,14 +55,13 @@ function OrderCard() {
             .filter((purchase) => purchase.username === user.username)
             .map(
               ({
-                name,
-                lastname,
                 address,
                 orderId,
                 createdAt,
                 shoppings,
                 username,
                 totalPrice,
+                user: { name, lastname },
               }) => (
                 <Card fluid style={{ margin: 10 }}>
                   <Card.Content>

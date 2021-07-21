@@ -37,10 +37,17 @@ const UserFieldSection = ({ values, errors, onChange }) => (
       error={!!errors.lastname}
       value={values.lastname}
     />
+    <Form.Input
+      placeholder="PhoneNumber"
+      name="phoneNumber"
+      onChange={onChange}
+      error={!!errors.phoneNumber}
+      value={values.phoneNumber}
+    />
   </>
 );
 
-function UpdateUser({ id, username, email, name, lastname }) {
+function UpdateUser({ id, username, email, name, lastname, phoneNumber }) {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState({});
 
@@ -50,6 +57,7 @@ function UpdateUser({ id, username, email, name, lastname }) {
     email: email,
     name: name,
     lastname: lastname,
+    phoneNumber: phoneNumber,
   });
 
   const [updateUser, { loading }] = useMutation(UPDATE_USER, {
@@ -61,6 +69,7 @@ function UpdateUser({ id, username, email, name, lastname }) {
       values.email = values.email;
       values.name = values.name;
       values.lastname = values.lastname;
+      values.phoneNumber = values.phoneNumber;
       proxy.modify({
         fields: {
           User(existingUser = []) {

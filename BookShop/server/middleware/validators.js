@@ -99,12 +99,15 @@ module.exports.validateCreateEvent = (goodData) => {
 
 module.exports.validateAddOrder = (orderData) => {
   const errors = {};
-  if (orderData.name.trim() === "") {
-    errors.name = "Name must not be empty";
-  }
-  if (orderData.lastname.trim() === "") {
-    errors.lastname = "Lastname must not be empty";
-  }
+  // if (orderData.name.trim() === "") {
+  //   errors.name = "Name must not be empty";
+  // }
+  // if (orderData.lastname.trim() === "") {
+  //   errors.lastname = "Lastname must not be empty";
+  // }
+  // if (orderData.phoneNumber.trim() === "") {
+  //   errors.phoneNumber = "PhoneNumber must not be empty";
+  // }
   if (orderData.address.trim() === "") {
     errors.address = "Address must not be empty";
   }
@@ -122,6 +125,20 @@ module.exports.validateUpdateUser = (userData) => {
   }
   if (userData.email.trim() === "") {
     errors.email = "E-mail must not be empty";
+  }
+  if (userData.name.trim() === "") {
+    errors.name = "Name must not be empty";
+  }
+  if (userData.lastname.trim() === "") {
+    errors.lastname = "Lastname must not be empty";
+  }
+  if (userData.phoneNumber.trim() === "") {
+    errors.phoneNumber = "PhoneNumber must not be empty";
+  } else {
+    const regEx = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/;
+    if (!userData.phoneNumber.match(regEx)) {
+      errors.phoneNumber = "PhoneNumber must be a valid like +XXX(XX)XXX-XX-XX";
+    }
   }
 
   return {

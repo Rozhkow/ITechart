@@ -1,5 +1,7 @@
 const Event = require("../../models/event");
 const Shopping = require("../../models/shopping");
+const User = require("../../models/user");
+
 const { dateToString } = require("../../date");
 
 const transformOrder = (order) => {
@@ -7,7 +9,17 @@ const transformOrder = (order) => {
     ...order._doc,
     orderId: order.id,
     shoppings: () => allShoppings(order._doc.shoppings),
+    user: () => getUser(order._doc.user),
     createdAt: dateToString(order._doc.createdAt),
+  };
+};
+
+const getUser = async (id) => {
+  const user = await User.findById(id);
+  console.log(user);
+  return {
+    ...user._doc,
+    id: user.id,
   };
 };
 

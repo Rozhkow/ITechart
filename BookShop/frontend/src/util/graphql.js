@@ -92,6 +92,7 @@ export const FETCH_USER_QUERY = gql`
     getUser(id: $id) {
       username
       name
+      phoneNumber
       lastname
       email
       admin
@@ -140,6 +141,7 @@ export const UPDATE_USER = gql`
     $email: String!
     $name: String!
     $lastname: String!
+    $phoneNumber: String!
   ) {
     updateUser(
       id: $id
@@ -147,12 +149,14 @@ export const UPDATE_USER = gql`
       email: $email
       name: $name
       lastname: $lastname
+      phoneNumber: $phoneNumber
     ) {
       id
       username
       email
       name
       lastname
+      phoneNumber
     }
   }
 `;
@@ -261,22 +265,15 @@ export const SUBMIT_COMMENT = gql`
 `;
 
 export const ADDING_ORDER = gql`
-  mutation addingOrder(
-    $name: String!
-    $lastname: String!
-    $address: String!
-    $shoppingIds: [ID]
-  ) {
-    addingOrder(
-      name: $name
-      lastname: $lastname
-      address: $address
-      shoppingIds: $shoppingIds
-    ) {
-      name
-      lastname
+  mutation addingOrder($address: String!, $shoppingIds: [ID]) {
+    addingOrder(address: $address, shoppingIds: $shoppingIds) {
       address
       totalPrice
+      user {
+        name
+        lastname
+        phoneNumber
+      }
       shoppings {
         event {
           id
@@ -302,12 +299,15 @@ export const ORDER_ALL = gql`
   query orders {
     orders {
       orderId
-      name
-      lastname
       address
       createdAt
       username
       totalPrice
+      user {
+        name
+        lastname
+        phoneNumber
+      }
       shoppings {
         username
         createdAt
@@ -325,9 +325,12 @@ export const ORDER_ALL = gql`
 export const FETCH_ORDER_QUERY = gql`
   query getOrder($orderId: ID!) {
     getOrder(orderId: $orderId) {
-      name
-      lastname
       address
+      user {
+        name
+        lastname
+        phoneNumber
+      }
       shopping {
         event {
           id
