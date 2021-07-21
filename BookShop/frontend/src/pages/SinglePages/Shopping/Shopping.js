@@ -7,8 +7,8 @@ import {
   Container,
   Accordion,
   Form,
-  Radio,
   FormGroup,
+  Dropdown,
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
@@ -48,6 +48,19 @@ function sortReducer(state, action) {
   }
 }
 
+const AddressesOption = [
+  {
+    key: "Lenina 44",
+    text: "Lenina 44",
+    value: "Lenina 44",
+  },
+  {
+    key: "Shorsa 22",
+    text: "Shorsa 22",
+    value: "Shorsa 22",
+  },
+];
+
 function Shopping() {
   const { loading, data } = useQuery(SHOPPING_ALL);
   const { user } = useContext(AuthContext);
@@ -58,7 +71,9 @@ function Shopping() {
 
   let [totalPrice, setTotalPrice] = useState(0);
 
-  const [radio, setRadio] = useState("");
+  const [payment, setPayment] = useState("");
+
+  const [delivery, setDelivery] = useState("");
 
   setTotalPrice = (price) => {
     totalPrice += +price;
@@ -68,7 +83,9 @@ function Shopping() {
     name: "",
     lastname: "",
     address: "",
-    paymentMethod: "",
+    // paymentMethod: "",
+    // deliveryMethod: "",
+    cardNumber: "",
   });
 
   const [state, dispatch] = useReducer(sortReducer, {
@@ -107,7 +124,9 @@ function Shopping() {
       name: values.name,
       lastname: values.lastname,
       address: values.address,
-      paymentMethod: radio,
+      paymentMethod: payment,
+      deliveryMethod: delivery,
+      cardNumber: values.cardNumber,
       totalPrice: totalPrice,
       shoppingIds: shoppingIds,
     },
@@ -147,7 +166,7 @@ function Shopping() {
       content: {
         content: (
           <Form onSubmit={onSubmit}>
-            <Form.Input
+            {/* <Form.Input
               label="Name"
               placeholder="Name"
               name="name"
@@ -166,16 +185,7 @@ function Shopping() {
               value={values.lastname}
               error={!!errors.lastname}
               disabled
-            />
-            <Form.Input
-              label="Address"
-              placeholder="Address"
-              name="address"
-              type="text"
-              onChange={onChange}
-              value={values.address}
-              error={!!errors.address}
-            />
+            /> */}
             <FormGroup>
               <p>
                 <input
@@ -183,8 +193,8 @@ function Shopping() {
                   label="Card"
                   type="radio"
                   value="Card"
-                  checked={radio === "Card"}
-                  onChange={(e) => setRadio(e.target.value)}
+                  checked={payment === "Card"}
+                  onChange={(e) => setPayment(e.target.value)}
                   style={{ margin: 10 }}
                 />
                 Card
@@ -195,14 +205,70 @@ function Shopping() {
                   label="Cash"
                   type="radio"
                   value="Cash"
-                  checked={radio === "Cash"}
-                  onChange={(e) => setRadio(e.target.value)}
+                  checked={payment === "Cash"}
+                  onChange={(e) => setPayment(e.target.value)}
                   style={{ margin: 10 }}
                 />
                 Cash
               </p>
             </FormGroup>
-
+            {payment === "Card" && (
+              <Form.Input
+                label="CardNumber"
+                placeholder="CardNumber"
+                name="cardNumber"
+                type="text"
+                onChange={onChange}
+                value={values.cardNumber}
+                error={!!errors.cardNumber}
+              />
+            )}
+            <FormGroup>
+              <p>
+                <input
+                  name="pickUp"
+                  label="PickUp"
+                  type="radio"
+                  value="PickUp"
+                  checked={delivery === "PickUp"}
+                  onChange={(e) => setDelivery(e.target.value)}
+                  style={{ margin: 10 }}
+                />
+                PickUp
+              </p>
+              <p>
+                <input
+                  name="delivery"
+                  label="Delivery"
+                  type="radio"
+                  value="Delivery"
+                  checked={delivery === "Delivery"}
+                  onChange={(e) => setDelivery(e.target.value)}
+                  style={{ margin: 10 }}
+                />
+                Delivery
+              </p>
+            </FormGroup>
+            {delivery === "Delivery" && (
+              <Form.Input
+                label="Address"
+                placeholder="Address"
+                name="address"
+                type="text"
+                onChange={onChange}
+                value={values.address}
+                error={!!errors.address}
+              />
+            )}
+            {delivery === "PickUp" && (
+              <Dropdown
+                placeholder="Select Address"
+                fluid
+                selection
+                options={AddressesOption}
+                style={{ marginBottom: 10 }}
+              />
+            )}
             <Button loading={loading} className="order">
               Order
             </Button>

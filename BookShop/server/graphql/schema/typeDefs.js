@@ -7,7 +7,8 @@ type Order {
     user: User!
     address: String!
     paymentMethod: String!
-    cardNumber: String!
+    deliveryMethod: String!
+    cardNumber: String
     totalPrice: Float!
     shoppings: [Shopping!]
     createdAt: String!
@@ -102,7 +103,7 @@ type Mutation {
     cancelShopping(shoppingId: ID!): String!
     createComment(id: String!, body: String!): Event!
     deleteComment(id: ID!, commentId: ID!): Event!
-    addingOrder(address: String!, paymentMethod: String!, shoppingIds: [ID]): Order
+    addingOrder(address: String!, paymentMethod: String!, deliveryMethod: String!, cardNumber: String, shoppingIds: [ID]): Order
     deleteOrder(orderId: ID!): String!
 }
 `);

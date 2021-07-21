@@ -15,6 +15,9 @@ const orderSchema = new Schema(
     cardNumber: {
       type: String,
     },
+    deliveryMethod: {
+      type: String,
+    },
     shoppings: [
       {
         type: Schema.Types.ObjectId,

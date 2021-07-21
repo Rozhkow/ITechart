@@ -105,9 +105,6 @@ module.exports.validateAddOrder = (orderData) => {
   // if (orderData.lastname.trim() === "") {
   //   errors.lastname = "Lastname must not be empty";
   // }
-  // if (orderData.phoneNumber.trim() === "") {
-  //   errors.phoneNumber = "PhoneNumber must not be empty";
-  // }
   if (orderData.address.trim() === "") {
     errors.address = "Address must not be empty";
   }

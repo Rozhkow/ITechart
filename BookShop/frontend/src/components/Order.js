@@ -57,6 +57,8 @@ function OrderCard() {
               ({
                 address,
                 paymentMethod,
+                deliveryMethod,
+                cardNumber,
                 orderId,
                 createdAt,
                 shoppings,
@@ -72,6 +74,12 @@ function OrderCard() {
                     <Card.Description>Address: {address}</Card.Description>
                     <Card.Description>
                       PaymentMethod: {paymentMethod}
+                    </Card.Description>
+                    <Card.Description>
+                      DeliveryMethod: {deliveryMethod}
+                    </Card.Description>
+                    <Card.Description>
+                      CardNumber: {cardNumber}
                     </Card.Description>
                     <Card.Description>OrderID: {orderId}</Card.Description>
                     <Card.Description>Username: {username}</Card.Description>

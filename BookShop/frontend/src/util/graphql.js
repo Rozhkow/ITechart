@@ -268,15 +268,21 @@ export const ADDING_ORDER = gql`
   mutation addingOrder(
     $address: String!
     $paymentMethod: String!
+    $deliveryMethod: String!
+    $cardNumber: String
     $shoppingIds: [ID]
   ) {
     addingOrder(
       address: $address
       paymentMethod: $paymentMethod
+      deliveryMethod: $deliveryMethod
+      cardNumber: $cardNumber
       shoppingIds: $shoppingIds
     ) {
       address
       paymentMethod
+      deliveryMethod
+      cardNumber
       totalPrice
       user {
         name
@@ -310,6 +316,8 @@ export const ORDER_ALL = gql`
       orderId
       address
       paymentMethod
+      deliveryMethod
+      cardNumber
       createdAt
       username
       totalPrice
@@ -337,6 +345,8 @@ export const FETCH_ORDER_QUERY = gql`
     getOrder(orderId: $orderId) {
       address
       paymentMethod
+      deliveryMethod
+      cardNumber
       user {
         name
         lastname
