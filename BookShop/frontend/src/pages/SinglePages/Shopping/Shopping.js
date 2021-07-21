@@ -1,7 +1,15 @@
 import React, { useState, useReducer, useContext } from "react";
 import _ from "lodash";
 import { useQuery, useMutation } from "@apollo/client";
-import { Table, Button, Container, Accordion, Form } from "semantic-ui-react";
+import {
+  Table,
+  Button,
+  Container,
+  Accordion,
+  Form,
+  Radio,
+  FormGroup,
+} from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../../../context/auth";
@@ -50,6 +58,8 @@ function Shopping() {
 
   let [totalPrice, setTotalPrice] = useState(0);
 
+  const [radio, setRadio] = useState("");
+
   setTotalPrice = (price) => {
     totalPrice += +price;
   };
@@ -58,6 +68,7 @@ function Shopping() {
     name: "",
     lastname: "",
     address: "",
+    paymentMethod: "",
   });
 
   const [state, dispatch] = useReducer(sortReducer, {
@@ -96,6 +107,7 @@ function Shopping() {
       name: values.name,
       lastname: values.lastname,
       address: values.address,
+      paymentMethod: radio,
       totalPrice: totalPrice,
       shoppingIds: shoppingIds,
     },
@@ -164,6 +176,33 @@ function Shopping() {
               value={values.address}
               error={!!errors.address}
             />
+            <FormGroup>
+              <p>
+                <input
+                  name="Card"
+                  label="Card"
+                  type="radio"
+                  value="Card"
+                  checked={radio === "Card"}
+                  onChange={(e) => setRadio(e.target.value)}
+                  style={{ margin: 10 }}
+                />
+                Card
+              </p>
+              <p>
+                <input
+                  name="Cash"
+                  label="Cash"
+                  type="radio"
+                  value="Cash"
+                  checked={radio === "Cash"}
+                  onChange={(e) => setRadio(e.target.value)}
+                  style={{ margin: 10 }}
+                />
+                Cash
+              </p>
+            </FormGroup>
+
             <Button loading={loading} className="order">
               Order
             </Button>

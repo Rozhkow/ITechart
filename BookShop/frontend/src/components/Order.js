@@ -56,6 +56,7 @@ function OrderCard() {
             .map(
               ({
                 address,
+                paymentMethod,
                 orderId,
                 createdAt,
                 shoppings,
@@ -69,6 +70,9 @@ function OrderCard() {
                     <hr />
                     <Card.Description>Lastname: {lastname}</Card.Description>
                     <Card.Description>Address: {address}</Card.Description>
+                    <Card.Description>
+                      PaymentMethod: {paymentMethod}
+                    </Card.Description>
                     <Card.Description>OrderID: {orderId}</Card.Description>
                     <Card.Description>Username: {username}</Card.Description>
                     <Card.Description>Created at: {createdAt}</Card.Description>
