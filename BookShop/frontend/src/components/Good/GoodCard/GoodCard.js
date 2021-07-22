@@ -49,19 +49,11 @@ function GoodCard({
         query: FETCH_ITEMS_QUERY,
       });
 
-      data.events = data.events.filter((p) => p.id !== id);
-      proxy.writeQuery({ query: FETCH_ITEMS_QUERY });
-      // let newData = [...data.events];
-      // newData = [result.data.events, ...newData];
-      // proxy.writeQuery({
-      //   query: FETCH_ITEMS_QUERY,
-      //   data: {
-      //     ...data,
-      //     events: {
-      //       newData,
-      //     },
-      //   },
-      // });
+      const newData = {
+        events: data.events.filter((p) => p.id !== id),
+      };
+
+      proxy.writeQuery({ query: FETCH_ITEMS_QUERY, data: newData });
     },
     variables: { id: id },
   });

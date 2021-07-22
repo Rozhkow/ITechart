@@ -5,6 +5,7 @@ import DeleteButton from "./DeleteButton";
 import { useQuery, useMutation } from "@apollo/client";
 
 import { AuthContext } from "../context/auth";
+import Spinner from "./Spinner";
 
 import { DELETE_ORDER } from "../util/graphql";
 import { ORDER_ALL } from "../util/graphql";
@@ -16,15 +17,15 @@ function OrderCard() {
   const orders = (!loading && data && data?.orders) || [];
 
   const [deleteOrder] = useMutation(DELETE_ORDER, {
-    update(proxy, result) {
+    update(proxy) {
       // TODO: remove users from cache
 
       const data = proxy.readQuery({
         query: ORDER_ALL,
       });
 
-      let newData = [...data.orders];
-      newData = [result.data.orders, ...newData];
+      const newData = { orders: data.orders.filter((p) => p.id !== orders.id) };
+
       proxy.writeQuery({
         query: ORDER_ALL,
         data: {
@@ -37,6 +38,10 @@ function OrderCard() {
     },
   });
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <Grid columns={3} className="Cards" stackable>
       <Grid.Column
@@ -47,10 +52,7 @@ function OrderCard() {
           alignItems: "baseline",
         }}
       >
-        {loading ? (
-          <h1>Loading orders..</h1>
-        ) : (
-          orders &&
+        {orders &&
           orders
             .filter((purchase) => purchase.user.username === user.username)
             .map(
@@ -103,8 +105,7 @@ function OrderCard() {
                   </Card.Content>
                 </Card>
               )
-            )
-        )}
+            )}
       </Grid.Column>
     </Grid>
   );

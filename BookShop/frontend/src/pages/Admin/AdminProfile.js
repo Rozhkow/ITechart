@@ -7,6 +7,7 @@ import { CSVLink } from "react-csv";
 import { Link } from "react-router-dom";
 import DeleteButton from "../../components/DeleteButton";
 import ReactPaginate from "react-paginate";
+import Spinner from "../../components/Spinner";
 
 import "./AdminProfile.css";
 import { ALL_USERS } from "../../util/graphql";
@@ -62,15 +63,14 @@ function AdminProfilePage() {
   };
 
   const [deleteUser] = useMutation(DELETE_USER_MUTATION, {
-    update(proxy, result) {
-      debugger;
+    update(proxy) {
       // TODO: remove users from cache
 
       const data = proxy.readQuery({
         query: ALL_USERS,
       });
-      let newData = [...data.users];
-      newData = [result.data.users, ...newData];
+
+      const newData = { users: data.users.filter((p) => p.id !== users.id) };
       proxy.writeQuery({
         query: ALL_USERS,
         data: {
@@ -82,6 +82,10 @@ function AdminProfilePage() {
       });
     },
   });
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <Container className="AdminBlock">

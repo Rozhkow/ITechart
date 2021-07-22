@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import { Card, Grid } from "semantic-ui-react";
 
 import DeleteButton from "../../../components/DeleteButton";
+import Spinner from "../../../components/Spinner";
 
 import "./SingleUser.css";
 
@@ -11,17 +12,17 @@ import { FETCH_USER_QUERY } from "../../../util/graphql";
 function SingleUser(props) {
   const id = props.match.params.id;
 
-  const { data } = useQuery(FETCH_USER_QUERY, {
+  const { data, loading } = useQuery(FETCH_USER_QUERY, {
     variables: {
       id,
     },
   });
 
-  console.log(data);
+  if (loading) {
+    return <Spinner />;
+  }
 
-  if (!data) {
-    <p>Loading user..</p>;
-  } else {
+  if (data) {
     const { username, email, createdAt, id } = data.getUser;
 
     return (

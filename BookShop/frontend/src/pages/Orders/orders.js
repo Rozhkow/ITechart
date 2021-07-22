@@ -4,6 +4,7 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 
 import DeleteButton from "../../components/DeleteButton";
+import Spinner from "../../components/Spinner";
 
 import { ORDER_ALL } from "../../util/graphql";
 import { DELETE_ORDER } from "../../util/graphql";
@@ -45,15 +46,15 @@ function Orders() {
   const { column } = state;
 
   const [deleteOrder] = useMutation(DELETE_ORDER, {
-    update(proxy, result) {
+    update(proxy) {
       // TODO: remove users from cache
 
       const data = proxy.readQuery({
         query: ORDER_ALL,
       });
 
-      let newData = [...data.orders];
-      newData = [result.data.orders, ...newData];
+      const newData = { orders: data.orders.filter((p) => p.id !== orders.id) };
+
       proxy.writeQuery({
         query: ORDER_ALL,
         data: {
@@ -65,6 +66,10 @@ function Orders() {
       });
     },
   });
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <Container classname="Orders">

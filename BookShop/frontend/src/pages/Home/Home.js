@@ -9,6 +9,7 @@ import { AuthContext } from "../../context/auth";
 import ImageSlider from "../../components/Slider/ImageSlider";
 import { SliderData } from "../../components/Slider/SliderData";
 import GoodForm from "../../components/Good/GoodForm/GoodForm";
+import Spinner from "../../components/Spinner";
 
 import "./Home.css";
 import { FETCH_ITEMS_QUERY } from "../../util/graphql";
@@ -41,6 +42,10 @@ function HomePage() {
     setPageNumber(selected);
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <Container className="Home">
       <ImageSlider slides={SliderData} />
@@ -57,7 +62,7 @@ function HomePage() {
       <Grid columns={3} className="Cards" stackable>
         <Grid.Row>
           <Grid.Column>
-            {user && user.admin === true ? <GoodForm data={data} /> : null}
+            {user && user.admin && <GoodForm data={data} />}
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>

@@ -8,14 +8,14 @@ import "./App.css";
 import { AuthProvider } from "../context/auth";
 import AuthRoute from "../util/AuthRoute";
 
-import MainNavigation from "../components/Navigation/MainNavigation";
+import MainNavigation from "../components/Navigation/MainNavigation/MainNavigation";
 import HomePage from "../pages/Home/Home";
 import LoginPage from "../pages/Authentication/Login";
 import RegisterPage from "../pages/Authentication/Register";
 
 import ProfilePage from "../pages/SinglePages/Profile";
 import AdminProfilePage from "../pages/Admin/AdminProfile";
-import Footer from "../components/Navigation/Footer";
+import Footer from "../components/Navigation/Footer/Footer";
 import SingleUser from "../pages/SinglePages/User/SingleUser";
 import SingleGood from "../pages/SinglePages/Good/SingleGood";
 import ShoppingPage from "../pages/SinglePages/Shopping/Shopping";

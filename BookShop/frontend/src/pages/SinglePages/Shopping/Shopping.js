@@ -17,6 +17,7 @@ import { AuthContext } from "../../../context/auth";
 import "./Shopping.css";
 
 import DeleteButton from "../../../components/DeleteButton";
+import Spinner from "../../../components/Spinner";
 
 import { SHOPPING_ALL } from "../../../util/graphql";
 import { CANCEL_SHOPPING } from "../../../util/graphql";
@@ -83,8 +84,6 @@ function Shopping() {
     name: "",
     lastname: "",
     address: "",
-    // paymentMethod: "",
-    // deliveryMethod: "",
     cardNumber: "",
   });
 
@@ -132,8 +131,6 @@ function Shopping() {
     },
   });
 
-  console.log(totalPrice);
-
   const [cancelShopping] = useMutation(CANCEL_SHOPPING, {
     update(proxy, result) {
       // TODO: remove users from cache
@@ -166,26 +163,6 @@ function Shopping() {
       content: {
         content: (
           <Form onSubmit={onSubmit}>
-            {/* <Form.Input
-              label="Name"
-              placeholder="Name"
-              name="name"
-              type="text"
-              onChange={onChange}
-              value={values.name}
-              error={!!errors.name}
-              disabled
-            />
-            <Form.Input
-              label="Last Name"
-              placeholder="Last Name"
-              name="lastname"
-              type="text"
-              onChange={onChange}
-              value={values.lastname}
-              error={!!errors.lastname}
-              disabled
-            /> */}
             <FormGroup>
               <p>
                 <input
@@ -277,6 +254,10 @@ function Shopping() {
       },
     },
   ];
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <Container className="Shopping">

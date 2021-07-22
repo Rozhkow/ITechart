@@ -70,6 +70,7 @@ function UpdateUser({ id, username, email, name, lastname, phoneNumber }) {
       values.name = values.name;
       values.lastname = values.lastname;
       values.phoneNumber = values.phoneNumber;
+
       proxy.modify({
         fields: {
           User(existingUser = []) {

@@ -58,11 +58,8 @@ const GoodFieldSection = ({ values, errors, onChange }) => (
   </>
 );
 
-function GoodForm(props) {
+function GoodForm() {
   const [errors, setErrors] = useState({});
-
-  const data = props.data;
-  console.log(data);
 
   const { values, onChange, onSubmit } = useForm(createGoodCallback, {
     title: "",
@@ -87,8 +84,6 @@ function GoodForm(props) {
       proxy.modify({
         fields: {
           events(existingEvents = []) {
-            console.log(result.data.createEvent);
-            console.log(existingEvents);
             return [...existingEvents, result.data.createEvent];
           },
         },

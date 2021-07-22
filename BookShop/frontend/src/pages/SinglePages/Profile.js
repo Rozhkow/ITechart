@@ -5,28 +5,24 @@ import { Card, Grid } from "semantic-ui-react";
 import { AuthContext } from "../../context/auth";
 
 import { FETCH_USER_QUERY } from "../../util/graphql";
-import { ORDER_ALL } from "../../util/graphql";
 import UpdateUser from "../../components/UpdateUser";
+import Spinner from "../../components/Spinner";
 
 function Profile() {
   const user = useContext(AuthContext);
   const { id } = user.user;
 
-  const { orderData } = useQuery(ORDER_ALL);
-
-  console.log(orderData);
-
-  const { data } = useQuery(FETCH_USER_QUERY, {
+  const { data, loading } = useQuery(FETCH_USER_QUERY, {
     variables: {
       id,
     },
   });
 
-  console.log(data);
+  if (loading) {
+    return <Spinner />;
+  }
 
-  if (!data) {
-    <p>Loading user..</p>;
-  } else {
+  if (data) {
     const { username, email, name, lastname, phoneNumber, createdAt, id } =
       data.getUser;
 

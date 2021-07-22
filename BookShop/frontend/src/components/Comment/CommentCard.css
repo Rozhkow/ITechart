@@ -1,0 +1,16 @@
+.CommentContainer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-direction: column !important;
+  width: 50% !important;
+  margin: 20px !important;
+}
+
+.Comments {
+  margin: 20px !important;
+}
+
+.CardContainer {
+  height: 180px !important;
+}

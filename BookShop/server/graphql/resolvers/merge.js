@@ -16,7 +16,7 @@ const transformOrder = (order) => {
 
 const getUser = async (id) => {
   const user = await User.findById(id);
-  console.log(user);
+
   return {
     ...user._doc,
     id: user.id,
