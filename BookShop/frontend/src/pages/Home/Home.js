@@ -3,8 +3,9 @@ import { useQuery } from "@apollo/client";
 import { Container, Grid } from "semantic-ui-react";
 
 import GoodCard from "../../components/Good/GoodCard/GoodCard";
-import ReactPaginate from "react-paginate";
 import { AuthContext } from "../../context/auth";
+import Pagination from "../../components/Pagination";
+import Search from "../../components/Search";
 
 import ImageSlider from "../../components/Slider/ImageSlider";
 import { SliderData } from "../../components/Slider/SliderData";
@@ -50,15 +51,8 @@ function HomePage() {
     <Container className="Home">
       <ImageSlider slides={SliderData} />
 
-      <div className="Search">
-        <input
-          type="text"
-          placeholder="Search.."
-          onChange={(event) => {
-            setSearchTerm(event.target.value);
-          }}
-        />
-      </div>
+      <Search setSearchTerm={setSearchTerm} />
+
       <Grid columns={3} className="Cards" stackable>
         <Grid.Row>
           <Grid.Column>
@@ -93,19 +87,7 @@ function HomePage() {
         </Grid.Row>
       </Grid>
 
-      <div className="App">
-        <ReactPaginate
-          previousLabel={"<"}
-          nextLabel={">"}
-          pageCount={pageCount}
-          onPageChange={changePage}
-          containerClassName={"paginationBttns"}
-          previousLinkClassName={"previousBttn"}
-          nextLinkClassName={"nextBttn"}
-          disabledClassName={"paginationDisabled"}
-          activeClassName={"paginationActive"}
-        />
-      </div>
+      <Pagination pageCount={pageCount} changePage={changePage} />
     </Container>
   );
 }

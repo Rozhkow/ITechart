@@ -1,7 +1,8 @@
 import React from "react";
 import { Table, Button, Container, Checkbox } from "semantic-ui-react";
 
-import ReactPaginate from "react-paginate";
+import Pagination from "./Pagination";
+import Search from "./Search";
 import { CSVLink } from "react-csv";
 import { Link } from "react-router-dom";
 
@@ -22,15 +23,7 @@ export const AdminComponent = ({
   dispatch,
 }) => (
   <Container className="AdminBlock">
-    <div className="Search">
-      <input
-        type="text"
-        placeholder="Search.."
-        onChange={(event) => {
-          setSearchTerm(event.target.value);
-        }}
-      />
-    </div>
+    <Search setSearchTerm={setSearchTerm} />
 
     <Table sortable celled compact>
       <Table.Header>
@@ -103,19 +96,7 @@ export const AdminComponent = ({
       </Table.Body>
     </Table>
 
-    <div className="App">
-      <ReactPaginate
-        previousLabel={"<"}
-        nextLabel={">"}
-        pageCount={pageCount}
-        onPageChange={changePage}
-        containerClassName={"paginationBttns"}
-        previousLinkClassName={"previousBttn"}
-        nextLinkClassName={"nextBttn"}
-        disabledClassName={"paginationDisabled"}
-        activeClassName={"paginationActive"}
-      />
-    </div>
+    <Pagination pageCount={pageCount} changePage={changePage} />
 
     <Button className="exportData">
       <CSVLink {...csvReport}>Export data</CSVLink>

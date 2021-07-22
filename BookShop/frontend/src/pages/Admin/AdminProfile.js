@@ -6,7 +6,8 @@ import { CSVLink } from "react-csv";
 
 import { Link } from "react-router-dom";
 import DeleteButton from "../../components/DeleteButton";
-import ReactPaginate from "react-paginate";
+import Pagination from "../../components/Pagination";
+import Search from "../../components/Search";
 import Spinner from "../../components/Spinner";
 
 import "./AdminProfile.css";
@@ -89,15 +90,7 @@ function AdminProfilePage() {
 
   return (
     <Container className="AdminBlock">
-      <div className="Search">
-        <input
-          type="text"
-          placeholder="Search.."
-          onChange={(event) => {
-            setSearchTerm(event.target.value);
-          }}
-        />
-      </div>
+      <Search setSearchTerm={setSearchTerm} />
 
       <Table sortable celled compact>
         <Table.Header>
@@ -195,19 +188,7 @@ function AdminProfilePage() {
         </Table.Body>
       </Table>
 
-      <div className="App">
-        <ReactPaginate
-          previousLabel={"<"}
-          nextLabel={">"}
-          pageCount={pageCount}
-          onPageChange={changePage}
-          containerClassName={"paginationBttns"}
-          previousLinkClassName={"previousBttn"}
-          nextLinkClassName={"nextBttn"}
-          disabledClassName={"paginationDisabled"}
-          activeClassName={"paginationActive"}
-        />
-      </div>
+      <Pagination pageCount={pageCount} changePage={changePage} />
 
       <CSVLink
         filename="Report.csv"
