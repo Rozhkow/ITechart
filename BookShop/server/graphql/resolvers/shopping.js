@@ -3,25 +3,25 @@ const Shopping = require("../../models/shopping");
 
 const checkAuth = require("../../middleware/is-auth");
 
-const { transformShopping } = require('./merge');
+const { transformShopping } = require("./merge");
 
+const DoesNotExist = require("../../middleware/validators");
+const DoesNotCreate = require("../../middleware/validators");
 
 module.exports = {
   Query: {
     async shoppings(_, args, context) {
-      try {
-        const { username } = checkAuth(context);
+      const { username } = checkAuth(context);
 
-        const shoppings = await Shopping.find();
-        
-        return shoppings
-          .filter((shopping) => shopping.username === username)
-          .map((shopping) => {
-            return transformShopping(shopping);
-          });
-      } catch (err) {
-        throw err;
+      const shoppings = await Shopping.find();
+      if (!shoppings) {
+        throw new DoesNotExist("Shoppings");
       }
+      return shoppings
+        .filter((shopping) => shopping.username === username)
+        .map((shopping) => {
+          return transformShopping(shopping);
+        });
     },
   },
   Mutation: {
@@ -29,28 +29,29 @@ module.exports = {
       const { username } = checkAuth(context);
 
       const fetchedEvent = await Event.findById({ _id: args.id });
-      if(fetchedEvent === undefined) throw new Error("Event not found");
+      if (!fetchedEvent) throw new DoesNotExist("Event");
 
       const shopping = new Shopping({
         event: fetchedEvent,
         username: username,
       });
-
+      if (!shopping) {
+        throw new DoesNotCreate("Shopping");
+      }
       const result = await shopping.save();
       return transformShopping(result);
     },
     async cancelShopping(_, args, context) {
-      try {
-        checkAuth(context);
-        const shopping = await Shopping.findById(args.shoppingId).populate(
-          "event"
-        );
-        if(shopping === undefined) throw new Error("Shoppin not found");
-        await shopping.delete();
-        return "Comment closed successfully";
-      } catch (err) {
-        throw err;
+      checkAuth(context);
+
+      const shopping = await Shopping.findById(args.shoppingId).populate(
+        "event"
+      );
+      if (!shopping) {
+        throw new DoesNotExist("Shopping");
       }
+      await shopping.delete();
+      return "Comment closed successfully";
     },
   },
 };

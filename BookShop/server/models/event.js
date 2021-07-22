@@ -29,9 +29,6 @@ const eventSchema = new Schema({
   commentCount: {
     type: Number,
   },
-  message: {
-    type: String,
-  },
 });
 
 module.exports = model("Event", eventSchema);

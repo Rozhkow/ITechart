@@ -47,7 +47,7 @@ function AdminProfilePage() {
     direction: null,
   });
 
-  const users  = (!loading && data && data?.users) || [];
+  const users = (!loading && data && data?.users) || [];
 
   // Pagination
 
@@ -212,18 +212,7 @@ function AdminProfilePage() {
         <Button className="exportData">Export data</Button>
       </CSVLink>
 
-      <Button
-        className="exportData"
-        as={Link}
-        to={`/orders`}
-        style={{
-          display: "flex",
-          marginTop: 20,
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#4183c4",
-        }}
-      >
+      <Button className="exportData" as={Link} to={`/orders`}>
         Check user's orders
       </Button>
     </Container>

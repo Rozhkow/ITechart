@@ -1,83 +1,97 @@
 const { validateAddOrder } = require("../../middleware/validators");
 const Order = require("../../models/order");
 const Shopping = require("../../models/shopping");
+const User = require("../../models/user");
 
 const checkAuth = require("../../middleware/is-auth");
 
-const { transformOrder } = require('./merge');
+const { transformOrder } = require("./merge");
 
-const { UserInputError } = require('apollo-server');
+const { UserInputError } = require("apollo-server");
+const DoesNotExist = require("../../middleware/validators");
+const DoesNotCreate = require("../../middleware/validators");
 
 module.exports = {
   Query: {
-    async orders(_) {
-      try {
-        const orders = await Order.find();
-        return orders.map((order) => {
-          return transformOrder(order);
-        });
-      } catch (err) {
-        throw err;
+    async orders() {
+      const orders = await Order.find();
+      if (!orders) {
+        throw new DoesNotExist("Orders");
       }
+      return orders.map((order) => {
+        return transformOrder(order);
+      });
     },
     async getOrder(_, { orderId }, context) {
-      try {
-        checkAuth(context);
-        const order = await Order.findById(orderId);
-        if (order) {
-          return transformOrder(order);
-        } else {
-          throw new Error("Order not found");
-        }
-      } catch (err) {
-        throw new Error(err);
+      checkAuth(context);
+
+      const order = await Order.findById(orderId);
+      if (!order) {
+        throw new DoesNotExist("Order");
       }
+      return transformOrder(order);
     },
   },
   Mutation: {
-    async addingOrder(_, args, context) {
+    async addingOrder(_, orderData, context) {
       const { username } = checkAuth(context);
-      var fetchedShoppings = [];
-      for (let i = 0; i < args.shoppingIds.length; i++) {
-        fetchedShoppings.push(
-          await Shopping.findById({
-            _id: args.shoppingIds[i],
-          })
-        );
-      }
 
-      const { valid, errors } = validateAddOrder(
-        args.name,
-        args.lastname,
-        args.address
+      const fetchedShoppingsPromises = orderData.shoppingIds.map(
+        async (id) => await Shopping.findById({ _id: id })
       );
 
-      if(!valid) {
-        throw new UserInputError('Errors', { errors });
+      const fetchedShoppings = await Promise.all(fetchedShoppingsPromises);
+
+      const { valid, errors } = validateAddOrder(orderData);
+
+      if (!valid) {
+        throw new UserInputError("Errors", { errors });
+      }
+
+      const shoppingIds = orderData.shoppingIds;
+      const shoppings = await Shopping.find({
+        _id: {
+          $in: shoppingIds,
+        },
+      }).populate("event");
+
+      const totalPrice = shoppings.reduce(
+        (priceAccumulator, shopping) =>
+          (priceAccumulator += shopping.event.price),
+        0
+      );
+
+      const user = await User.findOne({ username });
+
+      if (!user) {
+        throw new DoesNotExist("User");
       }
 
       const order = new Order({
-        name: args.name,
-        lastname: args.lastname,
-        address: args.address,
-        totalPrice: args.totalPrice,
+        ...orderData,
+        totalPrice: totalPrice,
         shoppings: fetchedShoppings,
         username: username,
+        user: user,
       });
 
+      if (!order) {
+        throw new DoesNotCreate("Order");
+      }
+
       const addingOrder = await order.save();
-      
       return transformOrder(addingOrder);
     },
     async deleteOrder(_, { orderId }, context) {
-      try {
-        checkAuth(context);
-        const order = await Order.findById(orderId).populate("shopping");
-        await order.delete();
-        return "Order deleted successfully";
-      } catch (err) {
-        throw err;
+      checkAuth(context);
+
+      const order = await Order.findById(orderId).populate("shopping");
+
+      if (!order) {
+        throw new DoesNotExist("Order");
       }
+      await order.delete();
+      return "Order deleted successfully";
     },
   },
 };

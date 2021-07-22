@@ -4,10 +4,19 @@ const userSchema = new Schema({
   username: {
     type: String,
   },
+  name: {
+    type: String,
+  },
+  lastname: {
+    type: String,
+  },
   password: {
     type: String,
   },
   email: {
+    type: String,
+  },
+  phoneNumber: {
     type: String,
   },
   admin: {
@@ -17,9 +26,6 @@ const userSchema = new Schema({
   createdAt: {
     type: String,
   },
-  message: {
-    type: String,
-  }
 });
 
 module.exports = model("User", userSchema);

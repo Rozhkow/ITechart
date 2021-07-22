@@ -91,6 +91,9 @@ export const FETCH_USER_QUERY = gql`
   query ($id: ID!) {
     getUser(id: $id) {
       username
+      name
+      phoneNumber
+      lastname
       email
       admin
       createdAt
@@ -132,12 +135,28 @@ export const ALL_USERS = gql`
 `;
 
 export const UPDATE_USER = gql`
-  mutation updateUser($id: ID!, $username: String!, $email: String!) {
-    updateUser(id: $id, username: $username, email: $email) {
+  mutation updateUser(
+    $id: ID!
+    $username: String!
+    $email: String!
+    $name: String!
+    $lastname: String!
+    $phoneNumber: String!
+  ) {
+    updateUser(
+      id: $id
+      username: $username
+      email: $email
+      name: $name
+      lastname: $lastname
+      phoneNumber: $phoneNumber
+    ) {
       id
       username
       email
-      message
+      name
+      lastname
+      phoneNumber
     }
   }
 `;
@@ -154,12 +173,14 @@ export const UPDATE_GOOD = gql`
   ) {
     updateEvent(
       id: $id
-      title: $title
-      description: $description
-      price: $price
-      autor: $autor
-      pageNumber: $pageNumber
-      publishYear: $publishYear
+      eventInput: {
+        title: $title
+        description: $description
+        price: $price
+        autor: $autor
+        pageNumber: $pageNumber
+        publishYear: $publishYear
+      }
     ) {
       id
       title
@@ -168,7 +189,6 @@ export const UPDATE_GOOD = gql`
       autor
       pageNumber
       publishYear
-      message
     }
   }
 `;
@@ -246,23 +266,29 @@ export const SUBMIT_COMMENT = gql`
 
 export const ADDING_ORDER = gql`
   mutation addingOrder(
-    $name: String!
-    $lastname: String!
     $address: String!
-    $totalPrice: Float!
+    $paymentMethod: String!
+    $deliveryMethod: String!
+    $cardNumber: String
     $shoppingIds: [ID]
   ) {
     addingOrder(
-      name: $name
-      lastname: $lastname
       address: $address
-      totalPrice: $totalPrice
+      paymentMethod: $paymentMethod
+      deliveryMethod: $deliveryMethod
+      cardNumber: $cardNumber
       shoppingIds: $shoppingIds
     ) {
-      name
-      lastname
       address
+      paymentMethod
+      deliveryMethod
+      cardNumber
       totalPrice
+      user {
+        name
+        lastname
+        phoneNumber
+      }
       shoppings {
         event {
           id
@@ -270,7 +296,6 @@ export const ADDING_ORDER = gql`
           autor
           price
         }
-        username
         createdAt
         updatedAt
       }
@@ -288,12 +313,18 @@ export const ORDER_ALL = gql`
   query orders {
     orders {
       orderId
-      name
-      lastname
       address
+      paymentMethod
+      deliveryMethod
+      cardNumber
       createdAt
-      username
       totalPrice
+      user {
+        name
+        lastname
+        phoneNumber
+        username
+      }
       shoppings {
         username
         createdAt
@@ -311,9 +342,15 @@ export const ORDER_ALL = gql`
 export const FETCH_ORDER_QUERY = gql`
   query getOrder($orderId: ID!) {
     getOrder(orderId: $orderId) {
-      name
-      lastname
       address
+      paymentMethod
+      deliveryMethod
+      cardNumber
+      user {
+        name
+        lastname
+        phoneNumber
+      }
       shopping {
         event {
           id
@@ -321,7 +358,6 @@ export const FETCH_ORDER_QUERY = gql`
           autor
           price
         }
-        username
         createdAt
         updatedAt
       }

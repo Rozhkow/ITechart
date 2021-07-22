@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Card, Icon, Image, Accordion, Button, Label } from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
@@ -13,9 +13,10 @@ import { FETCH_ITEMS_QUERY } from "../../../util/graphql";
 import { SHOP_EVENT } from "../../../util/graphql";
 import { SHOPPING_ALL } from "../../../util/graphql";
 
-import img from "../../../img/1.jpg";
-
-function GoodCard({ good: { title, description, price, id, commentCount } }) {
+function GoodCard({
+  good: { title, description, price, id, commentCount },
+  image,
+}) {
   const { user } = useContext(AuthContext);
   const [shopEvent, { loading }] = useMutation(SHOP_EVENT, {
     update(proxy, result) {
@@ -38,35 +39,48 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
     variables: { id: id },
   });
 
-  const [toggle, handleClick] = React.useState(0);
+  const [toggle, handleClick] = useState(0);
 
   const [deleteEvent] = useMutation(DELETE_GOOD_MUTATION, {
-    update(proxy, result) {
+    update(proxy) {
       // TODO: remove users from cache
 
       const data = proxy.readQuery({
         query: FETCH_ITEMS_QUERY,
       });
-      let newData = [...data.events];
-      newData = [result.data.events, ...newData];
-      proxy.writeQuery({
-        query: FETCH_ITEMS_QUERY,
-        data: {
-          ...data,
-          events: {
-            newData,
-          },
-        },
-      });
+
+      data.events = data.events.filter((p) => p.id !== id);
+      proxy.writeQuery({ query: FETCH_ITEMS_QUERY });
+      // let newData = [...data.events];
+      // newData = [result.data.events, ...newData];
+      // proxy.writeQuery({
+      //   query: FETCH_ITEMS_QUERY,
+      //   data: {
+      //     ...data,
+      //     events: {
+      //       newData,
+      //     },
+      //   },
+      // });
     },
     variables: { id: id },
   });
 
   return (
-    <Card>
-      <Card.Content>
-        <Image centered size="medium" src={img} as={Link} to={`/goods/${id}`} />
-        <Card.Header as={Link} to={`/goods/${id}`}>
+    <Card className="card">
+      <Card.Content className="cardContent">
+        <Image
+          centered
+          size="medium"
+          src={image}
+          as={Link}
+          to={`/goods/${id}`}
+        />
+        <Card.Header
+          as={Link}
+          to={`/goods/${id}`}
+          style={{ marginTop: "auto" }}
+        >
           {title}
         </Card.Header>
         <Accordion>
@@ -85,7 +99,7 @@ function GoodCard({ good: { title, description, price, id, commentCount } }) {
       <Card.Content extra>
         <Card.Meta>{price}$</Card.Meta>
         <br />
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="extraContent">
           {user?.admin && <DeleteButton id={id} onConfirm={deleteEvent} />}
           {user && !user.admin && (
             <Button

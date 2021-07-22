@@ -4,110 +4,82 @@ const Event = require("../../models/event");
 const checkAuth = require("../../middleware/is-auth");
 
 const { UserInputError } = require("apollo-server");
+const DoesNotExist = require("../../middleware/validators");
+const DoesNotCreate = require("../../middleware/validators");
+const ReceivePermission = require("../../middleware/validators");
 
 module.exports = {
   Query: {
     async events() {
-      try {
-        const events = await Event.find();
-        return events.map((event) => {
-          return event;
-        });
-      } catch (err) {
-        throw new Error(err);
+      const events = await Event.find();
+      if (!events) {
+        throw new DoesNotExist("Events");
       }
+      return events.map((event) => {
+        return event;
+      });
     },
     async getEvent(_, { id }) {
-      try {
-        if (typeof id !== "string") throw new Error("Id isn't valid");
+      if (typeof id !== "string") throw new Error("Id isn't valid");
 
-        const event = await Event.findById(id);
-        if (event) {
-          return event;
-        } else {
-          throw new Error("Good not found");
-        }
-      } catch (err) {
-        throw new Error(err);
+      const event = await Event.findById(id);
+      if (!event) {
+        throw new DoesNotExist("Event");
       }
+      return event;
     },
   },
   Mutation: {
-    async createEvent(_, args, context) {
+    async createEvent(_, { eventInput }, context) {
       checkAuth(context);
 
-      const { errors, valid } = validateCreateEvent(
-        args.eventInput.title,
-        args.eventInput.description,
-        args.eventInput.price,
-        args.eventInput.autor,
-        args.eventInput.pageNumber,
-        args.eventInput.publishYear
-      );
+      const { errors, valid } = validateCreateEvent(eventInput);
 
       if (!valid) {
         throw new UserInputError("Errors", { errors });
       }
 
-      const event = new Event({
-        title: args.eventInput.title,
-        description: args.eventInput.description,
-        price: args.eventInput.price,
-        autor: args.eventInput.autor,
-        pageNumber: args.eventInput.pageNumber,
-        publishYear: args.eventInput.publishYear,
-      });
+      const event = new Event(eventInput);
 
       if (!event) {
-        errors.general = "Event not created";
+        throw new DoesNotCreate("Event");
       }
 
       let createdEvent = await event.save(); // save into database
 
       return createdEvent;
     },
-    async updateEvent(_, args, context) {
+    async updateEvent(_, { id, eventInput }, context) {
       checkAuth(context);
 
-      const { errors, valid } = validateCreateEvent(
-        args.title,
-        args.description,
-        args.price,
-        args.autor,
-        args.pageNumber,
-        args.publishYear
-      );
+      const { errors, valid } = validateCreateEvent(eventInput);
 
       if (!valid) {
         throw new UserInputError("Errors", { errors });
       }
 
-      return Event.findOneAndUpdate(
-        Event.findById(args.id),
+      const event = await Event.findOneAndUpdate(
+        Event.findById(id),
         {
-          title: args.title,
-          description: args.description,
-          price: args.price,
-          autor: args.autor,
-          pageNumber: args.pageNumber,
-          publishYear: args.publishYear,
-          message: "Successful!",
+          ...eventInput,
         },
         { new: true }
       );
+      if (!event) {
+        throw new DoesNotExist("Event");
+      }
+      return event;
     },
     async deleteEvent(_, { id }, context) {
-      try {
-        const { username } = checkAuth(context);
+      const { username } = checkAuth(context);
 
-        if (username !== "admin")
-          throw new Error("You don't have a permission");
-        const event = await Event.findById(id);
-        await event.delete(); // delete from database
-        return "Good deleted successfully";
-      } catch (err) {
-        throw new Error(err);
+      if (username !== "admin") throw new ReceivePermission("Delete");
+      const event = await Event.findById(id);
+      if (!event) {
+        throw new DoesNotExist("Event");
       }
+      await event.delete(); // delete from database
+      return "Good deleted successfully";
     },
   },
 };

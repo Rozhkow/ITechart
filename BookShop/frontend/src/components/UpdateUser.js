@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { Form, Container } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 
-import { useFormm } from "../util/hooks";
+import { useForm } from "../util/hooks";
 import { UPDATE_USER } from "../util/graphql";
 
 import FormComponent from "../components/Authentication/FormComponent";
-
-import "./UpdateUser.css";
 
 const UserFieldSection = ({ values, errors, onChange }) => (
   <>
@@ -25,17 +23,41 @@ const UserFieldSection = ({ values, errors, onChange }) => (
       error={!!errors.email}
       value={values.email}
     />
+    <Form.Input
+      placeholder="Name"
+      name="name"
+      onChange={onChange}
+      error={!!errors.name}
+      value={values.name}
+    />
+    <Form.Input
+      placeholder="LastName"
+      name="lastname"
+      onChange={onChange}
+      error={!!errors.lastname}
+      value={values.lastname}
+    />
+    <Form.Input
+      placeholder="PhoneNumber"
+      name="phoneNumber"
+      onChange={onChange}
+      error={!!errors.phoneNumber}
+      value={values.phoneNumber}
+    />
   </>
 );
 
-function UpdateUser({ id, username, email }) {
+function UpdateUser({ id, username, email, name, lastname, phoneNumber }) {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState({});
 
-  const { values, onChange, onSubmit } = useFormm(updateUserCallback, {
+  const { values, onChange, onSubmit } = useForm(updateUserCallback, {
     id: id,
     username: username,
     email: email,
+    name: name,
+    lastname: lastname,
+    phoneNumber: phoneNumber,
   });
 
   const [updateUser, { loading }] = useMutation(UPDATE_USER, {
@@ -45,6 +67,9 @@ function UpdateUser({ id, username, email }) {
       values.id = values.id;
       values.username = values.username;
       values.email = values.email;
+      values.name = values.name;
+      values.lastname = values.lastname;
+      values.phoneNumber = values.phoneNumber;
       proxy.modify({
         fields: {
           User(existingUser = []) {
@@ -57,7 +82,7 @@ function UpdateUser({ id, username, email }) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     onCompleted(message) {
-      setMessage(Object.values(message.updateUser.message));
+      setMessage(() => (message = "Successful!"));
     },
   });
 
@@ -76,10 +101,9 @@ function UpdateUser({ id, username, email }) {
         loading={loading}
       >
         <UserFieldSection values={values} errors={errors} onChange={onChange} />
-        {Object.keys(errors).length === 0 &&
-          Object.values(message).length > 0 && (
-            <div className="ui success message">{Object.values(message)}</div>
-          )}
+        {Object.keys(errors).length === 0 && message.length > 0 && (
+          <div className="ui success message">{message}</div>
+        )}
       </FormComponent>
     </Container>
   );

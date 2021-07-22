@@ -32,57 +32,58 @@ function MainNavigation() {
 
       <Menu.Menu position="right" size="massive" color="teal">
         {user && user.admin === true ? (
-          <Menu.Item
-            name={user.username}
-            active={
-              activeItem === user.username || activeItem === "adminProfile"
-            }
-            onClick={handleItemClick}
-            as={Link}
-            to="/adminProfile"
-          />
-        ) : null}
-        {user && user.admin === false ? (
-          <Menu.Item
-            name="shopping cart"
-            active={activeItem === "shopping cart" || activeItem === "shopping"}
-            onClick={handleItemClick}
-            as={Link}
-            to="/shopping"
-          >
-            <Icon name="shopping cart" />
-          </Menu.Item>
-        ) : null}
-        {user && user.admin === false ? (
-          <Menu.Item
-            name={user.username}
-            active={activeItem === user.username || activeItem === "profile"}
-            onClick={handleItemClick}
-            as={Link}
-            to="/profile"
-          />
-        ) : null}
-        {user ? (
-          <Menu.Item name="Logout" onClick={logout} as={Link} to="/login" />
-        ) : null}
-        {!user ? (
-          <Menu.Item
-            name="login"
-            active={activeItem === "login"}
-            onClick={handleItemClick}
-            as={Link}
-            to="/login"
-          />
-        ) : null}
-        {!user ? (
-          <Menu.Item
-            name="register"
-            active={activeItem === "register"}
-            onClick={handleItemClick}
-            as={Link}
-            to="/register"
-          />
-        ) : null}
+          <>
+            <Menu.Item
+              name={user.username}
+              active={
+                activeItem === user.username || activeItem === "adminProfile"
+              }
+              onClick={handleItemClick}
+              as={Link}
+              to="/adminProfile"
+            />
+            <Menu.Item name="Logout" onClick={logout} as={Link} to="/login" />
+          </>
+        ) : user && user.admin === false ? (
+          <>
+            <Menu.Item
+              name="shopping cart"
+              active={
+                activeItem === "shopping cart" || activeItem === "shopping"
+              }
+              onClick={handleItemClick}
+              as={Link}
+              to="/shopping"
+            >
+              <Icon name="shopping cart" />
+            </Menu.Item>
+            <Menu.Item
+              name={user.username}
+              active={activeItem === user.username || activeItem === "profile"}
+              onClick={handleItemClick}
+              as={Link}
+              to="/profile"
+            />
+            <Menu.Item name="Logout" onClick={logout} as={Link} to="/login" />
+          </>
+        ) : (
+          <>
+            <Menu.Item
+              name="login"
+              active={activeItem === "login"}
+              onClick={handleItemClick}
+              as={Link}
+              to="/login"
+            />
+            <Menu.Item
+              name="register"
+              active={activeItem === "register"}
+              onClick={handleItemClick}
+              as={Link}
+              to="/register"
+            />
+          </>
+        )}
       </Menu.Menu>
     </Menu>
   );

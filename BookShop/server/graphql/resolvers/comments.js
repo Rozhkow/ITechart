@@ -2,62 +2,59 @@ const Event = require("../../models/event");
 
 const checkAuth = require("../../middleware/is-auth");
 
+const DoesNotExist = require("../../middleware/validators");
+const ReceivePermission = require("../../middleware/validators");
+
 module.exports = {
   Mutation: {
-    createComment: async (_, { id, body }, context) => {
-      try {
-        const { username } = checkAuth(context);
+    createComment: async (_, args, context) => {
+      const { username } = checkAuth(context);
 
-        if (body.trim() === "") {
-          throw new Error("Empty comment", {
-            errors: {
+      if (args.body.trim() === "") {
+        throw new Error("Empty comment", {
+          errors: {
             body: "Comment body must not empty",
           },
         });
-      };
-
-      const event = await Event.findById({ _id: id });
-
-      if (event) {
-        event.comments.unshift({
-          body,
-          username,
-          createdAt: new Date().toISOString(),
-        });
-        await event.save();
-        return event;
-      } else throw new Error("Event not found");
-
-      } catch (err) {
-        throw new Error(err);
       }
-    },
-    async deleteComment(_, { id, commentId }, context) {
-      try { 
-        checkAuth(context);
 
-        if(typeof(id && commentId) !== "string") throw new Error("Id isn't valid");
-        
-        const event = await Event.findById({ _id: id });
+      const event = await Event.findById({ _id: args.id });
+
+      if (!event) {
+        throw new DoesNotExist("Event");
+      }
+      event.comments.unshift({
+        body: args.body,
+        username,
+        createdAt: new Date().toISOString(),
+      });
+      await event.save();
+      return event;
+    },
+    async deleteComment(_, args, context) {
+      checkAuth(context);
+
+      if (typeof (args.id && args.commentId) !== "string") {
+        throw new Error("Id isn't valid");
+      }
+
+      const event = await Event.findById({ _id: args.id });
 
       if (event) {
         const commentIndex = event.comments.findIndex(
-          (c) => c.id === commentId
+          (c) => c.id === args.commentId
         );
-        
+
         if (event.comments[commentIndex].username) {
           event.comments.splice(commentIndex, 1);
           await event.save();
           return event;
         } else {
-          throw new Error("Action not allowed");
+          throw new ReceivePermission("Delete");
         }
-      } else { 
-        throw new Error("Post not found");
-      };
-      } catch(err) {
-        throw new Error(err);
-      };
+      } else {
+        throw new DoesNotExist("Post");
+      }
     },
   },
 };

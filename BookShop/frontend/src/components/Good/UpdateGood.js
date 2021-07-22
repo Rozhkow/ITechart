@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Container } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 
-import { useFormm } from "../../util/hooks";
+import { useForm } from "../../util/hooks";
 
 import "./GoodForm/GoodForm.css";
 
@@ -22,7 +22,7 @@ function UpdateGood({
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState({});
 
-  const { values, onChange, onSubmit } = useFormm(updateGoodCallback, {
+  const { values, onChange, onSubmit } = useForm(updateGoodCallback, {
     id: id,
     title: title,
     description: description,
@@ -56,7 +56,7 @@ function UpdateGood({
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     onCompleted(message) {
-      setMessage(Object.values(message.updateEvent.message));
+      setMessage(() => (message = "Successful!"));
     },
   });
 
@@ -75,10 +75,9 @@ function UpdateGood({
         loading={loading}
       >
         <GoodFieldSection values={values} errors={errors} onChange={onChange} />
-        {Object.keys(errors).length === 0 &&
-          Object.values(message).length > 0 && (
-            <div className="ui success message">{Object.values(message)}</div>
-          )}
+        {Object.keys(errors).length === 0 && message.length > 0 && (
+          <div className="ui success message">{message}</div>
+        )}
       </FormComponent>
     </Container>
   );

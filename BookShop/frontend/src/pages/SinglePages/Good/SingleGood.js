@@ -56,7 +56,7 @@ function SingleGood(props) {
       const data = proxy.readQuery({
         query: FETCH_GOOD_QUERY,
       });
-      return data
+      return data;
     },
   });
 
@@ -73,7 +73,7 @@ function SingleGood(props) {
 
   console.log(data);
   console.log(id);
-  
+
   if (!data) {
     <p>Loading good..</p>;
   } else {
@@ -85,103 +85,123 @@ function SingleGood(props) {
       autor,
       pageNumber,
       publishYear,
-      comments
+      comments,
     } = data.getEvent;
 
     return (
       <>
-      <Grid className="SingleGood">
-        <Grid.Column className="img" width={5}>
-          <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
-        </Grid.Column>
-        <Grid.Column width={6}>
-          <Card fluid>
-            <Card.Content className="Data">
-              <Card.Header>
-                <h1>{title}</h1>
-              </Card.Header>
-              <Card.Description>Description: {description}</Card.Description>
-              <Card.Description>Autor: {autor}</Card.Description>
-              <Card.Description>Number of page: {pageNumber}</Card.Description>
-              <Card.Description>
-                Year of publishing: {publishYear}
-              </Card.Description>
-              <Card.Description>id: {id}</Card.Description>
-              <hr />
-              <Card.Content>{price}$</Card.Content>
-            </Card.Content>
-            <hr />
-            <Card.Content extra>
-              {user && user.admin === true ? (
-                <DeleteButton onConfirm={deleteEvent} />
-              ) : null}
-            </Card.Content>
-          </Card>
-        </Grid.Column>
-        
-          {user && user.admin === true ? (
-          <Grid.Column width={5}>
-            <UpdateGood
-              id={id}
-              title={title}
-              description={description}
-              price={price}
-              autor={autor}
-              pageNumber={pageNumber}
-              publishYear={publishYear}
-            />
+        <Grid className="SingleGood">
+          <Grid.Column className="img" width={5}>
+            <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
           </Grid.Column>
-          ) : <div style={{display: "none"}}/>}
-          
-          
-        
-      </Grid>
-        <Container>
-            <h1>Comments:</h1>
-            {user ? (
-              <Card fluid>
-                <Card.Content>
-                  <p>Post a comment:</p>
-                  <Form>
-                    <div className="ui action input fluid">
-                      <input
-                        type="text"
-                        placeholder="Comment.."
-                        name="comment"
-                        value={comment}
-                        onChange={(event) => setComment(event.target.value)}
-                        ref={commentInputRef}
-                      />
-                      <button
-                        type="submit"
-                        className="ui button teal"
-                        disabled={comment.trim() === ""}
-                        onClick={submitComment}
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </Form>
-                </Card.Content>
-              </Card>
-            ) : (<Card style={{padding: 10}}><h1>If you wanna stay your comment, you need to register.</h1></Card>)}
-            {comments.map((comment) => (
-              <Card fluid key={comment.id}>
-                <Card.Content>
-                  <Card.Header>{comment.username}</Card.Header>
-                  <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
-                  <Card.Description>{comment.body}</Card.Description>
-                  <hr /> 
-                  {user && (user.username === comment.username || user.admin === true) && (
-                    <DeleteButton onConfirm={() => {
-                      deleteComment({ variables: { id:id, commentId: comment.id } });
-                    }}/>
+          <Grid.Column width={6}>
+            <Card fluid>
+              <Card.Content className="Data">
+                <Card.Header>
+                  <h1>{title}</h1>
+                </Card.Header>
+                <Card.Description>Description: {description}</Card.Description>
+                <Card.Description>Autor: {autor}</Card.Description>
+                <Card.Description>
+                  Number of page: {pageNumber}
+                </Card.Description>
+                <Card.Description>
+                  Year of publishing: {publishYear}
+                </Card.Description>
+                <Card.Description>id: {id}</Card.Description>
+                <hr />
+                <Card.Content>{price}$</Card.Content>
+              </Card.Content>
+              <hr />
+              <Card.Content extra>
+                {user && user.admin === true ? (
+                  <DeleteButton onConfirm={deleteEvent} />
+                ) : null}
+              </Card.Content>
+            </Card>
+          </Grid.Column>
+
+          {user && user.admin === true ? (
+            <Grid.Column width={5}>
+              <UpdateGood
+                id={id}
+                title={title}
+                description={description}
+                price={price}
+                autor={autor}
+                pageNumber={pageNumber}
+                publishYear={publishYear}
+              />
+            </Grid.Column>
+          ) : (
+            <div style={{ display: "none" }} />
+          )}
+        </Grid>
+        <Container
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            width: "50%",
+            margin: "20px",
+          }}
+        >
+          <h1 style={{ margin: 20 }}>Comments:</h1>
+          {user ? (
+            <Card fluid>
+              <Card.Content>
+                <p>Post a comment:</p>
+                <Form>
+                  <div className="ui action input fluid">
+                    <input
+                      type="text"
+                      placeholder="Comment.."
+                      name="comment"
+                      value={comment}
+                      onChange={(event) => setComment(event.target.value)}
+                      ref={commentInputRef}
+                    />
+                    <button
+                      type="submit"
+                      className="ui button teal"
+                      disabled={comment.trim() === ""}
+                      onClick={submitComment}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </Form>
+              </Card.Content>
+            </Card>
+          ) : (
+            <Card className="unAuthMessage">
+              <h1>If you wanna stay your comment, you need to register.</h1>
+            </Card>
+          )}
+          {comments.map((comment) => (
+            <Card fluid key={comment.id}>
+              <Card.Content style={{ height: 160 }}>
+                <Card.Header>{comment.username}</Card.Header>
+                <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
+                <Card.Description>{comment.body}</Card.Description>
+                <hr />
+                {user &&
+                  (user.username === comment.username ||
+                    user.admin === true) && (
+                    <DeleteButton
+                      onConfirm={() => {
+                        deleteComment({
+                          variables: { id: id, commentId: comment.id },
+                        });
+                      }}
+                    />
                   )}
-                </Card.Content>
-              </Card>
-            ))}
-          </Container>
-        </>
+              </Card.Content>
+            </Card>
+          ))}
+        </Container>
+      </>
     );
   }
   return SingleGood;

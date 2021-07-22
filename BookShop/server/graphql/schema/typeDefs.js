@@ -4,10 +4,11 @@ module.exports = gql(`
 
 type Order {
     orderId: ID!
-    name: String!
-    lastname: String!
+    user: User!
     address: String!
     paymentMethod: String!
+    deliveryMethod: String!
+    cardNumber: String
     totalPrice: Float!
     shoppings: [Shopping!]
     createdAt: String!
@@ -46,9 +47,12 @@ type Event {
 
 type User {
     id: ID!
+    name: String
+    lastname: String
     email: String!
     token: String!
     username: String!
+    phoneNumber: String
     admin: Boolean!
     createdAt: String!
     message: String!
@@ -93,13 +97,13 @@ type Mutation {
     createEvent(eventInput: EventInput): Event
     deleteUser(id: ID!): String!
     deleteEvent(id: ID!): String!
-    updateEvent(id: ID!, title: String!, description: String!, price: String!, autor: String!, pageNumber: String!, publishYear: String!): Event
-    updateUser(id: ID!, username: String!, email: String!): User
-    shopEvent(id: ID!): Shopping!
+    updateEvent(id: ID!, eventInput: EventInput): Event
+    updateUser(id: ID!, username: String!, email: String!, name: String, lastname: String, phoneNumber: String): User
+    shopEvent(id: ID!): Shopping! 
     cancelShopping(shoppingId: ID!): String!
     createComment(id: String!, body: String!): Event!
     deleteComment(id: ID!, commentId: ID!): Event!
-    addingOrder(name: String!, lastname: String!, address: String!, totalPrice: Float!, shoppingIds: [ID]): Order
+    addingOrder(address: String!, paymentMethod: String!, deliveryMethod: String!, cardNumber: String, shoppingIds: [ID]): Order
     deleteOrder(orderId: ID!): String!
 }
 `);

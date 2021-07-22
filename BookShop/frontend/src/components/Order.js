@@ -9,12 +9,11 @@ import { AuthContext } from "../context/auth";
 import { DELETE_ORDER } from "../util/graphql";
 import { ORDER_ALL } from "../util/graphql";
 
-
 function OrderCard() {
   const { loading, data } = useQuery(ORDER_ALL);
   const { user } = useContext(AuthContext);
 
-  const orders  = (!loading && data && data?.orders) || [];
+  const orders = (!loading && data && data?.orders) || [];
 
   const [deleteOrder] = useMutation(DELETE_ORDER, {
     update(proxy, result) {
@@ -53,17 +52,18 @@ function OrderCard() {
         ) : (
           orders &&
           orders
-            .filter((purchase) => purchase.username === user.username)
+            .filter((purchase) => purchase.user.username === user.username)
             .map(
               ({
-                name,
-                lastname,
                 address,
+                paymentMethod,
+                deliveryMethod,
+                cardNumber,
                 orderId,
                 createdAt,
                 shoppings,
-                username,
                 totalPrice,
+                user: { name, lastname, username },
               }) => (
                 <Card fluid style={{ margin: 10 }}>
                   <Card.Content>
@@ -71,15 +71,26 @@ function OrderCard() {
                     <hr />
                     <Card.Description>Lastname: {lastname}</Card.Description>
                     <Card.Description>Address: {address}</Card.Description>
+                    <Card.Description>
+                      PaymentMethod: {paymentMethod}
+                    </Card.Description>
+                    <Card.Description>
+                      DeliveryMethod: {deliveryMethod}
+                    </Card.Description>
+                    <Card.Description>
+                      CardNumber: {cardNumber}
+                    </Card.Description>
                     <Card.Description>OrderID: {orderId}</Card.Description>
                     <Card.Description>Username: {username}</Card.Description>
                     <Card.Description>Created at: {createdAt}</Card.Description>
 
                     <Card.Header>
                       Goods:
-                      {shoppings.filter((purchase) => purchase.username === username).map(({ event: { title } }) => (
-                        <div>{title}</div>
-                      ))}
+                      {shoppings
+                        .filter((purchase) => purchase.username === username)
+                        .map(({ event: { title } }) => (
+                          <div>{title}</div>
+                        ))}
                     </Card.Header>
                     <Card.Header>Price: {totalPrice}</Card.Header>
                     <Card.Content extra style={{ marginTop: 10 }}>

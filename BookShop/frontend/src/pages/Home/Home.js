@@ -13,7 +13,19 @@ import GoodForm from "../../components/Good/GoodForm/GoodForm";
 import "./Home.css";
 import { FETCH_ITEMS_QUERY } from "../../util/graphql";
 
+function importAll(r) {
+  let images = {};
+  r.keys().map((item, index) => {
+    images[item.replace("./", "")] = r(item);
+  });
+  return images;
+}
+
 function HomePage() {
+  const images = importAll(
+    require.context("../../img", false, /\.(png|jpe?g|svg)$/)
+  );
+
   const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -64,9 +76,12 @@ function HomePage() {
                 }
               })
               .slice(pagesVisited, pagesVisited + goodsPerPage)
-              .map((good) => (
-                <Grid.Column key={good.id} style={{ marginBottom: 20 }}>
-                  <GoodCard good={good} />
+              .map((good, index) => (
+                <Grid.Column key={good.id} className="goodCards">
+                  <GoodCard
+                    good={good}
+                    image={images[Object.keys(images)[index]]?.default || ""}
+                  />
                 </Grid.Column>
               ))
           )}

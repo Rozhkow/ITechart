@@ -8,7 +8,7 @@ import DeleteButton from "../../components/DeleteButton";
 import { ORDER_ALL } from "../../util/graphql";
 import { DELETE_ORDER } from "../../util/graphql";
 
-import { Container, Button, Table } from "semantic-ui-react";
+import { Container, Table } from "semantic-ui-react";
 
 function sortReducer(state, action) {
   switch (action.type) {
@@ -40,7 +40,7 @@ function Orders() {
     direction: null,
   });
 
-  const orders  = (!loading && data && data?.orders) || [];
+  const orders = (!loading && data && data?.orders) || [];
 
   const { column } = state;
 
@@ -65,8 +65,6 @@ function Orders() {
       });
     },
   });
-
-  let totalPrice = 0;
 
   return (
     <Container classname="Orders">
@@ -146,13 +144,12 @@ function Orders() {
             orders &&
             orders.map(
               ({
-                name,
-                lastname,
                 address,
                 orderId,
                 createdAt,
                 shoppings,
-                username,
+                totalPrice,
+                user: { name, lastname, username },
               }) => (
                 <Table.Row textAlign="center" key={name}>
                   <Table.Cell>{name}</Table.Cell>
@@ -165,7 +162,7 @@ function Orders() {
                       .filter((purchase) => purchase.username === username)
                       .map(({ event: { title, id } }) => (
                         <Table.Cell as={Link} to={`/goods/${id}`}>
-                        <div>{title}</div>
+                          <div>{title}</div>
                         </Table.Cell>
                       ))}
                   </Table.Cell>
@@ -173,12 +170,7 @@ function Orders() {
                   <Table.Cell>
                     {shoppings
                       .filter((purchase) => purchase.username === username)
-                      // .map(({ event: { price } }) => (
-                      //   <div style={{ display: "none" }}>
-                      //     {(totalPrice += +price)}
-                      //   </div>
-                      // ))}
-                      .map(({ event: { totalPrice } }) => (
+                      .map(({ totalPrice }) => (
                         <div>{totalPrice}</div>
                       ))}
                     {totalPrice}

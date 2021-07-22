@@ -14,6 +14,9 @@ const {
   validateUpdateUser,
 } = require("../../middleware/validators");
 
+const DoesNotExist = require("../../middleware/validators");
+const ReceivePermission = require("../../middleware/validators");
+
 function generateToken(user) {
   // Returns the JsonWebToken as string
   return jwt.sign(
@@ -31,87 +34,78 @@ function generateToken(user) {
 module.exports = {
   Query: {
     async getUser(_, { id }, context) {
-      try {
-        checkAuth(context);
-        const user = await User.findById(id);
-        if (user) {
-          return user;
-        } else {
-          throw new Error("User not found");
-        }
-      } catch (err) {
-        throw new Error(err);
+      checkAuth(context);
+
+      const user = await User.findById(id);
+      if (!user) {
+        throw new DoesNotExist("User");
       }
+      return user;
     },
-    async users() {
-      try {
-        const users = await User.find();
-        return users.map((user) => {
-          return user;
-        });
-      } catch (err) {
-        throw err;
+    async users(_) {
+      const users = await User.find();
+      if (!users) {
+        throw new DoesNotExist("Users");
       }
+      return users.map((user) => {
+        return user;
+      });
     },
   },
   Mutation: {
-    async updateUser(_, args, context) {
+    async updateUser(_, userData, context) {
       checkAuth(context);
 
-      const { errors, valid } = validateUpdateUser(args.username, args.email);
+      const { errors, valid } = validateUpdateUser(userData);
 
       if (!valid) {
         throw new UserInputError("Errors", { errors });
       }
 
-      return User.findOneAndUpdate(
-        User.findById(args.id),
-
+      const user = User.findOneAndUpdate(
+        User.findById(userData.id),
         {
-          username: args.username,
-          email: args.email,
-          message: "Successful!",
+          ...userData,
         },
         { new: true }
       );
+      if (!user) {
+        throw new DoesNotExist("User");
+      }
+      return user;
     },
     async deleteUser(_, { id }, context) {
-      try {
-        const { username } = checkAuth(context);
+      const { username } = checkAuth(context);
 
-        if (username !== "admin") {
-          throw new Error("Action not allowed");
-        }
-        const user = await User.findById(id);
-        // if (user.username === "admin") {
-        await user.delete();
-        return "User deleted successfully";
-        // } else {
-        //   throw new Error('Action not allowed');
-        // }
-      } catch (err) {
-        throw new Error(err);
+      if (username !== "admin") {
+        throw new ReceivePermission("Delete");
       }
+      const user = await User.findById(id);
+      if (!user) {
+        throw new DoesNotExist("User");
+      }
+      await user.delete();
+      return "User deleted successfully";
     },
 
-    async login(_, { username, password }) {
-      const { errors, valid } = validateLoginInput(username, password);
+    async login(_, args) {
+      const { errors, valid } = validateLoginInput(args);
 
       if (!valid) {
         throw new UserInputError("Errors", { errors });
       }
 
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ username: args.username });
 
       if (!user) {
         errors.general = "User not found";
-        throw new Error("User not found", { errors });
+        throw new UserInputError("Errors", { errors });
       }
 
-      const match = await bcrypt.compare(password, user.password);
+      const match = await bcrypt.compare(args.password, user.password);
       if (!match) {
         errors.general = "Wrong crendetials";
-        throw new Error("Wrong crendetials", { errors });
+        throw new UserInputError("Errors", { errors });
       }
 
       const token = generateToken(user);
@@ -123,51 +117,40 @@ module.exports = {
       };
     },
 
-    async register(
-      _,
-      { registerInput: { username, email, password, confirmPassword } }
-    ) {
-      {
-        // Validate user data
-        const { valid, errors } = validateRegisterInput(
-          username,
-          email,
-          password,
-          confirmPassword
-        );
+    async register(_, { registerInput }) {
+      // Validate user data
+      const { valid, errors } = validateRegisterInput(registerInput);
 
-        if (!valid) {
-          throw new UserInputError("Errors", { errors });
-        }
-        // Make sure that user doesn't already exist
-        const user = await User.findOne({ username });
-        if (user) {
-          throw new Error("Username is taken", {
-            errors: {
-              username: "This username is taken",
-            },
-          });
-        }
-        // hash password and create an auth token
-        password = await bcrypt.hash(password, 12);
-
-        const newUser = new User({
-          email,
-          username,
-          password,
-          createdAt: new Date().toISOString(),
-        });
-
-        const res = await newUser.save();
-
-        const token = generateToken(res);
-
-        return {
-          ...res._doc,
-          id: res._id,
-          token,
-        };
+      if (!valid) {
+        throw new UserInputError("Errors", { errors });
       }
+      // Make sure that user doesn't already exist
+      const user = await User.findOne({ username: registerInput.username });
+      if (user) {
+        errors.general = "Username is taken";
+        throw new UserInputError("Errors", {
+          errors: {
+            username: "This username is taken",
+          },
+        });
+      }
+      // hash password and create an auth token
+      password = await bcrypt.hash(registerInput.password, 12);
+
+      const newUser = new User({
+        ...registerInput,
+        createdAt: new Date().toISOString(),
+      });
+
+      const res = await newUser.save();
+
+      const token = generateToken(res);
+
+      return {
+        ...res._doc,
+        id: res._id,
+        token,
+      };
     },
   },
 };

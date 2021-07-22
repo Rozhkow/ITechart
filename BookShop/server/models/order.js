@@ -2,16 +2,20 @@ const { model, Schema } = require("mongoose");
 
 const orderSchema = new Schema(
   {
-    name: {
-      type: String,
-    },
-    lastname: {
-      type: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
     address: {
       type: String,
     },
     paymentMethod: {
+      type: String,
+    },
+    cardNumber: {
+      type: String,
+    },
+    deliveryMethod: {
       type: String,
     },
     shoppings: [
@@ -22,9 +26,6 @@ const orderSchema = new Schema(
     ],
     totalPrice: {
       type: Number,
-    },
-    username: {
-      type: String,
     },
   },
   { timestamps: true }

@@ -58,11 +58,9 @@
   text-align: center;
 }
 
-/* .Cards {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
+.goodCards {
+  margin-bottom: 20px !important;
+}
 
 @media only screen and (max-width: 767px) {
   .ui.container > .ui.stackable.grid > .column,
