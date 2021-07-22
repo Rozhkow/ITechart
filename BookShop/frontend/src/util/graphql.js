@@ -296,7 +296,6 @@ export const ADDING_ORDER = gql`
           autor
           price
         }
-        username
         createdAt
         updatedAt
       }
@@ -319,12 +318,12 @@ export const ORDER_ALL = gql`
       deliveryMethod
       cardNumber
       createdAt
-      username
       totalPrice
       user {
         name
         lastname
         phoneNumber
+        username
       }
       shoppings {
         username
@@ -359,7 +358,6 @@ export const FETCH_ORDER_QUERY = gql`
           autor
           price
         }
-        username
         createdAt
         updatedAt
       }

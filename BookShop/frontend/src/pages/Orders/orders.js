@@ -144,14 +144,12 @@ function Orders() {
             orders &&
             orders.map(
               ({
-                name,
-                lastname,
                 address,
                 orderId,
                 createdAt,
                 shoppings,
-                username,
                 totalPrice,
+                user: { name, lastname, username },
               }) => (
                 <Table.Row textAlign="center" key={name}>
                   <Table.Cell>{name}</Table.Cell>

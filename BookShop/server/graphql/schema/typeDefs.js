@@ -99,7 +99,7 @@ type Mutation {
     deleteEvent(id: ID!): String!
     updateEvent(id: ID!, eventInput: EventInput): Event
     updateUser(id: ID!, username: String!, email: String!, name: String, lastname: String, phoneNumber: String): User
-    shopEvent(id: ID!): Shopping!
+    shopEvent(id: ID!): Shopping! 
     cancelShopping(shoppingId: ID!): String!
     createComment(id: String!, body: String!): Event!
     deleteComment(id: ID!, commentId: ID!): Event!

@@ -52,7 +52,7 @@ function OrderCard() {
         ) : (
           orders &&
           orders
-            .filter((purchase) => purchase.username === user.username)
+            .filter((purchase) => purchase.user.username === user.username)
             .map(
               ({
                 address,
@@ -62,9 +62,8 @@ function OrderCard() {
                 orderId,
                 createdAt,
                 shoppings,
-                username,
                 totalPrice,
-                user: { name, lastname },
+                user: { name, lastname, username },
               }) => (
                 <Card fluid style={{ margin: 10 }}>
                   <Card.Content>

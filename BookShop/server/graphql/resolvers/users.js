@@ -42,9 +42,7 @@ module.exports = {
       }
       return user;
     },
-    async users() {
-      checkAuth(context);
-
+    async users(_) {
       const users = await User.find();
       if (!users) {
         throw new DoesNotExist("Users");

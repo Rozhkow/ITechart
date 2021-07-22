@@ -27,9 +27,6 @@ const orderSchema = new Schema(
     totalPrice: {
       type: Number,
     },
-    username: {
-      type: String,
-    },
   },
   { timestamps: true }
 );
