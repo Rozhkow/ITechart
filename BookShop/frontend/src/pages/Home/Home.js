@@ -60,10 +60,7 @@ function HomePage() {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
-          {loading ? (
-            <h1>Loading goods..</h1>
-          ) : (
-            goods &&
+          {goods &&
             goods
               .filter((val) => {
                 if (searchTerm === "") {
@@ -82,8 +79,7 @@ function HomePage() {
                     image={images[Object.keys(images)[index]]?.default || ""}
                   />
                 </Grid.Column>
-              ))
-          )}
+              ))}
         </Grid.Row>
       </Grid>
 

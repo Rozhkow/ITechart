@@ -76,6 +76,8 @@ function Shopping() {
 
   const [delivery, setDelivery] = useState("");
 
+  const [selectedOption, setselectedOption] = useState("");
+
   setTotalPrice = (price) => {
     totalPrice += +price;
   };
@@ -122,7 +124,7 @@ function Shopping() {
     variables: {
       name: values.name,
       lastname: values.lastname,
-      address: values.address,
+      address: values.address || selectedOption,
       paymentMethod: payment,
       deliveryMethod: delivery,
       cardNumber: values.cardNumber,
@@ -243,6 +245,7 @@ function Shopping() {
                 fluid
                 selection
                 options={AddressesOption}
+                additionLabel={() => setselectedOption(selectedOption)}
                 style={{ marginBottom: 10 }}
               />
             )}
@@ -308,10 +311,7 @@ function Shopping() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {loading ? (
-            <h1>Loading cart..</h1>
-          ) : (
-            event &&
+          {event &&
             event.map(
               ({
                 event: { title, autor, price, id },
@@ -343,8 +343,7 @@ function Shopping() {
                   )}
                 </>
               )
-            )
-          )}
+            )}
         </Table.Body>
       </Table>
 

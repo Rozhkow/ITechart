@@ -143,10 +143,7 @@ function Orders() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {loading ? (
-            <h1>Loading orders..</h1>
-          ) : (
-            orders &&
+          {orders &&
             orders.map(
               ({
                 address,
@@ -189,8 +186,7 @@ function Orders() {
                   </Table.Cell>
                 </Table.Row>
               )
-            )
-          )}
+            )}
         </Table.Body>
       </Table>
     </Container>

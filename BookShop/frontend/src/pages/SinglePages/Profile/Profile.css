@@ -1,0 +1,12 @@
+.Data {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 30px;
+  margin: 5px;
+}
+
+.SingleUser {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}

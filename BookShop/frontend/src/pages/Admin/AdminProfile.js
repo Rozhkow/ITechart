@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@apollo/client";
 import _ from "lodash";
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import { Table, Button, Container, Checkbox } from "semantic-ui-react";
 import { CSVLink } from "react-csv";
 
@@ -17,7 +17,6 @@ import { DELETE_USER_MUTATION } from "../../util/graphql";
 function sortReducer(state, action) {
   switch (action.type) {
     case "CHANGE_SORT":
-      debugger;
       if (state.column === action.column) {
         return {
           ...state,
@@ -31,6 +30,11 @@ function sortReducer(state, action) {
         column: action.column,
         users: _.sortBy(state.users, [action.column]),
         direction: "ascending",
+      };
+    case "UPDATE_USERS":
+      return {
+        ...state,
+        users: action.payload,
       };
     default:
       throw new Error();
@@ -46,14 +50,19 @@ function AdminProfilePage() {
 
   const [state, dispatch] = useReducer(sortReducer, {
     column: null,
+    users: data ? data.users : [],
     direction: null,
   });
 
-  const users = (!loading && data && data?.users) || [];
+  useEffect(() => {
+    if (!loading && data && data.users) {
+      dispatch({ type: "UPDATE_USERS", payload: data.users });
+    }
+  }, [data, loading]);
 
   // Pagination
 
-  const { column } = state;
+  const { column, users } = state;
 
   const [pageNumber, setPageNumber] = useState(0);
   const usersPerPage = 5;
@@ -137,10 +146,7 @@ function AdminProfilePage() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {loading ? (
-            <h1>Loading goods..</h1>
-          ) : (
-            users &&
+          {users &&
             users
               .filter((val) => {
                 if (searchTerm === "") {
@@ -183,8 +189,7 @@ function AdminProfilePage() {
                     />
                   </Table.Cell>
                 </Table.Row>
-              ))
-          )}
+              ))}
         </Table.Body>
       </Table>
 

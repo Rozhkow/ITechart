@@ -11,7 +11,6 @@ import DeleteButton from "./DeleteButton";
 export const AdminComponent = ({
   setSearchTerm,
   sortedColumn,
-  loading,
   users,
   searchTerm,
   pagesVisited,
@@ -59,10 +58,7 @@ export const AdminComponent = ({
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {loading ? (
-          <h1>Loading goods..</h1>
-        ) : (
-          users &&
+        {users &&
           users
             .filter((val) => {
               if (searchTerm === "") {
@@ -91,8 +87,7 @@ export const AdminComponent = ({
                   <DeleteButton onConfirm={deleteUser} />
                 </Table.Cell>
               </Table.Row>
-            ))
-        )}
+            ))}
       </Table.Body>
     </Table>
 

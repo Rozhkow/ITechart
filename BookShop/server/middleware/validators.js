@@ -99,12 +99,9 @@ module.exports.validateCreateEvent = (goodData) => {
 
 module.exports.validateAddOrder = (orderData) => {
   const errors = {};
-  // if (orderData.name.trim() === "") {
-  //   errors.name = "Name must not be empty";
-  // }
-  // if (orderData.lastname.trim() === "") {
-  //   errors.lastname = "Lastname must not be empty";
-  // }
+  if (orderData.paymentMethod.trim() === "") {
+    errors.paymentMethod = "You need to choose paymentMethod";
+  }
   if (orderData.address.trim() === "") {
     errors.address = "Address must not be empty";
   }
